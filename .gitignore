@@ -216,3 +216,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Entorno virtual
+.venv/
+
+# Datos crudos y procesados (son muy pesados)
+data/raw/
+data/processed/
+
+# Modelos entrenados (también pesados, usar Git LFS si se necesitan)
+model/checkpoints/**/*.pt
+model/checkpoints/**/*.pth
+
+# TensorBoard
+runs/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# DNSMOS model
+evaluation/dnsmos_model.onnx

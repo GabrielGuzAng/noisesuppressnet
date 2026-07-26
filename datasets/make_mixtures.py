@@ -8,7 +8,8 @@ import random
 SAMPLE_RATE = 16000
 SNR_RANGE = [0, 5, 10, 15, 20]
 TARGET_DURATION = 4.0
-
+N_TRAIN=50000
+N_VAL=2000
 
 
 
@@ -103,7 +104,7 @@ if __name__ == "__main__":
     assert len(noise_files)  > 100, "Muy pocos archivos de ruido"
 
     print("→ Generando train pairs...")
-    make_pairs(speech_files, noise_files, PROCESSED / "train", 200)
+    make_pairs(speech_files, noise_files, PROCESSED / "train", N_TRAIN)
     print("→ Generando val pairs...")
-    make_pairs(speech_files, noise_files, PROCESSED / "val", 50)
+    make_pairs(speech_files, noise_files, PROCESSED / "val", N_VAL)
     print("Listo.")

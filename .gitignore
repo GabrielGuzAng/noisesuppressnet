@@ -37,3 +37,11 @@ figures/README.md
 # PRompting
 doubts.md
 
+
+# ─── Excepciones: hash y metadata del test sellado SÍ se versionan ───
+!data/test_v1_hash.txt
+!data/test_v2_hash.txt
+!data/test_v1_metadata.json
+!data/test_v2_metadata.json
+
+

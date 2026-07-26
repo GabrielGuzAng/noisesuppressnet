@@ -1,0 +1,2531 @@
+{
+  "seed": 42,
+  "n_pairs_total": 250,
+  "snr_buckets": [
+    [
+      -5,
+      0
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      5,
+      10
+    ],
+    [
+      10,
+      15
+    ],
+    [
+      15,
+      20
+    ]
+  ],
+  "sample_rate": 16000,
+  "target_duration_s": 4.0,
+  "generated_at": "2026-07-26T11:19:55.356432",
+  "pairs": [
+    {
+      "id": 0,
+      "bucket_idx": 0,
+      "snr_db": -4.807,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6529/62554/6529-62554-0056.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0160.wav",
+      "noise_category": "musan",
+      "speech_offset": 53547,
+      "noise_offset": 2181124
+    },
+    {
+      "id": 1,
+      "bucket_idx": 0,
+      "snr_db": -1.519,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1116/137572/1116-137572-0028.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-153444-A-32.wav",
+      "noise_category": "esc50",
+      "speech_offset": 142074,
+      "noise_offset": 11495
+    },
+    {
+      "id": 2,
+      "bucket_idx": 0,
+      "snr_db": -4.28,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/311/124404/311-124404-0050.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0343.wav",
+      "noise_category": "musan",
+      "speech_offset": 30580,
+      "noise_offset": 0
+    },
+    {
+      "id": 3,
+      "bucket_idx": 0,
+      "snr_db": -2.687,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2691/156755/2691-156755-0028.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0058.wav",
+      "noise_category": "musan",
+      "speech_offset": 46311,
+      "noise_offset": 796013
+    },
+    {
+      "id": 4,
+      "bucket_idx": 0,
+      "snr_db": -1.642,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7517/100442/7517-100442-0034.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0123.wav",
+      "noise_category": "musan",
+      "speech_offset": 59024,
+      "noise_offset": 1214536
+    },
+    {
+      "id": 5,
+      "bucket_idx": 0,
+      "snr_db": -1.035,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7067/76048/7067-76048-0025.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-152594-A-30.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7627,
+      "noise_offset": 3681
+    },
+    {
+      "id": 6,
+      "bucket_idx": 0,
+      "snr_db": -2.734,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5652/19215/5652-19215-0039.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0060.wav",
+      "noise_category": "musan",
+      "speech_offset": 15289,
+      "noise_offset": 4770510
+    },
+    {
+      "id": 7,
+      "bucket_idx": 0,
+      "snr_db": -2.509,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6064/56165/6064-56165-0025.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0138.wav",
+      "noise_category": "musan",
+      "speech_offset": 2308,
+      "noise_offset": 420185
+    },
+    {
+      "id": 8,
+      "bucket_idx": 0,
+      "snr_db": -4.904,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1183/133256/1183-133256-0017.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0122.wav",
+      "noise_category": "musan",
+      "speech_offset": 1283,
+      "noise_offset": 6496538
+    },
+    {
+      "id": 9,
+      "bucket_idx": 0,
+      "snr_db": -2.838,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1737/142397/1737-142397-0020.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0235.wav",
+      "noise_category": "musan",
+      "speech_offset": 67333,
+      "noise_offset": 2889118
+    },
+    {
+      "id": 10,
+      "bucket_idx": 0,
+      "snr_db": -3.138,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2817/142371/2817-142371-0042.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-17124-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 79425,
+      "noise_offset": 11362
+    },
+    {
+      "id": 11,
+      "bucket_idx": 0,
+      "snr_db": -0.739,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6147/34607/6147-34607-0002.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0108.wav",
+      "noise_category": "musan",
+      "speech_offset": 20775,
+      "noise_offset": 1587236
+    },
+    {
+      "id": 12,
+      "bucket_idx": 0,
+      "snr_db": -2.265,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5750/100289/5750-100289-0085.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0154.wav",
+      "noise_category": "musan",
+      "speech_offset": 106180,
+      "noise_offset": 803309
+    },
+    {
+      "id": 13,
+      "bucket_idx": 0,
+      "snr_db": -1.223,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7367/86737/7367-86737-0000.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-50667-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 11326
+    },
+    {
+      "id": 14,
+      "bucket_idx": 0,
+      "snr_db": -2.83,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7264/92316/7264-92316-0008.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-46040-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 87822,
+      "noise_offset": 5343
+    },
+    {
+      "id": 15,
+      "bucket_idx": 0,
+      "snr_db": -4.119,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4214/7146/4214-7146-0037.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0242.wav",
+      "noise_category": "musan",
+      "speech_offset": 46961,
+      "noise_offset": 38563
+    },
+    {
+      "id": 16,
+      "bucket_idx": 0,
+      "snr_db": -0.746,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4441/76250/4441-76250-0026.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-9887-A-49.wav",
+      "noise_category": "esc50",
+      "speech_offset": 88819,
+      "noise_offset": 13787
+    },
+    {
+      "id": 17,
+      "bucket_idx": 0,
+      "snr_db": -0.899,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3112/9555/3112-9555-0007.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-161099-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 37057,
+      "noise_offset": 10112
+    },
+    {
+      "id": 18,
+      "bucket_idx": 0,
+      "snr_db": -3.121,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/911/128684/911-128684-0059.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0026.wav",
+      "noise_category": "musan",
+      "speech_offset": 20846,
+      "noise_offset": 939606
+    },
+    {
+      "id": 19,
+      "bucket_idx": 0,
+      "snr_db": -4.521,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8014/112602/8014-112602-0033.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-156827-A-46.wav",
+      "noise_category": "esc50",
+      "speech_offset": 66979,
+      "noise_offset": 1147
+    },
+    {
+      "id": 20,
+      "bucket_idx": 0,
+      "snr_db": -2.438,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2136/5143/2136-5143-0016.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-112522-A-27.wav",
+      "noise_category": "esc50",
+      "speech_offset": 775,
+      "noise_offset": 4423
+    },
+    {
+      "id": 21,
+      "bucket_idx": 0,
+      "snr_db": -2.52,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/426/122821/426-122821-0021.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0733.wav",
+      "noise_category": "musan",
+      "speech_offset": 41343,
+      "noise_offset": 56474
+    },
+    {
+      "id": 22,
+      "bucket_idx": 0,
+      "snr_db": -1.138,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3112/9554/3112-9554-0021.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0123.wav",
+      "noise_category": "musan",
+      "speech_offset": 20490,
+      "noise_offset": 4860478
+    },
+    {
+      "id": 23,
+      "bucket_idx": 0,
+      "snr_db": -2.014,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/254/27760/254-27760-0001.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-238492-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1146,
+      "noise_offset": 5645
+    },
+    {
+      "id": 24,
+      "bucket_idx": 0,
+      "snr_db": -2.467,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8063/274112/8063-274112-0016.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0718.wav",
+      "noise_category": "musan",
+      "speech_offset": 101155,
+      "noise_offset": 25116
+    },
+    {
+      "id": 25,
+      "bucket_idx": 0,
+      "snr_db": -2.124,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1841/179183/1841-179183-0018.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0083.wav",
+      "noise_category": "musan",
+      "speech_offset": 125116,
+      "noise_offset": 1996935
+    },
+    {
+      "id": 26,
+      "bucket_idx": 0,
+      "snr_db": -3.115,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/40/222/40-222-0023.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0100.wav",
+      "noise_category": "musan",
+      "speech_offset": 49959,
+      "noise_offset": 791017
+    },
+    {
+      "id": 27,
+      "bucket_idx": 0,
+      "snr_db": -4.755,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3857/182315/3857-182315-0031.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-188003-A-34.wav",
+      "noise_category": "esc50",
+      "speech_offset": 34089,
+      "noise_offset": 4232
+    },
+    {
+      "id": 28,
+      "bucket_idx": 0,
+      "snr_db": -4.694,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3723/171115/3723-171115-0017.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-109231-A-9.wav",
+      "noise_category": "esc50",
+      "speech_offset": 65002,
+      "noise_offset": 12723
+    },
+    {
+      "id": 29,
+      "bucket_idx": 0,
+      "snr_db": -0.29,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2989/138035/2989-138035-0021.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-157297-A-21.wav",
+      "noise_category": "esc50",
+      "speech_offset": 12898,
+      "noise_offset": 711
+    },
+    {
+      "id": 30,
+      "bucket_idx": 0,
+      "snr_db": -0.805,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/125/121342/125-121342-0042.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-145774-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 22076,
+      "noise_offset": 15738
+    },
+    {
+      "id": 31,
+      "bucket_idx": 0,
+      "snr_db": -3.519,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4481/17499/4481-17499-0017.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-34497-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 178221,
+      "noise_offset": 7149
+    },
+    {
+      "id": 32,
+      "bucket_idx": 0,
+      "snr_db": -0.556,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1963/147036/1963-147036-0010.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-256512-A-30.wav",
+      "noise_category": "esc50",
+      "speech_offset": 9917,
+      "noise_offset": 12101
+    },
+    {
+      "id": 33,
+      "bucket_idx": 0,
+      "snr_db": -2.389,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/40/121026/40-121026-0022.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0026.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 2992971
+    },
+    {
+      "id": 34,
+      "bucket_idx": 0,
+      "snr_db": -4.485,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5688/15787/5688-15787-0020.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0540.wav",
+      "noise_category": "musan",
+      "speech_offset": 21538,
+      "noise_offset": 0
+    },
+    {
+      "id": 35,
+      "bucket_idx": 0,
+      "snr_db": -0.722,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8609/283227/8609-283227-0053.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-135860-A-49.wav",
+      "noise_category": "esc50",
+      "speech_offset": 96865,
+      "noise_offset": 13606
+    },
+    {
+      "id": 36,
+      "bucket_idx": 0,
+      "snr_db": -2.078,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6367/65536/6367-65536-0049.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-117773-A-16.wav",
+      "noise_category": "esc50",
+      "speech_offset": 61718,
+      "noise_offset": 10331
+    },
+    {
+      "id": 37,
+      "bucket_idx": 0,
+      "snr_db": -0.336,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8975/270782/8975-270782-0035.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0821.wav",
+      "noise_category": "musan",
+      "speech_offset": 7432,
+      "noise_offset": 0
+    },
+    {
+      "id": 38,
+      "bucket_idx": 0,
+      "snr_db": -1.604,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/587/41619/587-41619-0017.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0127.wav",
+      "noise_category": "musan",
+      "speech_offset": 154658,
+      "noise_offset": 0
+    },
+    {
+      "id": 39,
+      "bucket_idx": 0,
+      "snr_db": -4.53,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7278/246956/7278-246956-0025.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0063.wav",
+      "noise_category": "musan",
+      "speech_offset": 141696,
+      "noise_offset": 1263214
+    },
+    {
+      "id": 40,
+      "bucket_idx": 0,
+      "snr_db": -1.886,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1263/141777/1263-141777-0004.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-69131-B-5.wav",
+      "noise_category": "esc50",
+      "speech_offset": 30574,
+      "noise_offset": 7920
+    },
+    {
+      "id": 41,
+      "bucket_idx": 0,
+      "snr_db": -1.066,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2764/36616/2764-36616-0006.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-246513-B-16.wav",
+      "noise_category": "esc50",
+      "speech_offset": 3732,
+      "noise_offset": 13009
+    },
+    {
+      "id": 42,
+      "bucket_idx": 0,
+      "snr_db": -0.505,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3214/167606/3214-167606-0017.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0030.wav",
+      "noise_category": "musan",
+      "speech_offset": 179242,
+      "noise_offset": 1450840
+    },
+    {
+      "id": 43,
+      "bucket_idx": 0,
+      "snr_db": -3.344,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/887/123290/887-123290-0024.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0293.wav",
+      "noise_category": "musan",
+      "speech_offset": 161546,
+      "noise_offset": 45742
+    },
+    {
+      "id": 44,
+      "bucket_idx": 0,
+      "snr_db": -2.356,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/909/131045/909-131045-0010.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0117.wav",
+      "noise_category": "musan",
+      "speech_offset": 72868,
+      "noise_offset": 1319270
+    },
+    {
+      "id": 45,
+      "bucket_idx": 0,
+      "snr_db": -1.494,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/40/222/40-222-0029.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0478.wav",
+      "noise_category": "musan",
+      "speech_offset": 2435,
+      "noise_offset": 29248
+    },
+    {
+      "id": 46,
+      "bucket_idx": 0,
+      "snr_db": -4.166,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/445/123860/445-123860-0007.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-158746-D-2.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1912,
+      "noise_offset": 9503
+    },
+    {
+      "id": 47,
+      "bucket_idx": 0,
+      "snr_db": -0.758,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8630/305212/8630-305212-0009.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0834.wav",
+      "noise_category": "musan",
+      "speech_offset": 158290,
+      "noise_offset": 169552
+    },
+    {
+      "id": 48,
+      "bucket_idx": 0,
+      "snr_db": -1.096,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2159/179154/2159-179154-0028.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0013.wav",
+      "noise_category": "musan",
+      "speech_offset": 145751,
+      "noise_offset": 17799
+    },
+    {
+      "id": 49,
+      "bucket_idx": 0,
+      "snr_db": -4.75,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3830/12531/3830-12531-0005.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0198.wav",
+      "noise_category": "musan",
+      "speech_offset": 73855,
+      "noise_offset": 46750
+    },
+    {
+      "id": 50,
+      "bucket_idx": 1,
+      "snr_db": 2.957,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/696/93314/696-93314-0040.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0433.wav",
+      "noise_category": "musan",
+      "speech_offset": 147712,
+      "noise_offset": 208715
+    },
+    {
+      "id": 51,
+      "bucket_idx": 1,
+      "snr_db": 1.84,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7264/92316/7264-92316-0024.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-215447-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 53022,
+      "noise_offset": 1827
+    },
+    {
+      "id": 52,
+      "bucket_idx": 1,
+      "snr_db": 0.93,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7113/86041/7113-86041-0073.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-39945-B-19.wav",
+      "noise_category": "esc50",
+      "speech_offset": 94619,
+      "noise_offset": 5572
+    },
+    {
+      "id": 53,
+      "bucket_idx": 1,
+      "snr_db": 3.022,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1502/122619/1502-122619-0084.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-114587-A-0.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7362,
+      "noise_offset": 13730
+    },
+    {
+      "id": 54,
+      "bucket_idx": 1,
+      "snr_db": 4.846,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6476/57446/6476-57446-0028.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0040.wav",
+      "noise_category": "musan",
+      "speech_offset": 58666,
+      "noise_offset": 159049
+    },
+    {
+      "id": 55,
+      "bucket_idx": 1,
+      "snr_db": 2.76,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5463/39173/5463-39173-0007.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-145577-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 15537,
+      "noise_offset": 7098
+    },
+    {
+      "id": 56,
+      "bucket_idx": 1,
+      "snr_db": 0.567,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2893/139310/2893-139310-0007.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0009.wav",
+      "noise_category": "musan",
+      "speech_offset": 12578,
+      "noise_offset": 62120
+    },
+    {
+      "id": 57,
+      "bucket_idx": 1,
+      "snr_db": 2.475,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/458/126305/458-126305-0023.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0051.wav",
+      "noise_category": "musan",
+      "speech_offset": 32109,
+      "noise_offset": 0
+    },
+    {
+      "id": 58,
+      "bucket_idx": 1,
+      "snr_db": 3.896,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/307/127535/307-127535-0007.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-207811-A-35.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18701,
+      "noise_offset": 2939
+    },
+    {
+      "id": 59,
+      "bucket_idx": 1,
+      "snr_db": 4.776,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6529/62556/6529-62556-0018.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-100024-B-27.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1414,
+      "noise_offset": 10152
+    },
+    {
+      "id": 60,
+      "bucket_idx": 1,
+      "snr_db": 3.576,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5703/47198/5703-47198-0058.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0239.wav",
+      "noise_category": "musan",
+      "speech_offset": 170244,
+      "noise_offset": 307965
+    },
+    {
+      "id": 61,
+      "bucket_idx": 1,
+      "snr_db": 0.207,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7113/86041/7113-86041-0108.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0668.wav",
+      "noise_category": "musan",
+      "speech_offset": 169165,
+      "noise_offset": 32
+    },
+    {
+      "id": 62,
+      "bucket_idx": 1,
+      "snr_db": 4.833,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8747/293952/8747-293952-0087.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-193767-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 71316,
+      "noise_offset": 1219
+    },
+    {
+      "id": 63,
+      "bucket_idx": 1,
+      "snr_db": 3.009,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8098/278252/8098-278252-0004.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0008.wav",
+      "noise_category": "musan",
+      "speech_offset": 1766,
+      "noise_offset": 912784
+    },
+    {
+      "id": 64,
+      "bucket_idx": 1,
+      "snr_db": 0.418,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2764/36617/2764-36617-0005.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-169127-B-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 71804,
+      "noise_offset": 2922
+    },
+    {
+      "id": 65,
+      "bucket_idx": 1,
+      "snr_db": 0.636,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1235/135883/1235-135883-0001.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-155650-B-24.wav",
+      "noise_category": "esc50",
+      "speech_offset": 137284,
+      "noise_offset": 10264
+    },
+    {
+      "id": 66,
+      "bucket_idx": 1,
+      "snr_db": 0.431,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/332/128985/332-128985-0083.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0053.wav",
+      "noise_category": "musan",
+      "speech_offset": 177794,
+      "noise_offset": 807943
+    },
+    {
+      "id": 67,
+      "bucket_idx": 1,
+      "snr_db": 3.324,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/302/123516/302-123516-0010.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0050.wav",
+      "noise_category": "musan",
+      "speech_offset": 15933,
+      "noise_offset": 2343557
+    },
+    {
+      "id": 68,
+      "bucket_idx": 1,
+      "snr_db": 0.771,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2518/154826/2518-154826-0001.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-198278-B-7.wav",
+      "noise_category": "esc50",
+      "speech_offset": 126653,
+      "noise_offset": 15743
+    },
+    {
+      "id": 69,
+      "bucket_idx": 1,
+      "snr_db": 4.037,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5789/57195/5789-57195-0022.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-232495-A-6.wav",
+      "noise_category": "esc50",
+      "speech_offset": 68829,
+      "noise_offset": 15951
+    },
+    {
+      "id": 70,
+      "bucket_idx": 1,
+      "snr_db": 0.545,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7367/86737/7367-86737-0062.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0628.wav",
+      "noise_category": "musan",
+      "speech_offset": 17006,
+      "noise_offset": 268558
+    },
+    {
+      "id": 71,
+      "bucket_idx": 1,
+      "snr_db": 2.676,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/254/12312/254-12312-0000.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-60180-A-49.wav",
+      "noise_category": "esc50",
+      "speech_offset": 12305,
+      "noise_offset": 14171
+    },
+    {
+      "id": 72,
+      "bucket_idx": 1,
+      "snr_db": 2.215,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5022/29411/5022-29411-0003.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0030.wav",
+      "noise_category": "musan",
+      "speech_offset": 157206,
+      "noise_offset": 5534862
+    },
+    {
+      "id": 73,
+      "bucket_idx": 1,
+      "snr_db": 0.19,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6531/61334/6531-61334-0061.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0116.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 9166109
+    },
+    {
+      "id": 74,
+      "bucket_idx": 1,
+      "snr_db": 0.013,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2007/132570/2007-132570-0029.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0424.wav",
+      "noise_category": "musan",
+      "speech_offset": 127834,
+      "noise_offset": 17147
+    },
+    {
+      "id": 75,
+      "bucket_idx": 1,
+      "snr_db": 4.518,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2002/139469/2002-139469-0039.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0350.wav",
+      "noise_category": "musan",
+      "speech_offset": 74485,
+      "noise_offset": 64374
+    },
+    {
+      "id": 76,
+      "bucket_idx": 1,
+      "snr_db": 4.883,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7794/295948/7794-295948-0003.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-56380-B-5.wav",
+      "noise_category": "esc50",
+      "speech_offset": 78611,
+      "noise_offset": 6572
+    },
+    {
+      "id": 77,
+      "bucket_idx": 1,
+      "snr_db": 0.622,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5514/19193/5514-19193-0000.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0416.wav",
+      "noise_category": "musan",
+      "speech_offset": 6604,
+      "noise_offset": 79205
+    },
+    {
+      "id": 78,
+      "bucket_idx": 1,
+      "snr_db": 3.673,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/78/368/78-368-0011.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-88409-A-45.wav",
+      "noise_category": "esc50",
+      "speech_offset": 117908,
+      "noise_offset": 1192
+    },
+    {
+      "id": 79,
+      "bucket_idx": 1,
+      "snr_db": 4.946,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4297/13006/4297-13006-0020.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-179860-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 83203,
+      "noise_offset": 4131
+    },
+    {
+      "id": 80,
+      "bucket_idx": 1,
+      "snr_db": 4.519,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6000/55211/6000-55211-0036.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0045.wav",
+      "noise_category": "musan",
+      "speech_offset": 34527,
+      "noise_offset": 2220080
+    },
+    {
+      "id": 81,
+      "bucket_idx": 1,
+      "snr_db": 4.425,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3879/174923/3879-174923-0005.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0238.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 34710
+    },
+    {
+      "id": 82,
+      "bucket_idx": 1,
+      "snr_db": 1.688,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/200/126784/200-126784-0034.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-18074-B-6.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 1218
+    },
+    {
+      "id": 83,
+      "bucket_idx": 1,
+      "snr_db": 3.586,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4859/29340/4859-29340-0012.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0076.wav",
+      "noise_category": "musan",
+      "speech_offset": 115769,
+      "noise_offset": 1660726
+    },
+    {
+      "id": 84,
+      "bucket_idx": 1,
+      "snr_db": 2.491,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7859/102519/7859-102519-0030.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma-western-art/music-fma-wa-0064.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 2730479
+    },
+    {
+      "id": 85,
+      "bucket_idx": 1,
+      "snr_db": 4.687,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8975/270782/8975-270782-0015.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0153.wav",
+      "noise_category": "musan",
+      "speech_offset": 90492,
+      "noise_offset": 1860048
+    },
+    {
+      "id": 86,
+      "bucket_idx": 1,
+      "snr_db": 3.515,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/211/122425/211-122425-0000.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-135649-A-45.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1379,
+      "noise_offset": 4489
+    },
+    {
+      "id": 87,
+      "bucket_idx": 1,
+      "snr_db": 4.218,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2136/5143/2136-5143-0027.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-125825-A-46.wav",
+      "noise_category": "esc50",
+      "speech_offset": 75517,
+      "noise_offset": 12627
+    },
+    {
+      "id": 88,
+      "bucket_idx": 1,
+      "snr_db": 4.286,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7078/271888/7078-271888-0088.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0139.wav",
+      "noise_category": "musan",
+      "speech_offset": 4374,
+      "noise_offset": 584255
+    },
+    {
+      "id": 89,
+      "bucket_idx": 1,
+      "snr_db": 1.928,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6081/41997/6081-41997-0016.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0039.wav",
+      "noise_category": "musan",
+      "speech_offset": 139831,
+      "noise_offset": 2110404
+    },
+    {
+      "id": 90,
+      "bucket_idx": 1,
+      "snr_db": 3.562,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4014/186179/4014-186179-0027.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0060.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 379586
+    },
+    {
+      "id": 91,
+      "bucket_idx": 1,
+      "snr_db": 0.465,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6078/54013/6078-54013-0079.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0154.wav",
+      "noise_category": "musan",
+      "speech_offset": 63735,
+      "noise_offset": 581569
+    },
+    {
+      "id": 92,
+      "bucket_idx": 1,
+      "snr_db": 1.03,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5393/19219/5393-19219-0018.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0369.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 718
+    },
+    {
+      "id": 93,
+      "bucket_idx": 1,
+      "snr_db": 4.683,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5688/41232/5688-41232-0013.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-198360-B-49.wav",
+      "noise_category": "esc50",
+      "speech_offset": 30700,
+      "noise_offset": 9175
+    },
+    {
+      "id": 94,
+      "bucket_idx": 1,
+      "snr_db": 2.023,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1069/133709/1069-133709-0042.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-87781-A-10.wav",
+      "noise_category": "esc50",
+      "speech_offset": 127853,
+      "noise_offset": 1196
+    },
+    {
+      "id": 95,
+      "bucket_idx": 1,
+      "snr_db": 3.425,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7402/59171/7402-59171-0035.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0173.wav",
+      "noise_category": "musan",
+      "speech_offset": 132220,
+      "noise_offset": 1139684
+    },
+    {
+      "id": 96,
+      "bucket_idx": 1,
+      "snr_db": 2.878,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7113/86041/7113-86041-0013.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-117122-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 108119,
+      "noise_offset": 11336
+    },
+    {
+      "id": 97,
+      "bucket_idx": 1,
+      "snr_db": 1.302,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5463/39174/5463-39174-0036.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-159346-A-36.wav",
+      "noise_category": "esc50",
+      "speech_offset": 36584,
+      "noise_offset": 15463
+    },
+    {
+      "id": 98,
+      "bucket_idx": 1,
+      "snr_db": 2.932,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/302/123504/302-123504-0018.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-197408-A-8.wav",
+      "noise_category": "esc50",
+      "speech_offset": 59327,
+      "noise_offset": 4097
+    },
+    {
+      "id": 99,
+      "bucket_idx": 1,
+      "snr_db": 4.562,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6531/61334/6531-61334-0000.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0733.wav",
+      "noise_category": "musan",
+      "speech_offset": 34519,
+      "noise_offset": 121503
+    },
+    {
+      "id": 100,
+      "bucket_idx": 2,
+      "snr_db": 6.637,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/19/198/19-198-0020.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0542.wav",
+      "noise_category": "musan",
+      "speech_offset": 95882,
+      "noise_offset": 14792
+    },
+    {
+      "id": 101,
+      "bucket_idx": 2,
+      "snr_db": 6.735,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4362/15663/4362-15663-0016.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0134.wav",
+      "noise_category": "musan",
+      "speech_offset": 83651,
+      "noise_offset": 5459821
+    },
+    {
+      "id": 102,
+      "bucket_idx": 2,
+      "snr_db": 5.929,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/445/123860/445-123860-0017.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0013.wav",
+      "noise_category": "musan",
+      "speech_offset": 130163,
+      "noise_offset": 1220341
+    },
+    {
+      "id": 103,
+      "bucket_idx": 2,
+      "snr_db": 5.889,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7402/90848/7402-90848-0031.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-223125-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1255,
+      "noise_offset": 1293
+    },
+    {
+      "id": 104,
+      "bucket_idx": 2,
+      "snr_db": 9.137,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7402/59171/7402-59171-0001.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0418.wav",
+      "noise_category": "musan",
+      "speech_offset": 53178,
+      "noise_offset": 422041
+    },
+    {
+      "id": 105,
+      "bucket_idx": 2,
+      "snr_db": 8.531,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5022/29411/5022-29411-0048.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-171041-A-38.wav",
+      "noise_category": "esc50",
+      "speech_offset": 100163,
+      "noise_offset": 9423
+    },
+    {
+      "id": 106,
+      "bucket_idx": 2,
+      "snr_db": 9.825,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2289/152258/2289-152258-0019.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-17565-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 133069,
+      "noise_offset": 7356
+    },
+    {
+      "id": 107,
+      "bucket_idx": 2,
+      "snr_db": 8.348,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1867/154075/1867-154075-0025.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-212604-A-15.wav",
+      "noise_category": "esc50",
+      "speech_offset": 57597,
+      "noise_offset": 3615
+    },
+    {
+      "id": 108,
+      "bucket_idx": 2,
+      "snr_db": 9.794,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6415/111615/6415-111615-0009.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0562.wav",
+      "noise_category": "musan",
+      "speech_offset": 40991,
+      "noise_offset": 19345
+    },
+    {
+      "id": 109,
+      "bucket_idx": 2,
+      "snr_db": 6.11,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8747/293952/8747-293952-0048.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-18766-B-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 24110,
+      "noise_offset": 83
+    },
+    {
+      "id": 110,
+      "bucket_idx": 2,
+      "snr_db": 5.939,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5104/33407/5104-33407-0020.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-114280-A-0.wav",
+      "noise_category": "esc50",
+      "speech_offset": 87492,
+      "noise_offset": 5099
+    },
+    {
+      "id": 111,
+      "bucket_idx": 2,
+      "snr_db": 6.083,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2436/2481/2436-2481-0036.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0113.wav",
+      "noise_category": "musan",
+      "speech_offset": 3624,
+      "noise_offset": 2246851
+    },
+    {
+      "id": 112,
+      "bucket_idx": 2,
+      "snr_db": 6.919,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3982/182255/3982-182255-0030.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-172179-A-31.wav",
+      "noise_category": "esc50",
+      "speech_offset": 55540,
+      "noise_offset": 9958
+    },
+    {
+      "id": 113,
+      "bucket_idx": 2,
+      "snr_db": 9.948,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2136/5147/2136-5147-0033.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-39835-A-9.wav",
+      "noise_category": "esc50",
+      "speech_offset": 33910,
+      "noise_offset": 2728
+    },
+    {
+      "id": 114,
+      "bucket_idx": 2,
+      "snr_db": 6.124,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8108/274318/8108-274318-0009.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-203739-A-10.wav",
+      "noise_category": "esc50",
+      "speech_offset": 49271,
+      "noise_offset": 8906
+    },
+    {
+      "id": 115,
+      "bucket_idx": 2,
+      "snr_db": 7.292,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5393/19219/5393-19219-0058.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-200334-B-1.wav",
+      "noise_category": "esc50",
+      "speech_offset": 4101,
+      "noise_offset": 1265
+    },
+    {
+      "id": 116,
+      "bucket_idx": 2,
+      "snr_db": 5.306,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/103/1240/103-1240-0018.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-106072-A-36.wav",
+      "noise_category": "esc50",
+      "speech_offset": 15810,
+      "noise_offset": 1556
+    },
+    {
+      "id": 117,
+      "bucket_idx": 2,
+      "snr_db": 5.136,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3440/171009/3440-171009-0007.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0238.wav",
+      "noise_category": "musan",
+      "speech_offset": 102596,
+      "noise_offset": 8951449
+    },
+    {
+      "id": 118,
+      "bucket_idx": 2,
+      "snr_db": 7.729,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1098/133695/1098-133695-0009.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0162.wav",
+      "noise_category": "musan",
+      "speech_offset": 131447,
+      "noise_offset": 214566
+    },
+    {
+      "id": 119,
+      "bucket_idx": 2,
+      "snr_db": 8.066,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3879/174923/3879-174923-0038.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-251959-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 167316,
+      "noise_offset": 14434
+    },
+    {
+      "id": 120,
+      "bucket_idx": 2,
+      "snr_db": 7.554,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8629/261139/8629-261139-0057.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-157296-A-24.wav",
+      "noise_category": "esc50",
+      "speech_offset": 80774,
+      "noise_offset": 6599
+    },
+    {
+      "id": 121,
+      "bucket_idx": 2,
+      "snr_db": 9.573,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3259/158083/3259-158083-0048.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0320.wav",
+      "noise_category": "musan",
+      "speech_offset": 16804,
+      "noise_offset": 18410
+    },
+    {
+      "id": 122,
+      "bucket_idx": 2,
+      "snr_db": 9.305,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1447/130551/1447-130551-0025.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0326.wav",
+      "noise_category": "musan",
+      "speech_offset": 42385,
+      "noise_offset": 177960
+    },
+    {
+      "id": 123,
+      "bucket_idx": 2,
+      "snr_db": 9.756,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5789/57195/5789-57195-0028.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-222524-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 8726,
+      "noise_offset": 5272
+    },
+    {
+      "id": 124,
+      "bucket_idx": 2,
+      "snr_db": 7.895,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1594/135914/1594-135914-0008.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0054.wav",
+      "noise_category": "musan",
+      "speech_offset": 142055,
+      "noise_offset": 4980434
+    },
+    {
+      "id": 125,
+      "bucket_idx": 2,
+      "snr_db": 6.317,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7511/102420/7511-102420-0004.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0227.wav",
+      "noise_category": "musan",
+      "speech_offset": 83567,
+      "noise_offset": 4843842
+    },
+    {
+      "id": 126,
+      "bucket_idx": 2,
+      "snr_db": 5.65,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8425/292520/8425-292520-0012.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0062.wav",
+      "noise_category": "musan",
+      "speech_offset": 4274,
+      "noise_offset": 143393
+    },
+    {
+      "id": 127,
+      "bucket_idx": 2,
+      "snr_db": 8.821,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8051/118101/8051-118101-0037.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-31482-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 26947,
+      "noise_offset": 1919
+    },
+    {
+      "id": 128,
+      "bucket_idx": 2,
+      "snr_db": 5.773,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8063/274116/8063-274116-0014.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0002.wav",
+      "noise_category": "musan",
+      "speech_offset": 51072,
+      "noise_offset": 67532
+    },
+    {
+      "id": 129,
+      "bucket_idx": 2,
+      "snr_db": 5.031,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1970/28415/1970-28415-0009.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-67422-A-18.wav",
+      "noise_category": "esc50",
+      "speech_offset": 43467,
+      "noise_offset": 1233
+    },
+    {
+      "id": 130,
+      "bucket_idx": 2,
+      "snr_db": 8.496,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4788/294466/4788-294466-0030.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-222524-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 45466,
+      "noise_offset": 9214
+    },
+    {
+      "id": 131,
+      "bucket_idx": 2,
+      "snr_db": 5.623,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5678/43302/5678-43302-0026.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0016.wav",
+      "noise_category": "musan",
+      "speech_offset": 30327,
+      "noise_offset": 0
+    },
+    {
+      "id": 132,
+      "bucket_idx": 2,
+      "snr_db": 8.112,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2989/138035/2989-138035-0039.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-27405-A-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 112457,
+      "noise_offset": 11436
+    },
+    {
+      "id": 133,
+      "bucket_idx": 2,
+      "snr_db": 6.005,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6181/216552/6181-216552-0111.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0143.wav",
+      "noise_category": "musan",
+      "speech_offset": 35787,
+      "noise_offset": 6339366
+    },
+    {
+      "id": 134,
+      "bucket_idx": 2,
+      "snr_db": 7.125,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2518/154826/2518-154826-0028.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-209989-A-22.wav",
+      "noise_category": "esc50",
+      "speech_offset": 98209,
+      "noise_offset": 4067
+    },
+    {
+      "id": 135,
+      "bucket_idx": 2,
+      "snr_db": 5.074,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5514/19193/5514-19193-0010.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-164216-A-6.wav",
+      "noise_category": "esc50",
+      "speech_offset": 38359,
+      "noise_offset": 4499
+    },
+    {
+      "id": 136,
+      "bucket_idx": 2,
+      "snr_db": 6.881,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7505/83618/7505-83618-0023.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-103050-A-19.wav",
+      "noise_category": "esc50",
+      "speech_offset": 39069,
+      "noise_offset": 4908
+    },
+    {
+      "id": 137,
+      "bucket_idx": 2,
+      "snr_db": 6.642,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/248/130652/248-130652-0035.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-129678-A-13.wav",
+      "noise_category": "esc50",
+      "speech_offset": 34520,
+      "noise_offset": 12666
+    },
+    {
+      "id": 138,
+      "bucket_idx": 2,
+      "snr_db": 6.306,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/328/129766/328-129766-0060.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0044.wav",
+      "noise_category": "musan",
+      "speech_offset": 106061,
+      "noise_offset": 6445079
+    },
+    {
+      "id": 139,
+      "bucket_idx": 2,
+      "snr_db": 5.669,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7059/77897/7059-77897-0021.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-50667-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 42829,
+      "noise_offset": 10812
+    },
+    {
+      "id": 140,
+      "bucket_idx": 2,
+      "snr_db": 7.878,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3982/182255/3982-182255-0014.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0031.wav",
+      "noise_category": "musan",
+      "speech_offset": 45085,
+      "noise_offset": 8056044
+    },
+    {
+      "id": 141,
+      "bucket_idx": 2,
+      "snr_db": 8.463,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5322/7679/5322-7679-0027.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0086.wav",
+      "noise_category": "musan",
+      "speech_offset": 46850,
+      "noise_offset": 4771094
+    },
+    {
+      "id": 142,
+      "bucket_idx": 2,
+      "snr_db": 5.998,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/196/122159/196-122159-0011.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0355.wav",
+      "noise_category": "musan",
+      "speech_offset": 118114,
+      "noise_offset": 127809
+    },
+    {
+      "id": 143,
+      "bucket_idx": 2,
+      "snr_db": 5.219,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/27/123349/27-123349-0039.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0041.wav",
+      "noise_category": "musan",
+      "speech_offset": 123826,
+      "noise_offset": 1186566
+    },
+    {
+      "id": 144,
+      "bucket_idx": 2,
+      "snr_db": 6.341,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3664/178355/3664-178355-0017.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0086.wav",
+      "noise_category": "musan",
+      "speech_offset": 77837,
+      "noise_offset": 3732799
+    },
+    {
+      "id": 145,
+      "bucket_idx": 2,
+      "snr_db": 8.497,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6019/3185/6019-3185-0104.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-51805-A-33.wav",
+      "noise_category": "esc50",
+      "speech_offset": 130109,
+      "noise_offset": 6191
+    },
+    {
+      "id": 146,
+      "bucket_idx": 2,
+      "snr_db": 6.366,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2764/36619/2764-36619-0001.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-97793-A-31.wav",
+      "noise_category": "esc50",
+      "speech_offset": 62980,
+      "noise_offset": 7497
+    },
+    {
+      "id": 147,
+      "bucket_idx": 2,
+      "snr_db": 8.238,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2691/156745/2691-156745-0009.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0029.wav",
+      "noise_category": "musan",
+      "speech_offset": 14706,
+      "noise_offset": 2337166
+    },
+    {
+      "id": 148,
+      "bucket_idx": 2,
+      "snr_db": 5.368,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1502/122619/1502-122619-0071.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-124376-B-3.wav",
+      "noise_category": "esc50",
+      "speech_offset": 76519,
+      "noise_offset": 3166
+    },
+    {
+      "id": 149,
+      "bucket_idx": 2,
+      "snr_db": 8.517,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6454/107462/6454-107462-0011.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0020.wav",
+      "noise_category": "musan",
+      "speech_offset": 65999,
+      "noise_offset": 1887549
+    },
+    {
+      "id": 150,
+      "bucket_idx": 3,
+      "snr_db": 10.711,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2764/36617/2764-36617-0001.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0055.wav",
+      "noise_category": "musan",
+      "speech_offset": 125916,
+      "noise_offset": 1872695
+    },
+    {
+      "id": 151,
+      "bucket_idx": 3,
+      "snr_db": 11.116,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1183/133256/1183-133256-0005.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-197454-B-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 168157,
+      "noise_offset": 12695
+    },
+    {
+      "id": 152,
+      "bucket_idx": 3,
+      "snr_db": 13.648,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3526/175658/3526-175658-0010.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0069.wav",
+      "noise_category": "musan",
+      "speech_offset": 45653,
+      "noise_offset": 1446736
+    },
+    {
+      "id": 153,
+      "bucket_idx": 3,
+      "snr_db": 12.375,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5192/19397/5192-19397-0041.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0314.wav",
+      "noise_category": "musan",
+      "speech_offset": 10854,
+      "noise_offset": 0
+    },
+    {
+      "id": 154,
+      "bucket_idx": 3,
+      "snr_db": 13.202,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3112/9555/3112-9555-0017.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-77347-A-46.wav",
+      "noise_category": "esc50",
+      "speech_offset": 95333,
+      "noise_offset": 3686
+    },
+    {
+      "id": 155,
+      "bucket_idx": 3,
+      "snr_db": 11.43,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4830/25898/4830-25898-0016.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0217.wav",
+      "noise_category": "musan",
+      "speech_offset": 27825,
+      "noise_offset": 7035
+    },
+    {
+      "id": 156,
+      "bucket_idx": 3,
+      "snr_db": 13.342,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5514/19193/5514-19193-0008.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0028.wav",
+      "noise_category": "musan",
+      "speech_offset": 80254,
+      "noise_offset": 138422
+    },
+    {
+      "id": 157,
+      "bucket_idx": 3,
+      "snr_db": 11.495,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7447/91186/7447-91186-0009.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-214869-A-9.wav",
+      "noise_category": "esc50",
+      "speech_offset": 71562,
+      "noise_offset": 8829
+    },
+    {
+      "id": 158,
+      "bucket_idx": 3,
+      "snr_db": 12.405,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5808/54425/5808-54425-0012.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-76831-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 114579,
+      "noise_offset": 1594
+    },
+    {
+      "id": 159,
+      "bucket_idx": 3,
+      "snr_db": 12.22,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4680/16041/4680-16041-0026.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0335.wav",
+      "noise_category": "musan",
+      "speech_offset": 1191,
+      "noise_offset": 120788
+    },
+    {
+      "id": 160,
+      "bucket_idx": 3,
+      "snr_db": 14.561,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8123/275216/8123-275216-0032.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0174.wav",
+      "noise_category": "musan",
+      "speech_offset": 140805,
+      "noise_offset": 5061989
+    },
+    {
+      "id": 161,
+      "bucket_idx": 3,
+      "snr_db": 13.761,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/839/130898/839-130898-0029.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0077.wav",
+      "noise_category": "musan",
+      "speech_offset": 2548,
+      "noise_offset": 724796
+    },
+    {
+      "id": 162,
+      "bucket_idx": 3,
+      "snr_db": 12.743,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2391/145015/2391-145015-0069.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0090.wav",
+      "noise_category": "musan",
+      "speech_offset": 101378,
+      "noise_offset": 1769432
+    },
+    {
+      "id": 163,
+      "bucket_idx": 3,
+      "snr_db": 14.227,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1743/142912/1743-142912-0024.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-66205-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 87109,
+      "noise_offset": 11073
+    },
+    {
+      "id": 164,
+      "bucket_idx": 3,
+      "snr_db": 13.05,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4297/13009/4297-13009-0061.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0791.wav",
+      "noise_category": "musan",
+      "speech_offset": 42499,
+      "noise_offset": 44520
+    },
+    {
+      "id": 165,
+      "bucket_idx": 3,
+      "snr_db": 13.619,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/426/122822/426-122822-0009.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0093.wav",
+      "noise_category": "musan",
+      "speech_offset": 58149,
+      "noise_offset": 4169843
+    },
+    {
+      "id": 166,
+      "bucket_idx": 3,
+      "snr_db": 12.59,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4640/19187/4640-19187-0010.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-202749-A-13.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1431,
+      "noise_offset": 9385
+    },
+    {
+      "id": 167,
+      "bucket_idx": 3,
+      "snr_db": 12.875,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7505/258964/7505-258964-0047.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0000.wav",
+      "noise_category": "musan",
+      "speech_offset": 155037,
+      "noise_offset": 199836
+    },
+    {
+      "id": 168,
+      "bucket_idx": 3,
+      "snr_db": 11.068,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7059/88364/7059-88364-0000.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-54962-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 76624,
+      "noise_offset": 2754
+    },
+    {
+      "id": 169,
+      "bucket_idx": 3,
+      "snr_db": 14.654,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6563/285357/6563-285357-0038.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0107.wav",
+      "noise_category": "musan",
+      "speech_offset": 58311,
+      "noise_offset": 4739056
+    },
+    {
+      "id": 170,
+      "bucket_idx": 3,
+      "snr_db": 13.196,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1455/134435/1455-134435-0015.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0059.wav",
+      "noise_category": "musan",
+      "speech_offset": 89267,
+      "noise_offset": 156940
+    },
+    {
+      "id": 171,
+      "bucket_idx": 3,
+      "snr_db": 14.098,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7505/258964/7505-258964-0019.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0729.wav",
+      "noise_category": "musan",
+      "speech_offset": 91193,
+      "noise_offset": 708943
+    },
+    {
+      "id": 172,
+      "bucket_idx": 3,
+      "snr_db": 13.032,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8312/279790/8312-279790-0021.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-198962-B-25.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 977
+    },
+    {
+      "id": 173,
+      "bucket_idx": 3,
+      "snr_db": 10.124,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1898/145720/1898-145720-0002.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0358.wav",
+      "noise_category": "musan",
+      "speech_offset": 125108,
+      "noise_offset": 25446
+    },
+    {
+      "id": 174,
+      "bucket_idx": 3,
+      "snr_db": 10.541,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2391/145015/2391-145015-0108.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0119.wav",
+      "noise_category": "musan",
+      "speech_offset": 19138,
+      "noise_offset": 649709
+    },
+    {
+      "id": 175,
+      "bucket_idx": 3,
+      "snr_db": 14.409,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5463/39174/5463-39174-0014.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0074.wav",
+      "noise_category": "musan",
+      "speech_offset": 100411,
+      "noise_offset": 2029732
+    },
+    {
+      "id": 176,
+      "bucket_idx": 3,
+      "snr_db": 13.498,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2002/139469/2002-139469-0057.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0138.wav",
+      "noise_category": "musan",
+      "speech_offset": 42497,
+      "noise_offset": 1847465
+    },
+    {
+      "id": 177,
+      "bucket_idx": 3,
+      "snr_db": 14.522,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/233/134440/233-134440-0042.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0480.wav",
+      "noise_category": "musan",
+      "speech_offset": 67894,
+      "noise_offset": 32484
+    },
+    {
+      "id": 178,
+      "bucket_idx": 3,
+      "snr_db": 14.468,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/458/126305/458-126305-0035.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0363.wav",
+      "noise_category": "musan",
+      "speech_offset": 15128,
+      "noise_offset": 8696
+    },
+    {
+      "id": 179,
+      "bucket_idx": 3,
+      "snr_db": 11.157,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1578/140045/1578-140045-0016.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0052.wav",
+      "noise_category": "musan",
+      "speech_offset": 7014,
+      "noise_offset": 6003874
+    },
+    {
+      "id": 180,
+      "bucket_idx": 3,
+      "snr_db": 14.926,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/839/130898/839-130898-0046.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-198962-A-25.wav",
+      "noise_category": "esc50",
+      "speech_offset": 10119,
+      "noise_offset": 15774
+    },
+    {
+      "id": 181,
+      "bucket_idx": 3,
+      "snr_db": 13.053,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/887/123291/887-123291-0013.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-50060-A-10.wav",
+      "noise_category": "esc50",
+      "speech_offset": 13767,
+      "noise_offset": 894
+    },
+    {
+      "id": 182,
+      "bucket_idx": 3,
+      "snr_db": 13.65,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1743/142913/1743-142913-0019.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma-western-art/music-fma-wa-0079.wav",
+      "noise_category": "musan",
+      "speech_offset": 4824,
+      "noise_offset": 1157513
+    },
+    {
+      "id": 183,
+      "bucket_idx": 3,
+      "snr_db": 12.583,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6818/68772/6818-68772-0023.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-39937-A-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 146228,
+      "noise_offset": 5563
+    },
+    {
+      "id": 184,
+      "bucket_idx": 3,
+      "snr_db": 11.281,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8630/305213/8630-305213-0026.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0060.wav",
+      "noise_category": "musan",
+      "speech_offset": 171545,
+      "noise_offset": 1040690
+    },
+    {
+      "id": 185,
+      "bucket_idx": 3,
+      "snr_db": 12.43,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1737/142397/1737-142397-0006.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-207836-C-29.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7330,
+      "noise_offset": 15466
+    },
+    {
+      "id": 186,
+      "bucket_idx": 3,
+      "snr_db": 12.31,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7800/283493/7800-283493-0031.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-188287-A-9.wav",
+      "noise_category": "esc50",
+      "speech_offset": 141477,
+      "noise_offset": 5437
+    },
+    {
+      "id": 187,
+      "bucket_idx": 3,
+      "snr_db": 11.486,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2836/5354/2836-5354-0042.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0021.wav",
+      "noise_category": "musan",
+      "speech_offset": 117705,
+      "noise_offset": 60013
+    },
+    {
+      "id": 188,
+      "bucket_idx": 3,
+      "snr_db": 11.709,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/412/126975/412-126975-0065.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0226.wav",
+      "noise_category": "musan",
+      "speech_offset": 184532,
+      "noise_offset": 8947216
+    },
+    {
+      "id": 189,
+      "bucket_idx": 3,
+      "snr_db": 12.214,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/481/123720/481-123720-0080.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0215.wav",
+      "noise_category": "musan",
+      "speech_offset": 127734,
+      "noise_offset": 1969
+    },
+    {
+      "id": 190,
+      "bucket_idx": 3,
+      "snr_db": 11.334,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/909/131041/909-131041-0016.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0052.wav",
+      "noise_category": "musan",
+      "speech_offset": 11657,
+      "noise_offset": 171724
+    },
+    {
+      "id": 191,
+      "bucket_idx": 3,
+      "snr_db": 10.697,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1447/130552/1447-130552-0013.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0014.wav",
+      "noise_category": "musan",
+      "speech_offset": 102431,
+      "noise_offset": 0
+    },
+    {
+      "id": 192,
+      "bucket_idx": 3,
+      "snr_db": 14.022,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/40/121026/40-121026-0037.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0008.wav",
+      "noise_category": "musan",
+      "speech_offset": 4133,
+      "noise_offset": 2340635
+    },
+    {
+      "id": 193,
+      "bucket_idx": 3,
+      "snr_db": 11.791,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/403/126855/403-126855-0023.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0426.wav",
+      "noise_category": "musan",
+      "speech_offset": 83711,
+      "noise_offset": 0
+    },
+    {
+      "id": 194,
+      "bucket_idx": 3,
+      "snr_db": 11.824,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8123/275216/8123-275216-0014.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-98869-A-46.wav",
+      "noise_category": "esc50",
+      "speech_offset": 23561,
+      "noise_offset": 1851
+    },
+    {
+      "id": 195,
+      "bucket_idx": 3,
+      "snr_db": 13.917,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/446/123501/446-123501-0032.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0508.wav",
+      "noise_category": "musan",
+      "speech_offset": 158343,
+      "noise_offset": 50858
+    },
+    {
+      "id": 196,
+      "bucket_idx": 3,
+      "snr_db": 13.491,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/426/122821/426-122821-0034.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-110913-C-7.wav",
+      "noise_category": "esc50",
+      "speech_offset": 57534,
+      "noise_offset": 10338
+    },
+    {
+      "id": 197,
+      "bucket_idx": 3,
+      "snr_db": 12.237,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7511/102419/7511-102419-0015.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-95698-A-5.wav",
+      "noise_category": "esc50",
+      "speech_offset": 75752,
+      "noise_offset": 9039
+    },
+    {
+      "id": 198,
+      "bucket_idx": 3,
+      "snr_db": 11.548,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5703/47198/5703-47198-0019.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-70280-A-18.wav",
+      "noise_category": "esc50",
+      "speech_offset": 113790,
+      "noise_offset": 9150
+    },
+    {
+      "id": 199,
+      "bucket_idx": 3,
+      "snr_db": 13.98,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7367/86737/7367-86737-0078.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0230.wav",
+      "noise_category": "musan",
+      "speech_offset": 14066,
+      "noise_offset": 6522416
+    },
+    {
+      "id": 200,
+      "bucket_idx": 4,
+      "snr_db": 16.183,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/211/122425/211-122425-0064.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0117.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 253224
+    },
+    {
+      "id": 201,
+      "bucket_idx": 4,
+      "snr_db": 17.315,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3235/28433/3235-28433-0028.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0231.wav",
+      "noise_category": "musan",
+      "speech_offset": 154866,
+      "noise_offset": 273123
+    },
+    {
+      "id": 202,
+      "bucket_idx": 4,
+      "snr_db": 16.872,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1447/130552/1447-130552-0008.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-7973-A-7.wav",
+      "noise_category": "esc50",
+      "speech_offset": 56169,
+      "noise_offset": 1256
+    },
+    {
+      "id": 203,
+      "bucket_idx": 4,
+      "snr_db": 19.974,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7517/100442/7517-100442-0010.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-4211-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 139695,
+      "noise_offset": 6208
+    },
+    {
+      "id": 204,
+      "bucket_idx": 4,
+      "snr_db": 16.2,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1455/134435/1455-134435-0026.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-156581-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1846,
+      "noise_offset": 10600
+    },
+    {
+      "id": 205,
+      "bucket_idx": 4,
+      "snr_db": 17.967,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/332/128985/332-128985-0023.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0013.wav",
+      "noise_category": "musan",
+      "speech_offset": 137653,
+      "noise_offset": 3244805
+    },
+    {
+      "id": 206,
+      "bucket_idx": 4,
+      "snr_db": 17.636,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1334/135589/1334-135589-0104.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-85909-A-29.wav",
+      "noise_category": "esc50",
+      "speech_offset": 35030,
+      "noise_offset": 3403
+    },
+    {
+      "id": 207,
+      "bucket_idx": 4,
+      "snr_db": 15.243,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4788/94904/4788-94904-0012.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-155858-E-25.wav",
+      "noise_category": "esc50",
+      "speech_offset": 25081,
+      "noise_offset": 4184
+    },
+    {
+      "id": 208,
+      "bucket_idx": 4,
+      "snr_db": 15.908,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8838/298546/8838-298546-0032.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-30709-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 72124,
+      "noise_offset": 4574
+    },
+    {
+      "id": 209,
+      "bucket_idx": 4,
+      "snr_db": 19.43,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/211/122442/211-122442-0068.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0011.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 1949000
+    },
+    {
+      "id": 210,
+      "bucket_idx": 4,
+      "snr_db": 18.944,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5104/33407/5104-33407-0025.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0032.wav",
+      "noise_category": "musan",
+      "speech_offset": 140429,
+      "noise_offset": 1441098
+    },
+    {
+      "id": 211,
+      "bucket_idx": 4,
+      "snr_db": 16.068,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8838/298545/8838-298545-0040.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0101.wav",
+      "noise_category": "musan",
+      "speech_offset": 22396,
+      "noise_offset": 1297784
+    },
+    {
+      "id": 212,
+      "bucket_idx": 4,
+      "snr_db": 15.893,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1502/122615/1502-122615-0029.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-103426-A-3.wav",
+      "noise_category": "esc50",
+      "speech_offset": 134022,
+      "noise_offset": 6252
+    },
+    {
+      "id": 213,
+      "bucket_idx": 4,
+      "snr_db": 19.692,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1502/122615/1502-122615-0010.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-82367-A-10.wav",
+      "noise_category": "esc50",
+      "speech_offset": 182469,
+      "noise_offset": 8988
+    },
+    {
+      "id": 214,
+      "bucket_idx": 4,
+      "snr_db": 17.943,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/8975/270782/8975-270782-0039.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0303.wav",
+      "noise_category": "musan",
+      "speech_offset": 6960,
+      "noise_offset": 43521
+    },
+    {
+      "id": 215,
+      "bucket_idx": 4,
+      "snr_db": 18.582,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4088/158077/4088-158077-0096.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0195.wav",
+      "noise_category": "musan",
+      "speech_offset": 25721,
+      "noise_offset": 1768292
+    },
+    {
+      "id": 216,
+      "bucket_idx": 4,
+      "snr_db": 19.536,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5808/48608/5808-48608-0029.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0348.wav",
+      "noise_category": "musan",
+      "speech_offset": 3655,
+      "noise_offset": 734575
+    },
+    {
+      "id": 217,
+      "bucket_idx": 4,
+      "snr_db": 16.305,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/587/54108/587-54108-0040.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-103423-A-3.wav",
+      "noise_category": "esc50",
+      "speech_offset": 117661,
+      "noise_offset": 6555
+    },
+    {
+      "id": 218,
+      "bucket_idx": 4,
+      "snr_db": 17.499,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/125/121124/125-121124-0010.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-122067-B-45.wav",
+      "noise_category": "esc50",
+      "speech_offset": 17965,
+      "noise_offset": 225
+    },
+    {
+      "id": 219,
+      "bucket_idx": 4,
+      "snr_db": 19.569,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1594/135914/1594-135914-0114.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0127.wav",
+      "noise_category": "musan",
+      "speech_offset": 103623,
+      "noise_offset": 2071919
+    },
+    {
+      "id": 220,
+      "bucket_idx": 4,
+      "snr_db": 15.931,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6836/76549/6836-76549-0004.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-85184-A-39.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 3222
+    },
+    {
+      "id": 221,
+      "bucket_idx": 4,
+      "snr_db": 16.273,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5778/54535/5778-54535-0044.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-24076-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 50462,
+      "noise_offset": 12419
+    },
+    {
+      "id": 222,
+      "bucket_idx": 4,
+      "snr_db": 19.408,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3374/298025/3374-298025-0024.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-214362-A-17.wav",
+      "noise_category": "esc50",
+      "speech_offset": 149100,
+      "noise_offset": 5227
+    },
+    {
+      "id": 223,
+      "bucket_idx": 4,
+      "snr_db": 19.208,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/298/126791/298-126791-0042.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0176.wav",
+      "noise_category": "musan",
+      "speech_offset": 55937,
+      "noise_offset": 0
+    },
+    {
+      "id": 224,
+      "bucket_idx": 4,
+      "snr_db": 17.577,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/696/93314/696-93314-0025.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-134699-B-16.wav",
+      "noise_category": "esc50",
+      "speech_offset": 87876,
+      "noise_offset": 6896
+    },
+    {
+      "id": 225,
+      "bucket_idx": 4,
+      "snr_db": 15.669,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/332/128985/332-128985-0042.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0317.wav",
+      "noise_category": "musan",
+      "speech_offset": 21591,
+      "noise_offset": 2564
+    },
+    {
+      "id": 226,
+      "bucket_idx": 4,
+      "snr_db": 19.166,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2989/138035/2989-138035-0057.flac",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0031.wav",
+      "noise_category": "musan",
+      "speech_offset": 51205,
+      "noise_offset": 684441
+    },
+    {
+      "id": 227,
+      "bucket_idx": 4,
+      "snr_db": 16.542,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/198/126831/198-126831-0050.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-80313-A-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 30692,
+      "noise_offset": 10386
+    },
+    {
+      "id": 228,
+      "bucket_idx": 4,
+      "snr_db": 18.787,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6563/285357/6563-285357-0015.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0568.wav",
+      "noise_category": "musan",
+      "speech_offset": 145111,
+      "noise_offset": 1127300
+    },
+    {
+      "id": 229,
+      "bucket_idx": 4,
+      "snr_db": 16.274,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/446/123502/446-123502-0044.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0635.wav",
+      "noise_category": "musan",
+      "speech_offset": 68243,
+      "noise_offset": 154117
+    },
+    {
+      "id": 230,
+      "bucket_idx": 4,
+      "snr_db": 15.77,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/7800/283492/7800-283492-0017.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-215005-A-32.wav",
+      "noise_category": "esc50",
+      "speech_offset": 48077,
+      "noise_offset": 2607
+    },
+    {
+      "id": 231,
+      "bucket_idx": 4,
+      "snr_db": 18.466,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1553/140047/1553-140047-0025.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0038.wav",
+      "noise_category": "musan",
+      "speech_offset": 11018,
+      "noise_offset": 4046945
+    },
+    {
+      "id": 232,
+      "bucket_idx": 4,
+      "snr_db": 16.966,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4481/17498/4481-17498-0029.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-123712-A-33.wav",
+      "noise_category": "esc50",
+      "speech_offset": 128018,
+      "noise_offset": 11690
+    },
+    {
+      "id": 233,
+      "bucket_idx": 4,
+      "snr_db": 16.88,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5778/12761/5778-12761-0021.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0113.wav",
+      "noise_category": "musan",
+      "speech_offset": 78408,
+      "noise_offset": 2760684
+    },
+    {
+      "id": 234,
+      "bucket_idx": 4,
+      "snr_db": 17.196,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1553/140047/1553-140047-0048.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-36397-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 27999,
+      "noise_offset": 15769
+    },
+    {
+      "id": 235,
+      "bucket_idx": 4,
+      "snr_db": 17.296,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/254/12312/254-12312-0017.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-172649-B-40.wav",
+      "noise_category": "esc50",
+      "speech_offset": 72900,
+      "noise_offset": 5021
+    },
+    {
+      "id": 236,
+      "bucket_idx": 4,
+      "snr_db": 17.354,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/2989/138035/2989-138035-0044.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0029.wav",
+      "noise_category": "musan",
+      "speech_offset": 63414,
+      "noise_offset": 3069539
+    },
+    {
+      "id": 237,
+      "bucket_idx": 4,
+      "snr_db": 18.241,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/374/180298/374-180298-0064.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-90014-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 75595,
+      "noise_offset": 9296
+    },
+    {
+      "id": 238,
+      "bucket_idx": 4,
+      "snr_db": 15.533,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1502/122615/1502-122615-0038.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-255371-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 78514,
+      "noise_offset": 8703
+    },
+    {
+      "id": 239,
+      "bucket_idx": 4,
+      "snr_db": 18.377,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/289/121665/289-121665-0037.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0010.wav",
+      "noise_category": "musan",
+      "speech_offset": 55776,
+      "noise_offset": 29846
+    },
+    {
+      "id": 240,
+      "bucket_idx": 4,
+      "snr_db": 17.433,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/32/21631/32-21631-0010.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0133.wav",
+      "noise_category": "musan",
+      "speech_offset": 3232,
+      "noise_offset": 694990
+    },
+    {
+      "id": 241,
+      "bucket_idx": 4,
+      "snr_db": 19.092,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/4397/15666/4397-15666-0021.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-179984-A-38.wav",
+      "noise_category": "esc50",
+      "speech_offset": 49181,
+      "noise_offset": 8026
+    },
+    {
+      "id": 242,
+      "bucket_idx": 4,
+      "snr_db": 16.436,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5561/41616/5561-41616-0008.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-118658-B-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 40542,
+      "noise_offset": 3917
+    },
+    {
+      "id": 243,
+      "bucket_idx": 4,
+      "snr_db": 18.334,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/3242/67153/3242-67153-0007.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-117615-D-48.wav",
+      "noise_category": "esc50",
+      "speech_offset": 138408,
+      "noise_offset": 15636
+    },
+    {
+      "id": 244,
+      "bucket_idx": 4,
+      "snr_db": 16.028,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/839/130898/839-130898-0016.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-57191-A-46.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7429,
+      "noise_offset": 5337
+    },
+    {
+      "id": 245,
+      "bucket_idx": 4,
+      "snr_db": 18.495,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5393/19219/5393-19219-0012.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0032.wav",
+      "noise_category": "musan",
+      "speech_offset": 41305,
+      "noise_offset": 1152748
+    },
+    {
+      "id": 246,
+      "bucket_idx": 4,
+      "snr_db": 18.404,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/696/92939/696-92939-0004.flac",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-165813-B-19.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1976,
+      "noise_offset": 363
+    },
+    {
+      "id": 247,
+      "bucket_idx": 4,
+      "snr_db": 17.719,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/5688/41232/5688-41232-0058.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0566.wav",
+      "noise_category": "musan",
+      "speech_offset": 140693,
+      "noise_offset": 5652
+    },
+    {
+      "id": 248,
+      "bucket_idx": 4,
+      "snr_db": 17.397,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/6880/216547/6880-216547-0059.flac",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0128.wav",
+      "noise_category": "musan",
+      "speech_offset": 108561,
+      "noise_offset": 1978467
+    },
+    {
+      "id": 249,
+      "bucket_idx": 4,
+      "snr_db": 19.752,
+      "speech_file": "data/raw/clean_speech/en/librispeech/LibriSpeech/train-clean-100/1992/141719/1992-141719-0036.flac",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0423.wav",
+      "noise_category": "musan",
+      "speech_offset": 146501,
+      "noise_offset": 63022
+    }
+  ]
+}

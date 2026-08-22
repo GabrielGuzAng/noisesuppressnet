@@ -1,0 +1,7 @@
+# Test Set v2 ES - Hash de integridad
+# Generado: 2026-08-20T08:08:47.843695
+# Seed: 42
+# Total pares: 250
+# Total archivos WAV: 500
+# Hash SHA-256 acumulativo:
+96f33f837627ec3c30304c83e4d500d3c557bc23822cf16e12fa12b729e2c972

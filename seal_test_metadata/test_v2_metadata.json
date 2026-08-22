@@ -1,0 +1,2533 @@
+{
+  "seed": 42,
+  "language": "es",
+  "source": "Common Voice ES v26 \u2014 split test (data/interim/cv26_es/test_manifest.tsv)",
+  "n_pairs_total": 250,
+  "snr_buckets": [
+    [
+      -5,
+      0
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      5,
+      10
+    ],
+    [
+      10,
+      15
+    ],
+    [
+      15,
+      20
+    ]
+  ],
+  "sample_rate": 16000,
+  "target_duration_s": 4.0,
+  "generated_at": "2026-08-20T08:08:29.341026",
+  "pairs": [
+    {
+      "id": 0,
+      "bucket_idx": 0,
+      "snr_db": -4.807,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27423983.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0160.wav",
+      "noise_category": "musan",
+      "speech_offset": 13386,
+      "noise_offset": 2181124
+    },
+    {
+      "id": 1,
+      "bucket_idx": 0,
+      "snr_db": -1.519,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19165047.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-153444-A-32.wav",
+      "noise_category": "esc50",
+      "speech_offset": 35518,
+      "noise_offset": 11495
+    },
+    {
+      "id": 2,
+      "bucket_idx": 0,
+      "snr_db": -4.28,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19723741.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0343.wav",
+      "noise_category": "musan",
+      "speech_offset": 15290,
+      "noise_offset": 0
+    },
+    {
+      "id": 3,
+      "bucket_idx": 0,
+      "snr_db": -2.687,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19686804.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0058.wav",
+      "noise_category": "musan",
+      "speech_offset": 11577,
+      "noise_offset": 796013
+    },
+    {
+      "id": 4,
+      "bucket_idx": 0,
+      "snr_db": -1.642,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33982705.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0123.wav",
+      "noise_category": "musan",
+      "speech_offset": 14756,
+      "noise_offset": 1214536
+    },
+    {
+      "id": 5,
+      "bucket_idx": 0,
+      "snr_db": -1.035,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_29775149.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-152594-A-30.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 476
+    },
+    {
+      "id": 6,
+      "bucket_idx": 0,
+      "snr_db": -2.734,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23726848.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0060.wav",
+      "noise_category": "musan",
+      "speech_offset": 14725,
+      "noise_offset": 978535
+    },
+    {
+      "id": 7,
+      "bucket_idx": 0,
+      "snr_db": -2.509,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_26980651.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0138.wav",
+      "noise_category": "musan",
+      "speech_offset": 37269,
+      "noise_offset": 36933
+    },
+    {
+      "id": 8,
+      "bucket_idx": 0,
+      "snr_db": -4.904,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19526289.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0122.wav",
+      "noise_category": "musan",
+      "speech_offset": 3282,
+      "noise_offset": 1314413
+    },
+    {
+      "id": 9,
+      "bucket_idx": 0,
+      "snr_db": -2.838,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19616072.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0235.wav",
+      "noise_category": "musan",
+      "speech_offset": 2104,
+      "noise_offset": 2889118
+    },
+    {
+      "id": 10,
+      "bucket_idx": 0,
+      "snr_db": -3.138,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19692098.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-17124-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 39712,
+      "noise_offset": 11362
+    },
+    {
+      "id": 11,
+      "bucket_idx": 0,
+      "snr_db": -0.739,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27030102.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0108.wav",
+      "noise_category": "musan",
+      "speech_offset": 12400,
+      "noise_offset": 2478821
+    },
+    {
+      "id": 12,
+      "bucket_idx": 0,
+      "snr_db": -2.265,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_24990528.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0154.wav",
+      "noise_category": "musan",
+      "speech_offset": 13272,
+      "noise_offset": 803309
+    },
+    {
+      "id": 13,
+      "bucket_idx": 0,
+      "snr_db": -1.223,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32427349.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-50667-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 5663,
+      "noise_offset": 10977
+    },
+    {
+      "id": 14,
+      "bucket_idx": 0,
+      "snr_db": -2.83,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32231654.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-46040-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 10686,
+      "noise_offset": 5870
+    },
+    {
+      "id": 15,
+      "bucket_idx": 0,
+      "snr_db": -4.119,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20233847.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0242.wav",
+      "noise_category": "musan",
+      "speech_offset": 602,
+      "noise_offset": 177639
+    },
+    {
+      "id": 16,
+      "bucket_idx": 0,
+      "snr_db": -0.746,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20271894.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-9887-A-49.wav",
+      "noise_category": "esc50",
+      "speech_offset": 27575,
+      "noise_offset": 4632
+    },
+    {
+      "id": 17,
+      "bucket_idx": 0,
+      "snr_db": -0.899,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19724950.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-161099-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 20846,
+      "noise_offset": 1835
+    },
+    {
+      "id": 18,
+      "bucket_idx": 0,
+      "snr_db": -3.121,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_18466824.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-166546-A-34.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 8372
+    },
+    {
+      "id": 19,
+      "bucket_idx": 0,
+      "snr_db": -4.521,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19647944.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-112522-A-27.wav",
+      "noise_category": "esc50",
+      "speech_offset": 573,
+      "noise_offset": 9643
+    },
+    {
+      "id": 20,
+      "bucket_idx": 0,
+      "snr_db": -2.438,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20235024.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0733.wav",
+      "noise_category": "musan",
+      "speech_offset": 6201,
+      "noise_offset": 141558
+    },
+    {
+      "id": 21,
+      "bucket_idx": 0,
+      "snr_db": -2.52,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19724645.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0123.wav",
+      "noise_category": "musan",
+      "speech_offset": 2583,
+      "noise_offset": 1807189
+    },
+    {
+      "id": 22,
+      "bucket_idx": 0,
+      "snr_db": -1.138,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19681782.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-238492-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18986,
+      "noise_offset": 573
+    },
+    {
+      "id": 23,
+      "bucket_idx": 0,
+      "snr_db": -2.014,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_39865466.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0718.wav",
+      "noise_category": "musan",
+      "speech_offset": 5645,
+      "noise_offset": 101155
+    },
+    {
+      "id": 24,
+      "bucket_idx": 0,
+      "snr_db": -2.467,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19621162.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0083.wav",
+      "noise_category": "musan",
+      "speech_offset": 1569,
+      "noise_offset": 2001861
+    },
+    {
+      "id": 25,
+      "bucket_idx": 0,
+      "snr_db": -2.124,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20005562.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0100.wav",
+      "noise_category": "musan",
+      "speech_offset": 15601,
+      "noise_offset": 3845713
+    },
+    {
+      "id": 26,
+      "bucket_idx": 0,
+      "snr_db": -3.115,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19960885.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-188003-A-34.wav",
+      "noise_category": "esc50",
+      "speech_offset": 24979,
+      "noise_offset": 3089
+    },
+    {
+      "id": 27,
+      "bucket_idx": 0,
+      "snr_db": -4.755,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19948846.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-109231-A-9.wav",
+      "noise_category": "esc50",
+      "speech_offset": 8522,
+      "noise_offset": 4232
+    },
+    {
+      "id": 28,
+      "bucket_idx": 0,
+      "snr_db": -4.694,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19718068.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-157297-A-21.wav",
+      "noise_category": "esc50",
+      "speech_offset": 2031,
+      "noise_offset": 12723
+    },
+    {
+      "id": 29,
+      "bucket_idx": 0,
+      "snr_db": -0.29,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19597358.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-145774-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 3224,
+      "noise_offset": 711
+    },
+    {
+      "id": 30,
+      "bucket_idx": 0,
+      "snr_db": -0.805,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20284827.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-34497-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 22076,
+      "noise_offset": 15738
+    },
+    {
+      "id": 31,
+      "bucket_idx": 0,
+      "snr_db": -3.519,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19631512.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-256512-A-30.wav",
+      "noise_category": "esc50",
+      "speech_offset": 14298,
+      "noise_offset": 11630
+    },
+    {
+      "id": 32,
+      "bucket_idx": 0,
+      "snr_db": -0.556,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20003221.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0026.wav",
+      "noise_category": "musan",
+      "speech_offset": 4958,
+      "noise_offset": 3097933
+    },
+    {
+      "id": 33,
+      "bucket_idx": 0,
+      "snr_db": -2.389,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_24059598.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0540.wav",
+      "noise_category": "musan",
+      "speech_offset": 10769,
+      "noise_offset": 0
+    },
+    {
+      "id": 34,
+      "bucket_idx": 0,
+      "snr_db": -4.485,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27331767.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-122066-A-45.wav",
+      "noise_category": "esc50",
+      "speech_offset": 6054,
+      "noise_offset": 13606
+    },
+    {
+      "id": 35,
+      "bucket_idx": 0,
+      "snr_db": -0.722,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19965775.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-76831-E-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7714,
+      "noise_offset": 10331
+    },
+    {
+      "id": 36,
+      "bucket_idx": 0,
+      "snr_db": -2.078,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19667589.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-119120-B-48.wav",
+      "noise_category": "esc50",
+      "speech_offset": 29729,
+      "noise_offset": 9666
+    },
+    {
+      "id": 37,
+      "bucket_idx": 0,
+      "snr_db": -0.336,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19606754.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma-western-art/music-fma-wa-0059.wav",
+      "noise_category": "musan",
+      "speech_offset": 35424,
+      "noise_offset": 631607
+    },
+    {
+      "id": 38,
+      "bucket_idx": 0,
+      "snr_db": -1.604,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_29083216.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0273.wav",
+      "noise_category": "musan",
+      "speech_offset": 1910,
+      "noise_offset": 63366
+    },
+    {
+      "id": 39,
+      "bucket_idx": 0,
+      "snr_db": -4.53,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19737257.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0030.wav",
+      "noise_category": "musan",
+      "speech_offset": 59712,
+      "noise_offset": 1450840
+    },
+    {
+      "id": 40,
+      "bucket_idx": 0,
+      "snr_db": -1.886,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19692144.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-204777-B-39.wav",
+      "noise_category": "esc50",
+      "speech_offset": 2858,
+      "noise_offset": 4554
+    },
+    {
+      "id": 41,
+      "bucket_idx": 0,
+      "snr_db": -1.066,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19620620.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0053.wav",
+      "noise_category": "musan",
+      "speech_offset": 10306,
+      "noise_offset": 2435
+    },
+    {
+      "id": 42,
+      "bucket_idx": 0,
+      "snr_db": -0.505,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19724759.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0094.wav",
+      "noise_category": "musan",
+      "speech_offset": 14624,
+      "noise_offset": 244753
+    },
+    {
+      "id": 43,
+      "bucket_idx": 0,
+      "snr_db": -3.344,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27391148.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-180337-A-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 19006,
+      "noise_offset": 12344
+    },
+    {
+      "id": 44,
+      "bucket_idx": 0,
+      "snr_db": -2.356,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19971052.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0006.wav",
+      "noise_category": "musan",
+      "speech_offset": 72875,
+      "noise_offset": 35599
+    },
+    {
+      "id": 45,
+      "bucket_idx": 0,
+      "snr_db": -1.494,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19980263.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0795.wav",
+      "noise_category": "musan",
+      "speech_offset": 4615,
+      "noise_offset": 374003
+    },
+    {
+      "id": 46,
+      "bucket_idx": 0,
+      "snr_db": -4.166,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19677081.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-78562-B-37.wav",
+      "noise_category": "esc50",
+      "speech_offset": 26089,
+      "noise_offset": 6627
+    },
+    {
+      "id": 47,
+      "bucket_idx": 0,
+      "snr_db": -0.758,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19719248.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-118069-B-27.wav",
+      "noise_category": "esc50",
+      "speech_offset": 913,
+      "noise_offset": 5913
+    },
+    {
+      "id": 48,
+      "bucket_idx": 0,
+      "snr_db": -1.096,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_30675167.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-39945-B-19.wav",
+      "noise_category": "esc50",
+      "speech_offset": 11145,
+      "noise_offset": 1840
+    },
+    {
+      "id": 49,
+      "bucket_idx": 0,
+      "snr_db": -4.75,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19607176.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-114587-A-0.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7333,
+      "noise_offset": 9940
+    },
+    {
+      "id": 50,
+      "bucket_idx": 1,
+      "snr_db": 2.957,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27387352.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0040.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 187879
+    },
+    {
+      "id": 51,
+      "bucket_idx": 1,
+      "snr_db": 1.84,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22753725.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-145577-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 3884,
+      "noise_offset": 7098
+    },
+    {
+      "id": 52,
+      "bucket_idx": 1,
+      "snr_db": 0.93,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19697552.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0009.wav",
+      "noise_category": "musan",
+      "speech_offset": 786,
+      "noise_offset": 62120
+    },
+    {
+      "id": 53,
+      "bucket_idx": 1,
+      "snr_db": 3.022,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20286758.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0051.wav",
+      "noise_category": "musan",
+      "speech_offset": 2006,
+      "noise_offset": 0
+    },
+    {
+      "id": 54,
+      "bucket_idx": 1,
+      "snr_db": 4.846,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19720468.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-207811-A-35.wav",
+      "noise_category": "esc50",
+      "speech_offset": 2337,
+      "noise_offset": 2939
+    },
+    {
+      "id": 55,
+      "bucket_idx": 1,
+      "snr_db": 2.76,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27425576.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-100024-B-27.wav",
+      "noise_category": "esc50",
+      "speech_offset": 707,
+      "noise_offset": 10152
+    },
+    {
+      "id": 56,
+      "bucket_idx": 1,
+      "snr_db": 0.567,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_24821496.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0239.wav",
+      "noise_category": "musan",
+      "speech_offset": 21280,
+      "noise_offset": 307965
+    },
+    {
+      "id": 57,
+      "bucket_idx": 1,
+      "snr_db": 2.475,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_30749767.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0668.wav",
+      "noise_category": "musan",
+      "speech_offset": 21145,
+      "noise_offset": 32
+    },
+    {
+      "id": 58,
+      "bucket_idx": 1,
+      "snr_db": 3.896,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_42026120.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-51731-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 4457
+    },
+    {
+      "id": 59,
+      "bucket_idx": 1,
+      "snr_db": 4.776,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19601851.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0278.wav",
+      "noise_category": "musan",
+      "speech_offset": 609,
+      "noise_offset": 7066
+    },
+    {
+      "id": 60,
+      "bucket_idx": 1,
+      "snr_db": 3.576,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19531854.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-155650-B-24.wav",
+      "noise_category": "esc50",
+      "speech_offset": 14262,
+      "noise_offset": 4487
+    },
+    {
+      "id": 61,
+      "bucket_idx": 1,
+      "snr_db": 0.207,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19761191.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0053.wav",
+      "noise_category": "musan",
+      "speech_offset": 11691,
+      "noise_offset": 2886670
+    },
+    {
+      "id": 62,
+      "bucket_idx": 1,
+      "snr_db": 4.833,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19719399.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0050.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 4393118
+    },
+    {
+      "id": 63,
+      "bucket_idx": 1,
+      "snr_db": 3.009,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19678239.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-198278-B-7.wav",
+      "noise_category": "esc50",
+      "speech_offset": 20528,
+      "noise_offset": 11112
+    },
+    {
+      "id": 64,
+      "bucket_idx": 1,
+      "snr_db": 0.418,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_25133685.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-232495-A-6.wav",
+      "noise_category": "esc50",
+      "speech_offset": 6312,
+      "noise_offset": 14058
+    },
+    {
+      "id": 65,
+      "bucket_idx": 1,
+      "snr_db": 0.636,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32627892.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0628.wav",
+      "noise_category": "musan",
+      "speech_offset": 995,
+      "noise_offset": 146472
+    },
+    {
+      "id": 66,
+      "bucket_idx": 1,
+      "snr_db": 0.431,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19679635.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-60180-A-49.wav",
+      "noise_category": "esc50",
+      "speech_offset": 63326,
+      "noise_offset": 15743
+    },
+    {
+      "id": 67,
+      "bucket_idx": 1,
+      "snr_db": 3.324,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_21843550.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0030.wav",
+      "noise_category": "musan",
+      "speech_offset": 17207,
+      "noise_offset": 1088443
+    },
+    {
+      "id": 68,
+      "bucket_idx": 1,
+      "snr_db": 0.771,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27571383.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0116.wav",
+      "noise_category": "musan",
+      "speech_offset": 43241,
+      "noise_offset": 9166109
+    },
+    {
+      "id": 69,
+      "bucket_idx": 1,
+      "snr_db": 4.037,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19637020.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0424.wav",
+      "noise_category": "musan",
+      "speech_offset": 13068,
+      "noise_offset": 127834
+    },
+    {
+      "id": 70,
+      "bucket_idx": 1,
+      "snr_db": 0.545,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19636057.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0350.wav",
+      "noise_category": "musan",
+      "speech_offset": 2143,
+      "noise_offset": 37242
+    },
+    {
+      "id": 71,
+      "bucket_idx": 1,
+      "snr_db": 2.676,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_35072646.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-56380-B-5.wav",
+      "noise_category": "esc50",
+      "speech_offset": 32187,
+      "noise_offset": 4913
+    },
+    {
+      "id": 72,
+      "bucket_idx": 1,
+      "snr_db": 2.215,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23360717.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0416.wav",
+      "noise_category": "musan",
+      "speech_offset": 13145,
+      "noise_offset": 105666
+    },
+    {
+      "id": 73,
+      "bucket_idx": 1,
+      "snr_db": 0.19,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_36556029.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-88409-A-45.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1237,
+      "noise_offset": 8963
+    },
+    {
+      "id": 74,
+      "bucket_idx": 1,
+      "snr_db": 0.013,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20245352.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-179860-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 57844,
+      "noise_offset": 15447
+    },
+    {
+      "id": 75,
+      "bucket_idx": 1,
+      "snr_db": 4.518,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_26538179.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0045.wav",
+      "noise_category": "musan",
+      "speech_offset": 58954,
+      "noise_offset": 1220932
+    },
+    {
+      "id": 76,
+      "bucket_idx": 1,
+      "snr_db": 4.883,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19966767.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0238.wav",
+      "noise_category": "musan",
+      "speech_offset": 10400,
+      "noise_offset": 66098
+    },
+    {
+      "id": 77,
+      "bucket_idx": 1,
+      "snr_db": 0.622,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19635568.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-18074-B-6.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 2157
+    },
+    {
+      "id": 78,
+      "bucket_idx": 1,
+      "snr_db": 3.673,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_21338431.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0076.wav",
+      "noise_category": "musan",
+      "speech_offset": 4336,
+      "noise_offset": 2756927
+    },
+    {
+      "id": 79,
+      "bucket_idx": 1,
+      "snr_db": 4.946,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_39112387.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma-western-art/music-fma-wa-0064.wav",
+      "noise_category": "musan",
+      "speech_offset": 271,
+      "noise_offset": 311888
+    },
+    {
+      "id": 80,
+      "bucket_idx": 1,
+      "snr_db": 4.519,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19624023.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0113.wav",
+      "noise_category": "musan",
+      "speech_offset": 28942,
+      "noise_offset": 1660726
+    },
+    {
+      "id": 81,
+      "bucket_idx": 1,
+      "snr_db": 4.425,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27318192.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0142.wav",
+      "noise_category": "musan",
+      "speech_offset": 21331,
+      "noise_offset": 723937
+    },
+    {
+      "id": 82,
+      "bucket_idx": 1,
+      "snr_db": 1.688,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_30505980.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0139.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 930024
+    },
+    {
+      "id": 83,
+      "bucket_idx": 1,
+      "snr_db": 3.586,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27024950.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0039.wav",
+      "noise_category": "musan",
+      "speech_offset": 5519,
+      "noise_offset": 1149421
+    },
+    {
+      "id": 84,
+      "bucket_idx": 1,
+      "snr_db": 2.491,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20013941.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0060.wav",
+      "noise_category": "musan",
+      "speech_offset": 37758,
+      "noise_offset": 139968
+    },
+    {
+      "id": 85,
+      "bucket_idx": 1,
+      "snr_db": 4.687,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27024652.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0154.wav",
+      "noise_category": "musan",
+      "speech_offset": 9128,
+      "noise_offset": 8949199
+    },
+    {
+      "id": 86,
+      "bucket_idx": 1,
+      "snr_db": 3.515,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22233140.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0369.wav",
+      "noise_category": "musan",
+      "speech_offset": 32975,
+      "noise_offset": 370
+    },
+    {
+      "id": 87,
+      "bucket_idx": 1,
+      "snr_db": 4.218,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_24398099.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-198360-B-49.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7966,
+      "noise_offset": 567
+    },
+    {
+      "id": 88,
+      "bucket_idx": 1,
+      "snr_db": 4.286,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_18618157.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-87781-A-10.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7675,
+      "noise_offset": 9175
+    },
+    {
+      "id": 89,
+      "bucket_idx": 1,
+      "snr_db": 1.928,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32813227.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0173.wav",
+      "noise_category": "musan",
+      "speech_offset": 31963,
+      "noise_offset": 306226
+    },
+    {
+      "id": 90,
+      "bucket_idx": 1,
+      "snr_db": 3.562,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_30513190.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-117122-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 16527,
+      "noise_offset": 4451
+    },
+    {
+      "id": 91,
+      "bucket_idx": 1,
+      "snr_db": 0.465,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22955415.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-159346-A-36.wav",
+      "noise_category": "esc50",
+      "speech_offset": 13514,
+      "noise_offset": 11336
+    },
+    {
+      "id": 92,
+      "bucket_idx": 1,
+      "snr_db": 1.03,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19719230.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-197408-A-8.wav",
+      "noise_category": "esc50",
+      "speech_offset": 9146,
+      "noise_offset": 15463
+    },
+    {
+      "id": 93,
+      "bucket_idx": 1,
+      "snr_db": 4.683,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27465565.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0733.wav",
+      "noise_category": "musan",
+      "speech_offset": 14831,
+      "noise_offset": 131114
+    },
+    {
+      "id": 94,
+      "bucket_idx": 1,
+      "snr_db": 2.023,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19625218.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0542.wav",
+      "noise_category": "musan",
+      "speech_offset": 8629,
+      "noise_offset": 30375
+    },
+    {
+      "id": 95,
+      "bucket_idx": 1,
+      "snr_db": 3.425,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20252029.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0134.wav",
+      "noise_category": "musan",
+      "speech_offset": 23970,
+      "noise_offset": 8851189
+    },
+    {
+      "id": 96,
+      "bucket_idx": 1,
+      "snr_db": 2.878,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20274432.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0013.wav",
+      "noise_category": "musan",
+      "speech_offset": 7396,
+      "noise_offset": 2676847
+    },
+    {
+      "id": 97,
+      "bucket_idx": 1,
+      "snr_db": 1.302,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32884731.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-223125-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1332,
+      "noise_offset": 14964
+    },
+    {
+      "id": 98,
+      "bucket_idx": 1,
+      "snr_db": 2.932,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32762774.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0418.wav",
+      "noise_category": "musan",
+      "speech_offset": 16270,
+      "noise_offset": 152542
+    },
+    {
+      "id": 99,
+      "bucket_idx": 1,
+      "snr_db": 4.562,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_21869421.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-171041-A-38.wav",
+      "noise_category": "esc50",
+      "speech_offset": 313,
+      "noise_offset": 1293
+    },
+    {
+      "id": 100,
+      "bucket_idx": 2,
+      "snr_db": 6.637,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19659151.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-17565-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 26589,
+      "noise_offset": 15368
+    },
+    {
+      "id": 101,
+      "bucket_idx": 2,
+      "snr_db": 6.735,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19622657.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-212604-A-15.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 10402
+    },
+    {
+      "id": 102,
+      "bucket_idx": 2,
+      "snr_db": 5.929,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27260267.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0562.wav",
+      "noise_category": "musan",
+      "speech_offset": 5597,
+      "noise_offset": 52755
+    },
+    {
+      "id": 103,
+      "bucket_idx": 2,
+      "snr_db": 5.889,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27422469.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-17565-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 6260
+    },
+    {
+      "id": 104,
+      "bucket_idx": 2,
+      "snr_db": 9.137,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27054409.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0154.wav",
+      "noise_category": "musan",
+      "speech_offset": 37695,
+      "noise_offset": 663076
+    },
+    {
+      "id": 105,
+      "bucket_idx": 2,
+      "snr_db": 8.531,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19640886.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0028.wav",
+      "noise_category": "musan",
+      "speech_offset": 12163,
+      "noise_offset": 133069
+    },
+    {
+      "id": 106,
+      "bucket_idx": 2,
+      "snr_db": 9.825,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_39765381.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0001.wav",
+      "noise_category": "musan",
+      "speech_offset": 14712,
+      "noise_offset": 230389
+    },
+    {
+      "id": 107,
+      "bucket_idx": 2,
+      "snr_db": 8.348,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23369129.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-234879-B-1.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 3615
+    },
+    {
+      "id": 108,
+      "bucket_idx": 2,
+      "snr_db": 9.794,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22251432.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-200334-B-1.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 2561
+    },
+    {
+      "id": 109,
+      "bucket_idx": 2,
+      "snr_db": 6.11,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_18315834.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-106072-A-36.wav",
+      "noise_category": "esc50",
+      "speech_offset": 11329,
+      "noise_offset": 2418
+    },
+    {
+      "id": 110,
+      "bucket_idx": 2,
+      "snr_db": 5.939,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19766974.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0238.wav",
+      "noise_category": "musan",
+      "speech_offset": 753,
+      "noise_offset": 85588
+    },
+    {
+      "id": 111,
+      "bucket_idx": 2,
+      "snr_db": 6.083,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19130987.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0162.wav",
+      "noise_category": "musan",
+      "speech_offset": 10936,
+      "noise_offset": 1305422
+    },
+    {
+      "id": 112,
+      "bucket_idx": 2,
+      "snr_db": 6.919,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19968479.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-251959-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 906,
+      "noise_offset": 8776
+    },
+    {
+      "id": 113,
+      "bucket_idx": 2,
+      "snr_db": 9.948,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19749667.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0320.wav",
+      "noise_category": "musan",
+      "speech_offset": 3471,
+      "noise_offset": 39832
+    },
+    {
+      "id": 114,
+      "bucket_idx": 2,
+      "snr_db": 6.124,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19602190.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0326.wav",
+      "noise_category": "musan",
+      "speech_offset": 8477,
+      "noise_offset": 43660
+    },
+    {
+      "id": 115,
+      "bucket_idx": 2,
+      "snr_db": 7.292,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_25136739.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-222524-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 12317,
+      "noise_offset": 8906
+    },
+    {
+      "id": 116,
+      "bucket_idx": 2,
+      "snr_db": 5.306,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19608902.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0054.wav",
+      "noise_category": "musan",
+      "speech_offset": 512,
+      "noise_offset": 647700
+    },
+    {
+      "id": 117,
+      "bucket_idx": 2,
+      "snr_db": 5.136,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33641509.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0227.wav",
+      "noise_category": "musan",
+      "speech_offset": 3952,
+      "noise_offset": 1594077
+    },
+    {
+      "id": 118,
+      "bucket_idx": 2,
+      "snr_db": 7.729,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19606647.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-263490-A-25.wav",
+      "noise_category": "esc50",
+      "speech_offset": 25649,
+      "noise_offset": 8741
+    },
+    {
+      "id": 119,
+      "bucket_idx": 2,
+      "snr_db": 8.066,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_39753907.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-31482-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 3352,
+      "noise_offset": 10457
+    },
+    {
+      "id": 120,
+      "bucket_idx": 2,
+      "snr_db": 7.554,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_41940756.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0002.wav",
+      "noise_category": "musan",
+      "speech_offset": 14434,
+      "noise_offset": 1292386
+    },
+    {
+      "id": 121,
+      "bucket_idx": 2,
+      "snr_db": 9.573,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19632801.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-67422-A-18.wav",
+      "noise_category": "esc50",
+      "speech_offset": 13199,
+      "noise_offset": 2100
+    },
+    {
+      "id": 122,
+      "bucket_idx": 2,
+      "snr_db": 9.305,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20309826.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-222524-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18410,
+      "noise_offset": 15076
+    },
+    {
+      "id": 123,
+      "bucket_idx": 2,
+      "snr_db": 9.756,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23936250.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0016.wav",
+      "noise_category": "musan",
+      "speech_offset": 5298,
+      "noise_offset": 0
+    },
+    {
+      "id": 124,
+      "bucket_idx": 2,
+      "snr_db": 7.895,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19718324.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-27405-A-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 21091,
+      "noise_offset": 8878
+    },
+    {
+      "id": 125,
+      "bucket_idx": 2,
+      "snr_db": 6.317,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27034970.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0143.wav",
+      "noise_category": "musan",
+      "speech_offset": 10445,
+      "noise_offset": 4843842
+    },
+    {
+      "id": 126,
+      "bucket_idx": 2,
+      "snr_db": 5.65,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19679254.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-209989-A-22.wav",
+      "noise_category": "esc50",
+      "speech_offset": 2137,
+      "noise_offset": 560
+    },
+    {
+      "id": 127,
+      "bucket_idx": 2,
+      "snr_db": 8.821,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23364933.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-164216-A-6.wav",
+      "noise_category": "esc50",
+      "speech_offset": 52145,
+      "noise_offset": 3368
+    },
+    {
+      "id": 128,
+      "bucket_idx": 2,
+      "snr_db": 5.773,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33386170.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-103050-A-19.wav",
+      "noise_category": "esc50",
+      "speech_offset": 479,
+      "noise_offset": 3192
+    },
+    {
+      "id": 129,
+      "bucket_idx": 2,
+      "snr_db": 5.031,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19670605.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-129678-A-13.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1055,
+      "noise_offset": 2716
+    },
+    {
+      "id": 130,
+      "bucket_idx": 2,
+      "snr_db": 8.496,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19758358.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0044.wav",
+      "noise_category": "musan",
+      "speech_offset": 9865,
+      "noise_offset": 1454919
+    },
+    {
+      "id": 131,
+      "bucket_idx": 2,
+      "snr_db": 5.623,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_29402567.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-50667-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18428,
+      "noise_offset": 1895
+    },
+    {
+      "id": 132,
+      "bucket_idx": 2,
+      "snr_db": 8.112,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19990539.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0031.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 2645544
+    },
+    {
+      "id": 133,
+      "bucket_idx": 2,
+      "snr_db": 6.005,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22141434.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0086.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 7197302
+    },
+    {
+      "id": 134,
+      "bucket_idx": 2,
+      "snr_db": 7.125,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19629603.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0355.wav",
+      "noise_category": "musan",
+      "speech_offset": 8946,
+      "noise_offset": 99052
+    },
+    {
+      "id": 135,
+      "bucket_idx": 2,
+      "snr_db": 5.074,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19687716.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0041.wav",
+      "noise_category": "musan",
+      "speech_offset": 54151,
+      "noise_offset": 1571345
+    },
+    {
+      "id": 136,
+      "bucket_idx": 2,
+      "snr_db": 6.881,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19933440.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0086.wav",
+      "noise_category": "musan",
+      "speech_offset": 4067,
+      "noise_offset": 2303996
+    },
+    {
+      "id": 137,
+      "bucket_idx": 2,
+      "snr_db": 6.642,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_26957278.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-51805-A-33.wav",
+      "noise_category": "esc50",
+      "speech_offset": 4883,
+      "noise_offset": 4908
+    },
+    {
+      "id": 138,
+      "bucket_idx": 2,
+      "snr_db": 6.306,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19690409.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-97793-A-31.wav",
+      "noise_category": "esc50",
+      "speech_offset": 17260,
+      "noise_offset": 12666
+    },
+    {
+      "id": 139,
+      "bucket_idx": 2,
+      "snr_db": 5.669,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19685478.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0029.wav",
+      "noise_category": "musan",
+      "speech_offset": 6628,
+      "noise_offset": 1370537
+    },
+    {
+      "id": 140,
+      "bucket_idx": 2,
+      "snr_db": 7.878,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19607108.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-124376-B-3.wav",
+      "noise_category": "esc50",
+      "speech_offset": 43251,
+      "noise_offset": 15529
+    },
+    {
+      "id": 141,
+      "bucket_idx": 2,
+      "snr_db": 8.463,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27354961.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0020.wav",
+      "noise_category": "musan",
+      "speech_offset": 5635,
+      "noise_offset": 4028022
+    },
+    {
+      "id": 142,
+      "bucket_idx": 2,
+      "snr_db": 5.998,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19690012.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0055.wav",
+      "noise_category": "musan",
+      "speech_offset": 11712,
+      "noise_offset": 596386
+    },
+    {
+      "id": 143,
+      "bucket_idx": 2,
+      "snr_db": 5.219,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19520471.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-197454-B-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 29528,
+      "noise_offset": 14969
+    },
+    {
+      "id": 144,
+      "bucket_idx": 2,
+      "snr_db": 6.341,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19769670.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0069.wav",
+      "noise_category": "musan",
+      "speech_offset": 31952,
+      "noise_offset": 1981218
+    },
+    {
+      "id": 145,
+      "bucket_idx": 2,
+      "snr_db": 8.497,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22130699.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0314.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 0
+    },
+    {
+      "id": 146,
+      "bucket_idx": 2,
+      "snr_db": 6.366,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19724975.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-77347-A-46.wav",
+      "noise_category": "esc50",
+      "speech_offset": 9270,
+      "noise_offset": 12926
+    },
+    {
+      "id": 147,
+      "bucket_idx": 2,
+      "snr_db": 8.238,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20529280.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0217.wav",
+      "noise_category": "musan",
+      "speech_offset": 9729,
+      "noise_offset": 11284
+    },
+    {
+      "id": 148,
+      "bucket_idx": 2,
+      "snr_db": 5.368,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23364932.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0028.wav",
+      "noise_category": "musan",
+      "speech_offset": 18930,
+      "noise_offset": 1866399
+    },
+    {
+      "id": 149,
+      "bucket_idx": 2,
+      "snr_db": 8.517,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33021465.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-214869-A-9.wav",
+      "noise_category": "esc50",
+      "speech_offset": 4065,
+      "noise_offset": 6191
+    },
+    {
+      "id": 150,
+      "bucket_idx": 3,
+      "snr_db": 10.711,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_25198540.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-76831-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 7872
+    },
+    {
+      "id": 151,
+      "bucket_idx": 3,
+      "snr_db": 11.116,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20303338.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0335.wav",
+      "noise_category": "musan",
+      "speech_offset": 29989,
+      "noise_offset": 58826
+    },
+    {
+      "id": 152,
+      "bucket_idx": 3,
+      "snr_db": 13.648,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20303686.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-157611-B-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 13140,
+      "noise_offset": 11308
+    },
+    {
+      "id": 153,
+      "bucket_idx": 3,
+      "snr_db": 12.375,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20146251.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0119.wav",
+      "noise_category": "musan",
+      "speech_offset": 36518,
+      "noise_offset": 405369
+    },
+    {
+      "id": 154,
+      "bucket_idx": 3,
+      "snr_db": 13.202,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19616959.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0101.wav",
+      "noise_category": "musan",
+      "speech_offset": 16499,
+      "noise_offset": 877478
+    },
+    {
+      "id": 155,
+      "bucket_idx": 3,
+      "snr_db": 11.43,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_28941680.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0002.wav",
+      "noise_category": "musan",
+      "speech_offset": 14746,
+      "noise_offset": 8058638
+    },
+    {
+      "id": 156,
+      "bucket_idx": 3,
+      "snr_db": 13.342,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19957667.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0144.wav",
+      "noise_category": "musan",
+      "speech_offset": 5706,
+      "noise_offset": 723368
+    },
+    {
+      "id": 157,
+      "bucket_idx": 3,
+      "snr_db": 11.495,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20221630.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0149.wav",
+      "noise_category": "musan",
+      "speech_offset": 2713,
+      "noise_offset": 6101334
+    },
+    {
+      "id": 158,
+      "bucket_idx": 3,
+      "snr_db": 12.405,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33367467.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0000.wav",
+      "noise_category": "musan",
+      "speech_offset": 7373,
+      "noise_offset": 1780815
+    },
+    {
+      "id": 159,
+      "bucket_idx": 3,
+      "snr_db": 12.22,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_29441914.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-54962-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 14070,
+      "noise_offset": 5015
+    },
+    {
+      "id": 160,
+      "bucket_idx": 3,
+      "snr_db": 14.561,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27702085.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0107.wav",
+      "noise_category": "musan",
+      "speech_offset": 1081,
+      "noise_offset": 2289996
+    },
+    {
+      "id": 161,
+      "bucket_idx": 3,
+      "snr_db": 13.761,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19602942.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0059.wav",
+      "noise_category": "musan",
+      "speech_offset": 17659,
+      "noise_offset": 7333116
+    },
+    {
+      "id": 162,
+      "bucket_idx": 3,
+      "snr_db": 12.743,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33348579.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0729.wav",
+      "noise_category": "musan",
+      "speech_offset": 3189,
+      "noise_offset": 19066
+    },
+    {
+      "id": 163,
+      "bucket_idx": 3,
+      "snr_db": 14.227,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19623870.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0358.wav",
+      "noise_category": "musan",
+      "speech_offset": 15098,
+      "noise_offset": 158187
+    },
+    {
+      "id": 164,
+      "bucket_idx": 3,
+      "snr_db": 13.05,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19667503.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0119.wav",
+      "noise_category": "musan",
+      "speech_offset": 1274,
+      "noise_offset": 362398
+    },
+    {
+      "id": 165,
+      "bucket_idx": 3,
+      "snr_db": 13.619,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22947383.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0074.wav",
+      "noise_category": "musan",
+      "speech_offset": 1727,
+      "noise_offset": 5439935
+    },
+    {
+      "id": 166,
+      "bucket_idx": 3,
+      "snr_db": 12.59,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19636316.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0138.wav",
+      "noise_category": "musan",
+      "speech_offset": 21575,
+      "noise_offset": 1424666
+    },
+    {
+      "id": 167,
+      "bucket_idx": 3,
+      "snr_db": 12.875,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19664420.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0480.wav",
+      "noise_category": "musan",
+      "speech_offset": 7268,
+      "noise_offset": 260615
+    },
+    {
+      "id": 168,
+      "bucket_idx": 3,
+      "snr_db": 11.068,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20286825.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0363.wav",
+      "noise_category": "musan",
+      "speech_offset": 22,
+      "noise_offset": 9385
+    },
+    {
+      "id": 169,
+      "bucket_idx": 3,
+      "snr_db": 14.654,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19608064.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0052.wav",
+      "noise_category": "musan",
+      "speech_offset": 38759,
+      "noise_offset": 799344
+    },
+    {
+      "id": 170,
+      "bucket_idx": 3,
+      "snr_db": 13.196,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23963817.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0105.wav",
+      "noise_category": "musan",
+      "speech_offset": 19156,
+      "noise_offset": 352556
+    },
+    {
+      "id": 171,
+      "bucket_idx": 3,
+      "snr_db": 14.098,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19599345.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-52085-A-4.wav",
+      "noise_category": "esc50",
+      "speech_offset": 14577,
+      "noise_offset": 12420
+    },
+    {
+      "id": 172,
+      "bucket_idx": 3,
+      "snr_db": 13.032,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23424537.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-181628-A-17.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18511,
+      "noise_offset": 5579
+    },
+    {
+      "id": 173,
+      "bucket_idx": 3,
+      "snr_db": 10.124,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_18880681.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-251971-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 13668
+    },
+    {
+      "id": 174,
+      "bucket_idx": 3,
+      "snr_db": 10.541,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19614558.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-207836-C-29.wav",
+      "noise_category": "esc50",
+      "speech_offset": 613,
+      "noise_offset": 15444
+    },
+    {
+      "id": 175,
+      "bucket_idx": 3,
+      "snr_db": 14.409,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_38161796.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-188287-A-9.wav",
+      "noise_category": "esc50",
+      "speech_offset": 22798,
+      "noise_offset": 2769
+    },
+    {
+      "id": 176,
+      "bucket_idx": 3,
+      "snr_db": 13.498,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19693805.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0021.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 15645
+    },
+    {
+      "id": 177,
+      "bucket_idx": 3,
+      "snr_db": 14.522,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20129064.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0226.wav",
+      "noise_category": "musan",
+      "speech_offset": 15638,
+      "noise_offset": 814278
+    },
+    {
+      "id": 178,
+      "bucket_idx": 3,
+      "snr_db": 14.468,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20317584.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0215.wav",
+      "noise_category": "musan",
+      "speech_offset": 9569,
+      "noise_offset": 20303
+    },
+    {
+      "id": 179,
+      "bucket_idx": 3,
+      "snr_db": 11.157,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20061384.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-185579-A-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 12551,
+      "noise_offset": 1982
+    },
+    {
+      "id": 180,
+      "bucket_idx": 3,
+      "snr_db": 14.926,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19602364.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0014.wav",
+      "noise_category": "musan",
+      "speech_offset": 5312,
+      "noise_offset": 0
+    },
+    {
+      "id": 181,
+      "bucket_idx": 3,
+      "snr_db": 13.053,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20004160.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0008.wav",
+      "noise_category": "musan",
+      "speech_offset": 7216,
+      "noise_offset": 1086318
+    },
+    {
+      "id": 182,
+      "bucket_idx": 3,
+      "snr_db": 13.65,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20025828.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0426.wav",
+      "noise_category": "musan",
+      "speech_offset": 8121,
+      "noise_offset": 0
+    },
+    {
+      "id": 183,
+      "bucket_idx": 3,
+      "snr_db": 12.583,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20280597.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0508.wav",
+      "noise_category": "musan",
+      "speech_offset": 15128,
+      "noise_offset": 34787
+    },
+    {
+      "id": 184,
+      "bucket_idx": 3,
+      "snr_db": 11.281,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20235800.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-110913-C-7.wav",
+      "noise_category": "esc50",
+      "speech_offset": 876,
+      "noise_offset": 5863
+    },
+    {
+      "id": 185,
+      "bucket_idx": 3,
+      "snr_db": 12.43,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33522574.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-95698-A-5.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1264,
+      "noise_offset": 15774
+    },
+    {
+      "id": 186,
+      "bucket_idx": 3,
+      "snr_db": 12.31,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_24743859.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-70280-A-18.wav",
+      "noise_category": "esc50",
+      "speech_offset": 13071,
+      "noise_offset": 860
+    },
+    {
+      "id": 187,
+      "bucket_idx": 3,
+      "snr_db": 11.486,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32642907.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/us-gov/speech-us-gov-0230.wav",
+      "noise_category": "musan",
+      "speech_offset": 7155,
+      "noise_offset": 308782
+    },
+    {
+      "id": 188,
+      "bucket_idx": 3,
+      "snr_db": 11.709,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19642315.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0117.wav",
+      "noise_category": "musan",
+      "speech_offset": 36172,
+      "noise_offset": 402586
+    },
+    {
+      "id": 189,
+      "bucket_idx": 3,
+      "snr_db": 12.214,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19743471.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0231.wav",
+      "noise_category": "musan",
+      "speech_offset": 23360,
+      "noise_offset": 292456
+    },
+    {
+      "id": 190,
+      "bucket_idx": 3,
+      "snr_db": 11.334,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19602336.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-7973-A-7.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 5563
+    },
+    {
+      "id": 191,
+      "bucket_idx": 3,
+      "snr_db": 10.697,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_33908014.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-4211-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 32521,
+      "noise_offset": 1832
+    },
+    {
+      "id": 192,
+      "bucket_idx": 3,
+      "snr_db": 14.022,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19603094.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-156581-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 17684,
+      "noise_offset": 5437
+    },
+    {
+      "id": 193,
+      "bucket_idx": 3,
+      "snr_db": 11.791,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19759801.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0013.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 1883287
+    },
+    {
+      "id": 194,
+      "bucket_idx": 3,
+      "snr_db": 11.824,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19599152.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-85909-A-29.wav",
+      "noise_category": "esc50",
+      "speech_offset": 7501,
+      "noise_offset": 14179
+    },
+    {
+      "id": 195,
+      "bucket_idx": 3,
+      "snr_db": 13.917,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20312556.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-155858-E-25.wav",
+      "noise_category": "esc50",
+      "speech_offset": 14478,
+      "noise_offset": 11533
+    },
+    {
+      "id": 196,
+      "bucket_idx": 3,
+      "snr_db": 13.491,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22340667.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0131.wav",
+      "noise_category": "musan",
+      "speech_offset": 17475,
+      "noise_offset": 1021879
+    },
+    {
+      "id": 197,
+      "bucket_idx": 3,
+      "snr_db": 12.237,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19601976.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-243450-A-14.wav",
+      "noise_category": "esc50",
+      "speech_offset": 984,
+      "noise_offset": 728
+    },
+    {
+      "id": 198,
+      "bucket_idx": 3,
+      "snr_db": 11.548,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_22088589.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0032.wav",
+      "noise_category": "musan",
+      "speech_offset": 670,
+      "noise_offset": 1638902
+    },
+    {
+      "id": 199,
+      "bucket_idx": 3,
+      "snr_db": 13.98,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19665443.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0059.wav",
+      "noise_category": "musan",
+      "speech_offset": 516,
+      "noise_offset": 3473934
+    },
+    {
+      "id": 200,
+      "bucket_idx": 4,
+      "snr_db": 16.183,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27024238.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/hd-classical/music-hd-0057.wav",
+      "noise_category": "musan",
+      "speech_offset": 4571,
+      "noise_offset": 1339389
+    },
+    {
+      "id": 201,
+      "bucket_idx": 4,
+      "snr_db": 17.315,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_29527623.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-198965-A-38.wav",
+      "noise_category": "esc50",
+      "speech_offset": 11780,
+      "noise_offset": 1851
+    },
+    {
+      "id": 202,
+      "bucket_idx": 4,
+      "snr_db": 16.872,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19693470.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0063.wav",
+      "noise_category": "musan",
+      "speech_offset": 4948,
+      "noise_offset": 6509938
+    },
+    {
+      "id": 203,
+      "bucket_idx": 4,
+      "snr_db": 19.974,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19628988.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-218981-A-30.wav",
+      "noise_category": "esc50",
+      "speech_offset": 14383,
+      "noise_offset": 10338
+    },
+    {
+      "id": 204,
+      "bucket_idx": 4,
+      "snr_db": 16.2,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_25174488.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0348.wav",
+      "noise_category": "musan",
+      "speech_offset": 39915,
+      "noise_offset": 606020
+    },
+    {
+      "id": 205,
+      "bucket_idx": 4,
+      "snr_db": 17.967,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_25745594.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-103423-A-3.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18078,
+      "noise_offset": 7111
+    },
+    {
+      "id": 206,
+      "bucket_idx": 4,
+      "snr_db": 17.636,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19596492.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-122067-B-45.wav",
+      "noise_category": "esc50",
+      "speech_offset": 36603,
+      "noise_offset": 11345
+    },
+    {
+      "id": 207,
+      "bucket_idx": 4,
+      "snr_db": 15.243,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19609766.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0127.wav",
+      "noise_category": "musan",
+      "speech_offset": 3516,
+      "noise_offset": 3261208
+    },
+    {
+      "id": 208,
+      "bucket_idx": 4,
+      "snr_db": 15.908,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_28813029.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-85184-A-39.wav",
+      "noise_category": "esc50",
+      "speech_offset": 15826,
+      "noise_offset": 15187
+    },
+    {
+      "id": 209,
+      "bucket_idx": 4,
+      "snr_db": 19.43,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_25051043.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-24076-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 38716,
+      "noise_offset": 8535
+    },
+    {
+      "id": 210,
+      "bucket_idx": 4,
+      "snr_db": 18.944,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19762155.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-214362-A-17.wav",
+      "noise_category": "esc50",
+      "speech_offset": 3510,
+      "noise_offset": 1256
+    },
+    {
+      "id": 211,
+      "bucket_idx": 4,
+      "snr_db": 16.068,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19715538.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0176.wav",
+      "noise_category": "musan",
+      "speech_offset": 8730,
+      "noise_offset": 0
+    },
+    {
+      "id": 212,
+      "bucket_idx": 4,
+      "snr_db": 15.893,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_29315370.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-134699-B-16.wav",
+      "noise_category": "esc50",
+      "speech_offset": 6208,
+      "noise_offset": 1846
+    },
+    {
+      "id": 213,
+      "bucket_idx": 4,
+      "snr_db": 19.692,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19760147.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0317.wav",
+      "noise_category": "musan",
+      "speech_offset": 21200,
+      "noise_offset": 34413
+    },
+    {
+      "id": 214,
+      "bucket_idx": 4,
+      "snr_db": 17.943,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19718742.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0031.wav",
+      "noise_category": "musan",
+      "speech_offset": 25350,
+      "noise_offset": 280246
+    },
+    {
+      "id": 215,
+      "bucket_idx": 4,
+      "snr_db": 18.582,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19633507.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-80313-A-28.wav",
+      "noise_category": "esc50",
+      "speech_offset": 1701,
+      "noise_offset": 1567
+    },
+    {
+      "id": 216,
+      "bucket_idx": 4,
+      "snr_db": 19.536,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27658611.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0568.wav",
+      "noise_category": "musan",
+      "speech_offset": 8369,
+      "noise_offset": 576993
+    },
+    {
+      "id": 217,
+      "bucket_idx": 4,
+      "snr_db": 16.305,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20283133.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0635.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 73195
+    },
+    {
+      "id": 218,
+      "bucket_idx": 4,
+      "snr_db": 17.499,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_37800912.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-215005-A-32.wav",
+      "noise_category": "esc50",
+      "speech_offset": 0,
+      "noise_offset": 3806
+    },
+    {
+      "id": 219,
+      "bucket_idx": 4,
+      "snr_db": 19.569,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19607475.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma/music-fma-0038.wav",
+      "noise_category": "musan",
+      "speech_offset": 17553,
+      "noise_offset": 2882197
+    },
+    {
+      "id": 220,
+      "bucket_idx": 4,
+      "snr_db": 15.931,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20283880.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-123712-A-33.wav",
+      "noise_category": "esc50",
+      "speech_offset": 5599,
+      "noise_offset": 10138
+    },
+    {
+      "id": 221,
+      "bucket_idx": 4,
+      "snr_db": 16.273,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_25019898.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0113.wav",
+      "noise_category": "musan",
+      "speech_offset": 8376,
+      "noise_offset": 1600740
+    },
+    {
+      "id": 222,
+      "bucket_idx": 4,
+      "snr_db": 19.408,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19607664.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-36397-A-23.wav",
+      "noise_category": "esc50",
+      "speech_offset": 17977,
+      "noise_offset": 435
+    },
+    {
+      "id": 223,
+      "bucket_idx": 4,
+      "snr_db": 19.208,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19680121.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-172649-B-40.wav",
+      "noise_category": "esc50",
+      "speech_offset": 21760,
+      "noise_offset": 3215
+    },
+    {
+      "id": 224,
+      "bucket_idx": 4,
+      "snr_db": 17.577,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19718459.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0029.wav",
+      "noise_category": "musan",
+      "speech_offset": 3453,
+      "noise_offset": 58495
+    },
+    {
+      "id": 225,
+      "bucket_idx": 4,
+      "snr_db": 15.669,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19954753.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-90014-A-42.wav",
+      "noise_category": "esc50",
+      "speech_offset": 45910,
+      "noise_offset": 11405
+    },
+    {
+      "id": 226,
+      "bucket_idx": 4,
+      "snr_db": 19.166,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19606616.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-255371-A-47.wav",
+      "noise_category": "esc50",
+      "speech_offset": 58830,
+      "noise_offset": 6555
+    },
+    {
+      "id": 227,
+      "bucket_idx": 4,
+      "snr_db": 16.542,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19697343.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/sound-bible/noise-sound-bible-0010.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 8982
+    },
+    {
+      "id": 228,
+      "bucket_idx": 4,
+      "snr_db": 18.787,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19734178.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0133.wav",
+      "noise_category": "musan",
+      "speech_offset": 450,
+      "noise_offset": 3315957
+    },
+    {
+      "id": 229,
+      "bucket_idx": 4,
+      "snr_db": 16.274,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20256041.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-179984-A-38.wav",
+      "noise_category": "esc50",
+      "speech_offset": 8093,
+      "noise_offset": 3222
+    },
+    {
+      "id": 230,
+      "bucket_idx": 4,
+      "snr_db": 15.77,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_23653415.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-118658-B-41.wav",
+      "noise_category": "esc50",
+      "speech_offset": 25231,
+      "noise_offset": 12419
+    },
+    {
+      "id": 231,
+      "bucket_idx": 4,
+      "snr_db": 18.466,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19746397.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-117615-D-48.wav",
+      "noise_category": "esc50",
+      "speech_offset": 37275,
+      "noise_offset": 5227
+    },
+    {
+      "id": 232,
+      "bucket_idx": 4,
+      "snr_db": 16.966,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_28644829.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-28808-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 874,
+      "noise_offset": 5492
+    },
+    {
+      "id": 233,
+      "bucket_idx": 4,
+      "snr_db": 16.88,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_18522038.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-76408-B-22.wav",
+      "noise_category": "esc50",
+      "speech_offset": 55168,
+      "noise_offset": 13897
+    },
+    {
+      "id": 234,
+      "bucket_idx": 4,
+      "snr_db": 17.196,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_24639516.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0566.wav",
+      "noise_category": "musan",
+      "speech_offset": 10795,
+      "noise_offset": 2564
+    },
+    {
+      "id": 235,
+      "bucket_idx": 4,
+      "snr_db": 17.296,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_29112435.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0128.wav",
+      "noise_category": "musan",
+      "speech_offset": 25602,
+      "noise_offset": 1368882
+    },
+    {
+      "id": 236,
+      "bucket_idx": 4,
+      "snr_db": 17.354,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19634785.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0423.wav",
+      "noise_category": "musan",
+      "speech_offset": 30692,
+      "noise_offset": 68243
+    },
+    {
+      "id": 237,
+      "bucket_idx": 4,
+      "snr_db": 18.241,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19626710.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/5-157204-A-16.wav",
+      "noise_category": "esc50",
+      "speech_offset": 77058,
+      "noise_offset": 6009
+    },
+    {
+      "id": 238,
+      "bucket_idx": 4,
+      "snr_db": 15.533,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19623020.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/3-154758-A-44.wav",
+      "noise_category": "esc50",
+      "speech_offset": 20860,
+      "noise_offset": 13786
+    },
+    {
+      "id": 239,
+      "bucket_idx": 4,
+      "snr_db": 18.377,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_24398099.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/rfm/music-rfm-0123.wav",
+      "noise_category": "musan",
+      "speech_offset": 1377,
+      "noise_offset": 8093890
+    },
+    {
+      "id": 240,
+      "bucket_idx": 4,
+      "snr_db": 17.433,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19721919.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0494.wav",
+      "noise_category": "musan",
+      "speech_offset": 64009,
+      "noise_offset": 748217
+    },
+    {
+      "id": 241,
+      "bucket_idx": 4,
+      "snr_db": 19.092,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27033643.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0202.wav",
+      "noise_category": "musan",
+      "speech_offset": 0,
+      "noise_offset": 78408
+    },
+    {
+      "id": 242,
+      "bucket_idx": 4,
+      "snr_db": 16.436,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_32565778.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0744.wav",
+      "noise_category": "musan",
+      "speech_offset": 13999,
+      "noise_offset": 0
+    },
+    {
+      "id": 243,
+      "bucket_idx": 4,
+      "snr_db": 18.334,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19671438.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/2-99955-C-7.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18225,
+      "noise_offset": 5021
+    },
+    {
+      "id": 244,
+      "bucket_idx": 4,
+      "snr_db": 16.028,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27384630.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/4-191015-A-43.wav",
+      "noise_category": "esc50",
+      "speech_offset": 3963,
+      "noise_offset": 11990
+    },
+    {
+      "id": 245,
+      "bucket_idx": 4,
+      "snr_db": 18.495,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19717705.mp3",
+      "noise_file": "data/raw/noise/esc50/ESC-50-master/audio/1-17150-A-12.wav",
+      "noise_category": "esc50",
+      "speech_offset": 18898,
+      "noise_offset": 9296
+    },
+    {
+      "id": 246,
+      "bucket_idx": 4,
+      "snr_db": 18.404,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_20820971.mp3",
+      "noise_file": "data/raw/noise/musan/musan/noise/free-sound/noise-free-sound-0368.wav",
+      "noise_category": "musan",
+      "speech_offset": 19628,
+      "noise_offset": 0
+    },
+    {
+      "id": 247,
+      "bucket_idx": 4,
+      "snr_db": 17.719,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19599464.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/jamendo/music-jamendo-0082.wav",
+      "noise_category": "musan",
+      "speech_offset": 17407,
+      "noise_offset": 892429
+    },
+    {
+      "id": 248,
+      "bucket_idx": 4,
+      "snr_db": 17.397,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_27384889.mp3",
+      "noise_file": "data/raw/noise/musan/musan/speech/librivox/speech-librivox-0144.wav",
+      "noise_category": "musan",
+      "speech_offset": 14923,
+      "noise_offset": 25861
+    },
+    {
+      "id": 249,
+      "bucket_idx": 4,
+      "snr_db": 19.752,
+      "speech_file": "data/raw/clean_speech/es/cv-corpus-26.0-2026-06-12/es/clips/common_voice_es_19724307.mp3",
+      "noise_file": "data/raw/noise/musan/musan/music/fma-western-art/music-fma-wa-0052.wav",
+      "noise_category": "musan",
+      "speech_offset": 40296,
+      "noise_offset": 347495
+    }
+  ]
+}

@@ -55,6 +55,14 @@ class Trainer:
         )
 
         self.model = CRN().to(self.device)
+
+        init_checkpoint = config.get("init_checkpoint")
+        if init_checkpoint:
+            init_checkpoint = Path(init_checkpoint)
+            print(f"Cargando pesos iniciales desde: {init_checkpoint}")
+            ckpt = torch.load(init_checkpoint, map_location=self.device, weights_only=False)
+            self.model.load_state_dict(ckpt["model_state"])
+
         self.stft = STFTHelper(n_fft=320, hop_length=160)
         self.stft._window = torch.hamming_window(320).to(self.device)
 
@@ -236,7 +244,7 @@ class Trainer:
 
 if __name__ == "__main__":
     # Cambiamos a importación absoluta para evitar problemas con -m
-    from .config import CONFIG_V1, CONFIG_V2
+    from .config import CONFIG_V1, CONFIG_V2, CONFIG_V3
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="V1",
@@ -245,7 +253,8 @@ if __name__ == "__main__":
 
     configs = {
         "V1": CONFIG_V1,
-        "V2": CONFIG_V2
+        "V2": CONFIG_V2,
+        "V3": CONFIG_V3,
     }
     if args.config not in configs:
         print(f"Configuración '{args.config}' no encontrada. Las disponibles: {list(configs.keys())}")

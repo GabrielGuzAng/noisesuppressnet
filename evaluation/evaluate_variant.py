@@ -219,7 +219,10 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False):
               f"{pesq_d:>+10.3f} {stoi_d:>+10.3f} {sisdr_d:>+14.2f}")
     
     # ─── Guardar resultados JSON ───
-    output_json = PROJECT_ROOT / "results" / f"{variant_name}_test_sealed.json"
+    # Nombre incluye el test set (ej. v1_en, v2_es): antes dependía solo de
+    # variant_name y una segunda evaluación de la misma variante sobre otro
+    # test set pisaba el resultado anterior sin avisar.
+    output_json = PROJECT_ROOT / "results" / f"{variant_name}_{test_dir.name}.json"
     output_json.parent.mkdir(exist_ok=True)
     
     global_stats = {}

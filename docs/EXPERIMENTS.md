@@ -402,3 +402,113 @@ Implicancia para V4/V5: el aporte de PESQNet debe medirse sobre V1
 (baseline) Y sobre V2 (referencia superior). Si V4/V5 aportan sobre V2,
 demuestran valor perceptual adicional al SI-SDR.
 
+
+---
+
+## V3 — Fine-tuning de V1 sobre Common Voice ES (full fine-tuning)
+
+**Tag git:** v3.0.0
+**Fecha:** 20 agosto 2026
+**Checkpoint:** checkpoints/v3/best.pt (época 21)
+**Referencia:** Fine-tuning desde checkpoints/v1/best.pt. Ver docs/decisions.md
+19/08/2026 (diseño) y 21/08/2026 (discusión metodológica de fine-tuning).
+
+### Objetivo del experimento
+Responder la pregunta central de V3: ¿el fine-tuning sobre español mejora el
+desempeño del modelo frente a audio en español, comparado con V1 (entrenado
+solo en inglés)? Para aislar esa única variable (idioma/dataset), V3 usa la
+**misma loss, mismo lr (2e-4) y mismas 30 épocas que V1** — sin cambiar
+ningún otro hiperparámetro de optimización.
+
+### Configuración
+- Dataset: Common Voice ES v26, 50.000 train + 2.000 val (`data/processed_es`),
+  balanceado por género, splits train/dev oficiales sin leakage de hablante/frase
+  (ver docs/decisions.md 17-18/08/2026)
+- Init: checkpoints/v1/best.pt (pesos completos, sin capas congeladas)
+- Loss: mse_magnitude — misma que V1, sin componente SI-SDR
+- Épocas: 30 (mejor época: 21 por val_loss), batch size 4, lr 2e-4,
+  StepLR γ=0.98 cada 2 épocas — idéntico a V1
+- Seed: 42
+- Tiempo total entrenamiento: ~15h 45min sobre RTX 4060
+- Test sets: sealed v1_en (250 pares, EN) y v2_es (250 pares, ES, sellado
+  20/08/2026 — ver docs/decisions.md)
+
+### Metodología de fine-tuning — nota importante
+Este es **full fine-tuning agresivo**: los 17,58 M parámetros quedan
+entrenables (`requires_grad=True` en todos, sin excepción — verificado
+contra el código), con el mismo lr y presupuesto de épocas que el
+entrenamiento desde cero de V1. La bibliografía de transfer learning
+(Yosinski et al. 2014, NeurIPS; Howard & Ruder 2018 ULMFiT, ACL) predice
+que este régimen favorece la adaptación al nuevo dominio a costa de
+"catastrophic forgetting" (McCloskey & Cohen 1989) del dominio original —
+exactamente lo que se observa más abajo. V3b, planificado como siguiente
+paso, explora fine-tuning conservador con lr determinado por barrido
+empírico para caracterizar ese trade-off (ver docs/PLAN_V3B.md).
+
+### Curva de entrenamiento
+- Val_loss inicial: 0,1029 (época 1)
+- Val_loss mínimo: 0,0821 (época 21)
+- Val_loss final: 0,0854 (época 30)
+- Train_loss desciende monótonamente: 0,0976 → 0,0367
+
+### Resultados globales — V1 vs V3 sobre ambos test sets (n=250 c/u)
+
+| | PESQ-NB | PESQ-WB | STOI | SI-SDR (dB) |
+|---|---|---|---|---|
+| Noisy (test_v1_en) | 2,152 | 1,583 | 0,852 | 7,86 |
+| V1 sobre test_v1_en | 2,650 (+0,497) | 2,021 (+0,437) | 0,904 (+0,051) | 13,80 (+5,95) |
+| V3 sobre test_v1_en | 2,571 (+0,418) | 1,967 (+0,384) | 0,886 (+0,034) | 12,25 (+4,39) |
+| Noisy (test_v2_es) | 2,161 | 1,641 | 0,850 | 8,41 |
+| V1 sobre test_v2_es | 2,330 (+0,170) | 1,749 (+0,108) | 0,866 (+0,016) | 11,25 (+2,84) |
+| V3 sobre test_v2_es | 2,560 (+0,399) | 1,980 (+0,338) | 0,890 (+0,040) | 13,34 (+4,92) |
+
+**V3 vs V1, ambos sobre test_v2_es (español): +0,230 PESQ-NB, +0,231
+PESQ-WB, +0,024 STOI, +2,08 dB SI-SDR.** El fine-tuning en español mejora
+el desempeño sobre audio en español, en las 4 métricas.
+
+**Costo en inglés: V3 vs V1 sobre test_v1_en: -0,079 PESQ-NB, -0,054
+PESQ-WB, -0,018 STOI, -1,55 dB SI-SDR.** Forgetting real pero moderado —
+V3 sigue mejorando sustancialmente sobre el audio ruidoso en inglés
+(+0,418 PESQ-NB), no se degrada a nivel de V0.
+
+### Análisis por bucket de SNR (test_v2_es)
+
+| Bucket | V1 ΔPESQ-NB | V1 ΔSTOI | V1 ΔSI-SDR | V3 ΔPESQ-NB | V3 ΔSTOI | V3 ΔSI-SDR |
+|---|---|---|---|---|---|---|
+| [-5, 0] dB | +0,307 | +0,060 | +6,25 | +0,407 | +0,071 | +7,10 |
+| [0, 5] dB | +0,267 | +0,040 | +5,79 | +0,481 | +0,077 | +7,86 |
+| [5, 10] dB | +0,368 | +0,032 | +5,29 | +0,538 | +0,045 | +6,50 |
+| [10, 15] dB | +0,073 | -0,018 | +0,36 | +0,424 | +0,018 | +3,84 |
+| [15, 20] dB | **-0,167** | **-0,035** | **-3,49** | +0,147 | -0,010 | -0,68 |
+
+**Hallazgo clave**: en el bucket de SNR alto [15,20] dB, **V1 degrada
+activamente la señal en español** (PESQ y SI-SDR negativos) — el modelo
+entrenado solo en inglés introduce artefactos sobre voz limpia en español
+que un filtro nulo no introduciría. V3 corrige esto casi por completo
+(PESQ vuelve a ser positivo; SI-SDR queda apenas negativo). Es el dato
+más fuerte a favor de la hipótesis central del proyecto: el idioma
+importa, y el fine-tuning específico lo remedia donde más se nota.
+
+### Análisis por categoría de ruido
+
+| | V1 sobre ES (n) | V1 ΔPESQ-NB | V3 sobre ES (n) | V3 ΔPESQ-NB |
+|---|---|---|---|---|
+| ESC-50 | 111 | +0,170 | 111 | +0,404 |
+| MUSAN | 139 | +0,169 | 139 | +0,395 |
+
+Sin overfitting a categoría específica en ninguno de los dos casos —
+mejora pareja entre ESC-50 y MUSAN.
+
+### Conclusión
+**El fine-tuning en español responde que sí a la pregunta central de V3**:
+mejora medible y consistente en las 4 métricas sobre `test_v2_es`, con
+mayor impacto justamente donde V1 fallaba (SNR alto). El costo es un
+catastrophic forgetting moderado en inglés, consistente con lo que
+predice la bibliografía de transfer learning para full fine-tuning a lr
+alto sin capas congeladas.
+
+Implicancia para V3b/V5: vale la pena explorar si un régimen de
+fine-tuning más conservador (lr reducido, determinado empíricamente)
+reduce el forgetting en inglés sin sacrificar la ganancia en español —
+ese es el objetivo de V3b (docs/PLAN_V3B.md, en curso).
+

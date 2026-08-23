@@ -27,6 +27,17 @@ from evaluation.metrics import compute_metrics
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SAMPLE_RATE = 16000
 
+
+def _display_path(p: Path) -> str:
+    """Path relativo a PROJECT_ROOT para logging; si p vive afuera
+    (ej. --output apuntando a /tmp), cae al path absoluto en vez de
+    romper con ValueError."""
+    try:
+        return str(p.relative_to(PROJECT_ROOT))
+    except ValueError:
+        return str(p)
+
+
 def _make_json_serializable(obj):
     """Convierte numpy types a Python nativos para JSON."""
     if isinstance(obj, np.floating):
@@ -42,9 +53,14 @@ def _make_json_serializable(obj):
     return obj
 
 
-def load_variant(variant_name, device):
-    """Carga checkpoint de una variante entrenada."""
-    ckpt_path = PROJECT_ROOT / "checkpoints" / variant_name / "best.pt"
+def load_variant(variant_name, device, checkpoint_path=None):
+    """Carga checkpoint de una variante entrenada.
+
+    Por default busca checkpoints/<variant_name>/best.pt. Si se pasa
+    checkpoint_path explícito (ej. checkpoints/v3_sweep/lr_5e-06/best.pt,
+    que no sigue esa convención), se usa ese en su lugar.
+    """
+    ckpt_path = Path(checkpoint_path) if checkpoint_path else PROJECT_ROOT / "checkpoints" / variant_name / "best.pt"
     if not ckpt_path.exists():
         raise FileNotFoundError(f"No existe checkpoint: {ckpt_path}")
     
@@ -71,17 +87,18 @@ def infer_pair(model, stft, noisy_wav, device):
         return audio_est.squeeze(0).cpu()
 
 
-def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False):
+def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
+                      checkpoint_path=None, output_path=None):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"\n{'='*70}")
     print(f"EVALUACIÓN: {variant_name.upper()} sobre test set sellado")
     print(f"{'='*70}")
     print(f"Device: {device}")
-    print(f"Test set: {test_dir.relative_to(PROJECT_ROOT)}")
-    print(f"Metadata: {metadata_path.relative_to(PROJECT_ROOT)}")
-    
+    print(f"Test set: {_display_path(test_dir)}")
+    print(f"Metadata: {_display_path(metadata_path)}")
+
     # Cargar modelo
-    model, ckpt = load_variant(variant_name, device)
+    model, ckpt = load_variant(variant_name, device, checkpoint_path=checkpoint_path)
     stft = STFTHelper(n_fft=320, hop_length=160)
     stft._window = torch.hamming_window(320).to(device)
     
@@ -221,8 +238,10 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False):
     # ─── Guardar resultados JSON ───
     # Nombre incluye el test set (ej. v1_en, v2_es): antes dependía solo de
     # variant_name y una segunda evaluación de la misma variante sobre otro
-    # test set pisaba el resultado anterior sin avisar.
-    output_json = PROJECT_ROOT / "results" / f"{variant_name}_{test_dir.name}.json"
+    # test set pisaba el resultado anterior sin avisar. output_path permite
+    # override explícito (usado por el sweep de V3b, checkpoints fuera de
+    # la convención checkpoints/<variant>/).
+    output_json = Path(output_path) if output_path else PROJECT_ROOT / "results" / f"{variant_name}_{test_dir.name}.json"
     output_json.parent.mkdir(exist_ok=True)
     
     global_stats = {}
@@ -263,7 +282,7 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False):
         "variant": variant_name,
         "checkpoint_epoch": ckpt["epoch"],
         "checkpoint_val_loss": float(ckpt["val_loss"]),
-        "test_set": str(test_dir.relative_to(PROJECT_ROOT)),
+        "test_set": _display_path(test_dir),
         "n_pairs_evaluated": len(all_results),
         "global": global_stats,
         "by_bucket": by_bucket_summary,
@@ -276,7 +295,7 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False):
 
     
     print(f"\n{'='*70}")
-    print(f"✅ Resultados guardados en: {output_json.relative_to(PROJECT_ROOT)}")
+    print(f"✅ Resultados guardados en: {_display_path(output_json)}")
     print(f"{'='*70}\n")
     
     return output_data
@@ -294,12 +313,23 @@ if __name__ == "__main__":
                         help="Archivo de metadata del test set")
     parser.add_argument("--save_audio", action="store_true",
                         help="Guardar audios estimados en data/estimates/<variant>/")
+    parser.add_argument("--checkpoint", type=str, default=None,
+                        help="Ruta explícita a un checkpoint (best.pt). "
+                             "Si no se pasa, usa checkpoints/<variant>/best.pt")
+    parser.add_argument("--output", type=str, default=None,
+                        help="Ruta explícita para el JSON de salida. "
+                             "Si no se pasa, usa results/<variant>_<test_dir_name>.json")
     args = parser.parse_args()
-    
+
     evaluate_variant(
         variant_name=args.variant,
-        test_dir=Path(args.test_dir),
-        metadata_path=Path(args.metadata),
+        # .resolve(): --test_dir/--metadata relativos (ej. "data/test_sealed/v2_es"
+        # corrido desde la raíz del repo) rompían test_dir.relative_to(PROJECT_ROOT)
+        # más abajo, que requiere un path absoluto.
+        test_dir=Path(args.test_dir).resolve(),
+        metadata_path=Path(args.metadata).resolve(),
         save_audio=args.save_audio,
+        checkpoint_path=args.checkpoint,
+        output_path=args.output,
     )
 

@@ -1,4 +1,5 @@
 # trainer.py
+import numpy as np
 import torch
 import torch.nn as nn
 from training.losses import mse_magnitude, mse_plus_sisdr, get_loss_name
@@ -23,11 +24,23 @@ class Trainer:
         """
         self.config = config
 
-        # Fijar semilla para reproducibilidad
+        # Fijar semilla para reproducibilidad (restricción dura del proyecto:
+        # seed 42 en TODAS las operaciones aleatorias)
         seed = config.get("seed", 42)
         torch.manual_seed(seed)
+        np.random.seed(seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(seed)
+            # Default True: reproducibilidad bit-exact. Costo real medido:
+            # ~2x tiempo/época en este modelo (94% LSTM, cuDNN determinista
+            # es notablemente más lento en RNN). Para corridas exploratorias
+            # descartables (ej. sweep de lr de V3b) se puede desactivar
+            # explícitamente vía config — ver docs/decisions.md 22/08/2026.
+            if config.get("cudnn_deterministic", True):
+                torch.backends.cudnn.deterministic = True
+                torch.backends.cudnn.benchmark = False
+            else:
+                torch.backends.cudnn.benchmark = True  # shapes fijas (segment_samples constante) -> autotune ayuda
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Training on device: {self.device}")
@@ -40,8 +53,8 @@ class Trainer:
         train_shuffle = config.get("train_shuffle", True)
         val_shuffle = config.get("val_shuffle", False)
         lr = config["lr"]
-        lr_decay_factor = config["scheduler_gamma"]
-        lr_decay_period = config["scheduler_step"]
+        lr_decay_factor = config.get("scheduler_gamma")
+        lr_decay_period = config.get("scheduler_step")
         self.n_epochs = config["n_epochs"]
         self.checkpoint_dir = Path(config["checkpoint_dir"])
 
@@ -67,7 +80,12 @@ class Trainer:
         self.stft._window = torch.hamming_window(320).to(self.device)
 
         self.opt = Adam(self.model.parameters(), lr=lr, amsgrad=False)
-        self.sched = StepLR(self.opt, step_size=lr_decay_period, gamma=lr_decay_factor)
+        # scheduler_step/scheduler_gamma ausentes en la config = lr fijo, sin decay
+        # (usado por el sweep de V3b, que quiere medir el efecto de un lr constante)
+        if lr_decay_factor is not None and lr_decay_period is not None:
+            self.sched = StepLR(self.opt, step_size=lr_decay_period, gamma=lr_decay_factor)
+        else:
+            self.sched = None
 
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
@@ -201,7 +219,8 @@ class Trainer:
             t0 = time.time()
             tr = self.train_epoch()
             va = self.validate()
-            self.sched.step()
+            if self.sched is not None:
+                self.sched.step()
             elapsed = time.time() - t0
         
             self.history["train_loss"].append(tr["loss"])
@@ -244,7 +263,7 @@ class Trainer:
 
 if __name__ == "__main__":
     # Cambiamos a importación absoluta para evitar problemas con -m
-    from .config import CONFIG_V1, CONFIG_V2, CONFIG_V3
+    from .config import CONFIG_V1, CONFIG_V2, CONFIG_V3, CONFIG_V3B
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="V1",
@@ -255,6 +274,7 @@ if __name__ == "__main__":
         "V1": CONFIG_V1,
         "V2": CONFIG_V2,
         "V3": CONFIG_V3,
+        "V3B": CONFIG_V3B,
     }
     if args.config not in configs:
         print(f"Configuración '{args.config}' no encontrada. Las disponibles: {list(configs.keys())}")

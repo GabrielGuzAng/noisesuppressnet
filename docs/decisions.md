@@ -244,3 +244,44 @@ pura sobre magnitud STFT, `mse_magnitude`, sin componente SI-SDR).
   iguales a V1 salvo que el fine-tuning amerite ajuste explícito y
   documentado (ej. lr menor); cualquier cambio ahí es una desviación que
   debe registrarse acá si se decide.
+
+
+## CuDNN determinism: activado por default, desactivado en el sweep de V3b (22/08/2026)
+
+Al preparar el sweep de lr de V3b se agregó `torch.backends.cudnn.deterministic`
++ `np.random.seed()` a `training/trainer.py`, cerrando un gap real: `CLAUDE.md`
+afirmaba "CuDNN determinism activado en trainer" pero el código nunca lo
+tuvo — V1, V2 y V3 se entrenaron solo con `torch.manual_seed(42)` (sin
+`cudnn.deterministic`), que da reproducibilidad de init de pesos y orden
+lógico de datos, pero no bit-exactitud del cómputo en GPU (la suma en
+punto flotante en paralelo no es asociativa; cuDNN puede autoseleccionar
+distinto algoritmo entre corridas). No se corrige retroactivamente V1/V2/V3
+— ya están taggeados y reportados — pero queda documentado como limitación
+real de esos resultados.
+
+**Costo medido**: con `cudnn.deterministic=True` cada época del sweep pasó
+de ~1.886s (V3, sin el flag) a ~3.820s — el doble. Este modelo es 94% LSTM,
+y los kernels deterministas de cuDNN para RNN son notablemente más lentos
+que los default. El sweep completo hubiera tardado ~26-27h en vez de las
+~12h estimadas.
+
+**Decisión**: `cudnn_deterministic` queda como flag de config, default
+`True` (la restricción dura se cumple por default para cualquier variante
+nueva). Se desactiva explícitamente solo en `CONFIG_V3_SWEEP_BASE`
+(`training/config.py`) — es la única config pensada para corridas
+exploratorias descartables (comparación relativa entre 5 candidatos de lr,
+no un resultado citable). `CONFIG_V3B` (el entrenamiento final, el que se
+taggea) no define la clave y por lo tanto queda determinista por default.
+
+**Razón**: en investigación/industria es práctica estándar no pagar el
+costo de determinism durante hyperparameter search — las corridas del
+sweep se descartan después de elegir el ganador, y si el ruido de punto
+flotante alcanzara para cambiar cuál lr gana, esa diferencia ya sería
+demasiado débil para ser una conclusión sólida de todos modos. Reservar
+el determinism para la corrida que sí se reporta (V3b final) es donde
+realmente importa poder decir "esto es reproducible bit-exact".
+
+Bonus de velocidad: cuando `cudnn_deterministic=False`, el trainer activa
+`cudnn.benchmark=True` — como todos los segmentos de audio miden
+exactamente 64.000 samples (shape fija), cuDNN autotunea una vez el
+kernel más rápido para ese tamaño y lo reusa.

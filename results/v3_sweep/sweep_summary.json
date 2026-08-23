@@ -1,0 +1,43 @@
+{
+  "lr_candidates": [
+    5e-06,
+    2e-05,
+    5e-05,
+    0.0001,
+    0.0002
+  ],
+  "n_epochs": 5,
+  "total_time_hours": 13.071753280758857,
+  "runs": [
+    {
+      "lr": 5e-06,
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v3_sweep/lr_5e-6",
+      "time_min": 156.4479756395022,
+      "status": "success"
+    },
+    {
+      "lr": 2e-05,
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v3_sweep/lr_2e-5",
+      "time_min": 160.75349245866138,
+      "status": "success"
+    },
+    {
+      "lr": 5e-05,
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v3_sweep/lr_5e-5",
+      "time_min": 155.61890494823456,
+      "status": "success"
+    },
+    {
+      "lr": 0.0001,
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v3_sweep/lr_1e-4",
+      "time_min": 155.29755407571793,
+      "status": "success"
+    },
+    {
+      "lr": 0.0002,
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v3_sweep/lr_2e-4",
+      "time_min": 156.18442981243135,
+      "status": "success"
+    }
+  ]
+}

@@ -110,3 +110,29 @@ CONFIG_V3B = {
     "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v3b",
     "description": "Fine-tuning conservador de V1 sobre Common Voice ES, lr=5e-5 elegido por sweep empírico (10 épocas, StepLR step=4 gamma=0.5).",
 }
+
+# CONFIG_V3E: explota el hallazgo del sweep -- lr=1e-4 tuvo la mayor
+# ganancia en español (+0.162 PESQ-NB a 5 épocas) sin haber convergido
+# todavía. Se extiende a 25 épocas con decay tardío (época 12, no época 4
+# como V3b) para darle más recorrido al lr alto antes de bajarlo.
+# (V3c-b, el control para desconfundir épocas vs lr, quedó pospuesto por
+# tiempo -- ver docs/decisions.md. V3e no depende de ese resultado, es una
+# hipótesis distinta: explotar el punto del sweep con mayor ΔPESQ_ES.)
+CONFIG_V3E = {
+    **CONFIG_V3_SWEEP_BASE,
+    "variant": "V3e",
+    "lr": 1e-4,
+    "n_epochs": 25,
+    "scheduler_step": 12,             # decay tardío -- V3b decayó en época 4
+                                       # y se estabilizó demasiado pronto
+    "scheduler_gamma": 0.5,
+    "cudnn_deterministic": True,      # esta SÍ es corrida reportable
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v3e",
+    "description": "lr=1e-4: la corrida del sweep con mayor ΔPESQ_ES "
+                   "(+0.162 a 5 épocas), sin haber convergido todavía. "
+                   "Extendida a 25 épocas con decay tardío (época 12, no "
+                   "época 4 como V3b) para darle más recorrido antes de "
+                   "que el lr empiece a bajar. Hipótesis: puede igualar o "
+                   "superar el score de V3 (+0.151) con menos forgetting "
+                   "en inglés que V3 (-0.079).",
+}

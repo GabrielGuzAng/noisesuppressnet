@@ -263,7 +263,7 @@ class Trainer:
 
 if __name__ == "__main__":
     # Cambiamos a importación absoluta para evitar problemas con -m
-    from .config import CONFIG_V1, CONFIG_V2, CONFIG_V3, CONFIG_V3B
+    from .config import CONFIG_V1, CONFIG_V2, CONFIG_V3, CONFIG_V3B, CONFIG_V3E
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="V1",
@@ -275,6 +275,7 @@ if __name__ == "__main__":
         "V2": CONFIG_V2,
         "V3": CONFIG_V3,
         "V3B": CONFIG_V3B,
+        "V3E": CONFIG_V3E,
     }
     if args.config not in configs:
         print(f"Configuración '{args.config}' no encontrada. Las disponibles: {list(configs.keys())}")

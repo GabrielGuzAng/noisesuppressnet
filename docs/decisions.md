@@ -675,3 +675,51 @@ causal con controles, no observación bruta.
 **Limitaciones de V4b:** `cudnn_deterministic=False` en las tres corridas, elegido a propósito para ser
 comparable con `alpha_090` (que se corrió así en el sweep de Fase 3) — ninguna de las dos es bit-exacta.
 3 épocas por corrida, no 25 como la segunda etapa de Xu.
+
+
+## GCRN descartado como línea de trabajo; el próximo experimento es el control de idioma vs canal (06/09/2026)
+
+Las entradas de V4 (31/08) y V4b (01/09) de más arriba en este mismo archivo cierran la
+línea de proxy perceptual y señalan a GCRN (Tan & Wang 2020) como el paso siguiente,
+remitiendo a `docs/PLAN_GCRN.md`. **Ese plan se descarta y el archivo ya no está en el
+repositorio.** Las referencias de aquellas entradas quedan como estaban: eran ciertas en
+su fecha, y reescribirlas hacia atrás falsificaría la bitácora.
+
+**Por qué se descarta.** GCRN es una mejora de arquitectura —complex spectral mapping,
+GLU, LSTM agrupada— sobre un eje que no es el aporte del proyecto. Ninguna de las cuatro
+afirmaciones diferenciadoras depende de ella: el cambio de signo de la transferencia según
+el SNR, el trade-off adaptación/olvido, la validación downstream con emparejamiento de
+idioma y el despliegue causal en el hardware objetivo se sostienen o se caen con el CRN
+actual. Mejor PESQ absoluto no defiende ninguna, y las horas de GPU compiten directamente
+contra los dos experimentos que sí las alimentan, con la defensa fijada al 29/12/2026.
+
+**Qué cambió la prioridad.** El reanálisis estadístico del 05-06/09 movió dos cosas.
+Primero, expuso que el contraste EN/ES actual confunde idioma con canal de grabación
+—LibriSpeech son audiolibros en FLAC, Common Voice es MP3 crowdsourced— y que ese confound
+tiene un paper dedicado en contra: Wang, Lee, Tsao & Wang (Interspeech 2022,
+*Disentangling the Impacts of Language and Channel Variability on Speech Separation
+Networks*) concluye que el canal domina y el idioma es despreciable. Es la objeción más
+fuerte que existe contra el aporte 1 y hoy no tiene respuesta. Segundo, la familia F5
+mostró que el olvido en inglés es real y está concentrado en un subconjunto identificable
+de archivos, lo que le devuelve sentido al experimento de fine-tuning con capas congeladas
+con un endpoint medible. Los dos rinden más que reproducir una arquitectura de 2020.
+
+**Único encuadre en que GCRN valdría la pena, si sobra tiempo.** No como búsqueda de mejor
+PESQ sino como chequeo de validez externa: si el patrón de decaimiento por SNR se reproduce
+en una arquitectura distinta, el hallazgo deja de ser atribuible a una particularidad del
+CRN. Esa es una pregunta que un jurado va a hacer igual, y así GCRN la contesta en vez de
+competir. Con ese encuadre habría que rehacer el plan, no recuperarlo.
+
+**Qué se conserva del trabajo hecho.** La lectura del paper y del repo oficial fue real y
+verificada: kernel temporal de tamaño 1 (causal sin necesitar el truco de truncamiento que
+usa `models/crn.py`), STFT bit-exacta con la convención del proyecto (n_fft=320, hop=160,
+Hamming), y GCRN(G=2) con 23.82M MACs/frame contra los 25.27M del CRN actual. Si alguna vez
+se revive la línea, ese análisis está en el mensaje de este commit y no hay que rehacerlo
+desde cero.
+
+**Qué lo reemplaza.** Sellar `test_v3_mls_es` con voz de Multilingual LibriSpeech español
+—LibriVox, el mismo paradigma de grabación que LibriSpeech— reusando verbatim las
+condiciones de ruido de `test_v1_en`, y evaluar V1, V2 y V3e sin reentrenar nada. El 2×2
+resultante permite separar el efecto de idioma del de canal en las mismas unidades. Las
+predicciones y los criterios de decisión están preregistrados fuera del repositorio, con
+el hash comprometido en `docs/preregistro_mls_es.sha256` antes de que el dato exista.

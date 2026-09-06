@@ -53,3 +53,6 @@ PapersAporteFinal/
 
 # Logs de entrenamiento (CLAUDE.md ya los daba por ignorados)
 logs/
+
+# Planilla de trabajo, duplica results/summary_metrics.csv que sí está versionado
+results/summary_metrics.ods

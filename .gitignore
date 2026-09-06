@@ -56,3 +56,9 @@ logs/
 
 # Planilla de trabajo, duplica results/summary_metrics.csv que sí está versionado
 results/summary_metrics.ods
+
+# Entregas a la cátedra (documentos de gestión, no artefactos del proyecto)
+DocsProfesores/
+
+# Plan de una línea descartada; la decisión y su razón están en docs/decisions.md
+docs/PLAN_GCRN.md

@@ -1,1 +1,16 @@
+# Preregistro de test_v3_mls_es — hashes por versión.
+# El archivo vive fuera del repositorio (~/nosiesuppressnet-oracle/preregistro_mls_es.md)
+# hasta que el experimento corra, porque contiene predicciones y criterios de decisión que
+# un agente ejecutor no debe ver. Cuando se publique, cada versión debe verificar contra su
+# hash. Ambas se comprometieron ANTES de generar una sola mixtura o evaluar un solo modelo.
+
+# v1 — 5/09/2026. Diseño original: 250 pares del split test de MLS español.
 3eee52bd22fbba812cc49c6a32b7080072692f19c9a81693137ff4a0bf506963  preregistro_mls_es.md
+
+# v2 — 6/09/2026. Enmienda 1, escrita tras inspeccionar SOLO los metadatos del corpus
+# (hablante, duración, capítulo), sin generar mixturas ni evaluar nada. Cambia la fuente a
+# dev+test (40 hablantes en vez de 20), obliga a inferencia agrupada por hablante, declara
+# la dirección del confusor de diversidad de hablantes antes de ver el resultado, y agrega
+# la medición objetiva de canal como requisito previo. Los umbrales de tamaño de efecto de
+# P1 y P2 no se modificaron.
+492f1d04639ea49494d678e826df27e5ddce41bf565db68054d86ab27d6ef4b6  preregistro_mls_es.md

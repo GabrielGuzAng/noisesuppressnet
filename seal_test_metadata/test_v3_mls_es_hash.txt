@@ -1,0 +1,9 @@
+# Test Set v3 ES (canal audiolibro, MLS) - Hash de integridad
+# Generado: 2026-09-06T16:40:00.096848
+# Seed: 42
+# Total pares: 250
+# Total archivos WAV: 500
+# Hablantes: 40
+# Condiciones de ruido reusadas de: seal_test_metadata/test_v1_metadata.json
+# Hash SHA-256 acumulativo:
+fa99a0faaf2d1c78b5c2d1ef79a513a9557bc4255ceadfb36230df3f5bd21306

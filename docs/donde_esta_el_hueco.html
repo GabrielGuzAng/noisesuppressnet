@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Dónde Está el Hueco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+
+<style>
+  :root {
+    --ground:     #F4F6F8;
+    --surface:    #FFFFFF;
+    --surface-2:  #EBEFF3;
+    --ink:        #111A22;
+    --ink-mid:    #3A4854;
+    --ink-mute:   #5E6E7C;
+    --line:       #D9E0E7;
+    --line-soft:  #E7ECF1;
+
+    --mine:       #1D4ED8;
+    --mine-soft:  #E4EBFB;
+    --prior:      #64748B;
+    --prior-soft: #EDF0F3;
+    --warn:       #C2410C;
+    --warn-soft:  #FBEBE1;
+
+    --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --sans:  "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono:  "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --measure: 70ch;
+    --shadow: 0 1px 2px rgba(17,26,34,.05), 0 10px 28px -20px rgba(17,26,34,.3);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:     #0D141A;
+      --surface:    #161F26;
+      --surface-2:  #1C2731;
+      --ink:        #DEE6ED;
+      --ink-mid:    #B0BEC9;
+      --ink-mute:   #8797A4;
+      --line:       #29363F;
+      --line-soft:  #212C35;
+      --mine:       #5B8DEF;
+      --mine-soft:  #16233C;
+      --prior:      #8D9BAA;
+      --prior-soft: #1E272F;
+      --warn:       #C97B24;
+      --warn-soft:  #2C2214;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -20px rgba(0,0,0,.85);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:     #0D141A;
+    --surface:    #161F26;
+    --surface-2:  #1C2731;
+    --ink:        #DEE6ED;
+    --ink-mid:    #B0BEC9;
+    --ink-mute:   #8797A4;
+    --line:       #29363F;
+    --line-soft:  #212C35;
+    --mine:       #5B8DEF;
+    --mine-soft:  #16233C;
+    --prior:      #8D9BAA;
+    --prior-soft: #1E272F;
+    --warn:       #C97B24;
+    --warn-soft:  #2C2214;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -20px rgba(0,0,0,.85);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 1060px; margin: 0 auto; padding: clamp(1.8rem,5vw,4rem) clamp(1rem,4vw,2.4rem) 6rem; }
+  .col { max-width: var(--measure); }
+
+  /* masthead */
+  .kicker {
+    font-family: var(--mono); font-size: .71rem; font-weight: 500;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute);
+    display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: baseline;
+    padding-bottom: .85rem; border-bottom: 1px solid var(--line); margin-bottom: 1.7rem;
+  }
+  .kicker .sep { color: var(--line); }
+
+  h1 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(2.2rem,6vw,3.5rem); line-height: 1.05;
+    letter-spacing: -.02em; margin: 0 0 .9rem; text-wrap: balance;
+  }
+  .standfirst {
+    font-family: var(--serif); font-size: clamp(1.04rem,2.2vw,1.22rem);
+    line-height: 1.55; color: var(--ink-mid); max-width: 62ch; margin: 0;
+  }
+
+  section { margin-top: clamp(2.6rem,6vw,4rem); }
+  .snum {
+    font-family: var(--mono); font-size: .71rem; font-weight: 600;
+    letter-spacing: .1em; color: var(--mine); display: block; margin-bottom: .5rem;
+  }
+  h2 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(1.42rem,3.2vw,1.85rem); line-height: 1.2;
+    letter-spacing: -.012em; margin: 0 0 1rem; text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--sans); font-weight: 600; font-size: 1rem;
+    letter-spacing: -.004em; margin: 1.9rem 0 .55rem;
+  }
+  p { margin: 0 0 1rem; max-width: var(--measure); }
+  ul, ol { max-width: var(--measure); padding-left: 1.15rem; margin: 0 0 1rem; }
+  li { margin-bottom: .45rem; }
+  li::marker { color: var(--ink-mute); }
+  strong { font-weight: 600; }
+  code {
+    font-family: var(--mono); font-size: .87em;
+    background: var(--surface-2); padding: .1em .36em; border-radius: 3px;
+  }
+
+  blockquote {
+    max-width: var(--measure); margin: 1.3rem 0; padding-left: 1.1rem;
+    border-left: 2px solid var(--line); font-family: var(--serif);
+    font-style: italic; color: var(--ink-mid); font-size: 1rem;
+  }
+  blockquote p { margin-bottom: .4rem; }
+  blockquote cite {
+    display: block; font-family: var(--mono); font-style: normal;
+    font-size: .72rem; letter-spacing: .03em; color: var(--ink-mute);
+  }
+
+  /* callouts */
+  .box {
+    max-width: var(--measure); background: var(--surface);
+    border: 1px solid var(--line); border-left: 3px solid var(--mine);
+    border-radius: 4px; padding: 1rem 1.2rem; margin: 1.4rem 0;
+    font-size: .94rem; line-height: 1.58;
+  }
+  .box p:last-child { margin-bottom: 0; }
+  .box .lbl {
+    font-family: var(--mono); font-size: .67rem; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--mine); display: block; margin-bottom: .35rem;
+  }
+  .box.warn { border-left-color: var(--warn); }
+  .box.warn .lbl { color: var(--warn); }
+
+  /* tables */
+  .tablewrap { overflow-x: auto; margin: 1.4rem 0; }
+  table {
+    border-collapse: collapse; width: 100%; min-width: 560px;
+    font-size: .87rem; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 5px;
+  }
+  caption {
+    text-align: left; font-family: var(--mono); font-size: .68rem;
+    font-weight: 600; letter-spacing: .11em; text-transform: uppercase;
+    color: var(--ink-mute); padding-bottom: .55rem;
+  }
+  th, td {
+    padding: .6rem .8rem; text-align: left; vertical-align: top;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  thead th {
+    font-family: var(--mono); font-size: .68rem; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--ink-mute);
+    border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .work { font-weight: 600; white-space: nowrap; }
+  .work small { display: block; font-weight: 400; color: var(--ink-mute); font-size: .84em; white-space: normal; }
+
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: .64rem;
+    font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+    padding: .18em .5em; border-radius: 3px; white-space: nowrap;
+  }
+  .tag.free { background: var(--mine-soft); color: var(--mine); }
+  .tag.taken { background: var(--prior-soft); color: var(--prior); }
+
+  .pos { color: var(--mine); font-weight: 600; }
+  .neg { color: var(--warn); font-weight: 600; }
+
+  /* figure */
+  figure {
+    margin: 1.8rem 0; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; box-shadow: var(--shadow); overflow: hidden;
+  }
+  figure .fig-body { padding: 1.3rem clamp(.8rem,3vw,1.5rem); overflow-x: auto; }
+  figcaption {
+    font-size: .83rem; line-height: 1.5; color: var(--ink-mute);
+    padding: .8rem clamp(.8rem,3vw,1.5rem); border-top: 1px solid var(--line-soft);
+    background: var(--surface-2);
+  }
+  figcaption b { color: var(--ink-mid); font-weight: 600; }
+  svg { display: block; max-width: 100%; height: auto; }
+  svg text { font-family: var(--sans); }
+  svg .mono { font-family: var(--mono); }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: .45rem 1.3rem;
+    font-size: .81rem; color: var(--ink-mid); margin-bottom: .9rem;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+  .swatch { width: 13px; height: 3px; border-radius: 2px; flex: none; }
+
+  /* plan */
+  .plan { display: flex; flex-direction: column; gap: .75rem; margin: 1.5rem 0; }
+  .step {
+    display: grid; grid-template-columns: auto 1fr; gap: 0 1rem;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 5px; padding: 1rem 1.15rem;
+  }
+  .step .ord {
+    font-family: var(--mono); font-size: 1.35rem; font-weight: 600;
+    color: var(--mine); line-height: 1; grid-row: span 2;
+  }
+  .step .hd { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: baseline; }
+  .step .ttl { font-weight: 600; font-size: 1rem; }
+  .step .cost {
+    font-family: var(--mono); font-size: .69rem; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--ink-mute);
+    border: 1px solid var(--line); border-radius: 3px; padding: .12em .45em;
+  }
+  .step .why { font-size: .92rem; color: var(--ink-mid); margin-top: .35rem; line-height: 1.55; }
+  .step .why p { margin: 0 0 .45rem; max-width: none; }
+  .step .why p:last-child { margin-bottom: 0; }
+
+  /* claims */
+  .claims { counter-reset: c; display: flex; flex-direction: column; gap: .9rem; margin: 1.5rem 0; max-width: var(--measure); }
+  .claim {
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--mine); border-radius: 4px; padding: .9rem 1.15rem;
+  }
+  .claim .ct { font-weight: 600; margin-bottom: .25rem; }
+  .claim .cw { font-size: .9rem; color: var(--ink-mute); line-height: 1.55; }
+
+  footer {
+    margin-top: clamp(3rem,7vw,4.5rem); padding-top: 1.2rem;
+    border-top: 1px solid var(--line); font-family: var(--mono);
+    font-size: .73rem; line-height: 1.7; color: var(--ink-mute); max-width: var(--measure);
+  }
+
+  .hit { cursor: pointer; }
+  .hit:focus-visible { outline: 2px solid var(--mine); outline-offset: 2px; }
+  .chartwrap { position: relative; }
+  #tip {
+    position: absolute; pointer-events: none; background: var(--ink);
+    color: var(--ground); font-family: var(--mono); font-size: .73rem;
+    padding: .35rem .5rem; border-radius: 4px; white-space: nowrap;
+    transform: translate(-50%,-125%); opacity: 0; transition: opacity .12s ease; z-index: 5;
+  }
+  #tip.on { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="page">
+
+  <header>
+    <div class="kicker">
+      <span>NoiseSuppressNet</span><span class="sep">/</span>
+      <span>Ruta a publicación</span><span class="sep">/</span>
+      <span>Documento de trabajo</span><span class="sep">/</span>
+      <span>3 sep 2026</span>
+    </div>
+    <h1>Dónde está el hueco</h1>
+    <p class="standfirst">Qué hay publicado sobre enhancement cross-lingual, qué queda libre como aporte
+      propio, qué me van a preguntar los revisores, y en qué orden conviene trabajar hasta diciembre.
+      Todo verificado contra fuente primaria.</p>
+  </header>
+
+  <section>
+    <span class="snum">01 — La respuesta corta</span>
+    <h2>No existe lo mío, pero hay vecinos que hay que citar bien</h2>
+    <p>Nadie combinó <strong>CRN causal + fine-tuning EN→ES + test set sellado de español real +
+      análisis por bucket de SNR</strong>. Hay tres trabajos cercanos y uno que niega la premisa
+      entera; ninguno tapa el hueco, pero cada uno obliga a enunciar el aporte con precisión.</p>
+    <div class="box">
+      <span class="lbl">Lo que queda libre</span>
+      <p>El trade-off adaptación/olvido cuantificado en las dos direcciones, el régimen de optimización
+        que lo controla, el cambio de signo de la transferencia según SNR, y la validación downstream
+        sobre ASR con emparejamiento de idioma. Los cuatro son míos.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="snum">02 — El mapa</span>
+    <h2>Trabajo previo, y por qué ninguno es esto</h2>
+    <div class="tablewrap">
+      <table>
+        <caption>Trabajo previo en enhancement cross-lingual y por idioma</caption>
+        <thead>
+          <tr><th>Trabajo</th><th>Qué hizo</th><th>Por qué no es lo mío</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="work">Xu et al. 2014<small>ISCSLP</small></td>
+            <td>Transfer EN↔mandarín en DNN, congelando capas bajas. ~1 min de datos ya mejora mucho.</td>
+            <td>DNN simple, no causal, no español. Evalúa adaptación en ambas direcciones, pero <strong>no mide olvido</strong> del origen tras adaptar al destino.</td>
+            <td><span class="tag free">deja hueco</span></td>
+          </tr>
+          <tr>
+            <td class="work">Pascual et al. 2017<small>ICASSP</small></td>
+            <td>SEGAN preentrenada en inglés, fine-tuneada a catalán y coreano. Curva de datos: 24 s ya mejora, codo a los 10 min.</td>
+            <td>Mi método exacto pero otros idiomas, arquitectura de forma de onda, no causal. Solo evalúa el idioma destino.</td>
+            <td><span class="tag free">deja hueco</span></td>
+          </tr>
+          <tr>
+            <td class="work">Close et al. 2023<small>WASPAA</small></td>
+            <td>Construyó <strong>CommonVoice-DEMAND en español</strong> y entrenó SE en ES, testeando cruzado EN/ES/galés.</td>
+            <td>Entrena <strong>desde cero</strong>, no fine-tuning. BLSTM <strong>bidireccional</strong> — imposible en tiempo real. Su variable era la loss SSSR, no el idioma. 11.572 pares.</td>
+            <td><span class="tag free">deja hueco</span></td>
+          </tr>
+          <tr>
+            <td class="work">Zhang et al. 2024<small>arXiv 2412.14890</small></td>
+            <td>Concluye que los atributos acústicos (hablante, ruido) importan mucho más que los semánticos — <strong>el idioma no importaría</strong>.</td>
+            <td>Niega mi premisa, pero su habla multilingüe es <strong>sintética (XTTS)</strong> con <em>speaker prompts de LibriSpeech</em>, o sea voces inglesas diciendo texto en otros idiomas.</td>
+            <td><span class="tag free">refutable</span></td>
+          </tr>
+          <tr>
+            <td class="work">URGENT 2025<small>arXiv 2507.11306</small></td>
+            <td>Challenge multilingüe con ES 300 h entre 5 idiomas, test ciego P.808.</td>
+            <td>Entrenamiento multilingüe conjunto, no fine-tuning por idioma.</td>
+            <td><span class="tag taken">no compite</span></td>
+          </tr>
+          <tr>
+            <td class="work">Parra 2024<small>FieldMatters</small></td>
+            <td>Español peninsular y peruano: ¿el enhancement distorsiona rasgos sociofonéticos?</td>
+            <td>Usa SE como herramienta, no entrena ni adapta nada.</td>
+            <td><span class="tag taken">no compite</span></td>
+          </tr>
+          <tr>
+            <td class="work">Cheng et al. 2025<small>arXiv 2503.07078</small></td>
+            <td>Inyecta conocimiento lingüístico de LLMs en el modelo de SE (CMKT).</td>
+            <td>Mandarín e inglés evaluados <strong>por separado</strong>. Sin transferencia entre idiomas, sin medición de olvido. Verificado: <strong>no pisa el aporte</strong>.</td>
+            <td><span class="tag taken">no compite</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="snum">03 — Dos correcciones</span>
+    <h2>Lo que hay que desandar antes de decidir</h2>
+
+    <h3>La conclusión sobre congelar capas estaba invertida</h3>
+    <p>Xu et al. 2014 dice, textual:</p>
+    <blockquote>
+      <p>«transfer learning to update the parameters of all layers is just slightly better than that to
+        update the parameters of top 2 layers, which indicates that the language-specific information
+        mainly lies in the top layers.»</p>
+      <cite>Xu, Du, Dai &amp; Lee (2014), ISCSLP — sección 4</cite>
+    </blockquote>
+    <p>Eso se leyó como «entonces congelar no aporta nada». Es al revés, y la distinción es la que
+      define si vale la pena correr el experimento:</p>
+    <div class="box">
+      <span class="lbl">La lectura correcta</span>
+      <p>Xu comparó full fine-tuning contra top-2 <strong>solo sobre el idioma destino</strong>. Ahí
+        empatan. Nunca midió el olvido del origen — que es exactamente mi problema (V3: −0,079 en
+        inglés). Si las dos estrategias dan <strong>la misma ganancia en español</strong> tocando ~10×
+        menos parámetros, congelar debería producir <strong>bastante menos olvido en inglés</strong>.</p>
+      <p style="margin-top:.5rem">Congelar no es una forma de mejorar el español: es la forma de
+        conseguir el mismo español gastando menos inglés. Es literalmente mi eje de trade-off.</p>
+    </div>
+    <p>Munición extra del mismo paper: el full fine-tuning (<code>M-DNN-Top4</code>) <em>«easily gets
+      stuck in over-fitting»</em>, mientras que top-2 <em>«can converge fast starting from a better
+      initialization point»</em>. Y el mapeo arquitectónico es directo — Xu identifica las capas
+      sigmoides de denoising como compartidas entre idiomas y la capa lineal de salida como portadora
+      de lo específico del idioma. En el CRN: encoder convolucional = extractor compartido; LSTM +
+      decoder = reconstrucción específica.</p>
+
+    <h3>Xu sí evalúa los dos idiomas</h3>
+    <p>Su Tabla 2 dice <em>«on the Mandarin <strong>and</strong> English test set»</em>. Lo que hacen es
+      adaptación bidireccional (EN→ZH y ZH→EN, cada una evaluada sobre su propio destino), no medición
+      de olvido. El aporte sobrevive, pero es más angosto de lo que parecía y hay que enunciarlo con
+      esa precisión: un revisor va a abrir esa tabla.</p>
+  </section>
+
+  <section>
+    <span class="snum">04 — La evidencia</span>
+    <h2>El activo más fuerte: la ganancia decae con el SNR en español, no en inglés</h2>
+    <p>V1 (entrenado solo en inglés) aplicado en zero-shot al español mejora <strong>+0,170</strong>
+      PESQ-NB en promedio (media de los cinco buckets de la fig. 1). Pero el promedio esconde una
+      interacción que resulta ser el hallazgo más sólido de todo el reanálisis estadístico.</p>
+
+    <figure>
+      <div class="fig-body chartwrap">
+        <div class="legend">
+          <span><i class="swatch" style="background:var(--mine)"></i> test inglés — idioma visto en entrenamiento</span>
+          <span><i class="swatch" style="background:var(--warn)"></i> test español — idioma nunca visto</span>
+        </div>
+        <svg viewBox="0 0 720 348" role="img" aria-label="Gráfico de líneas: la mejora de PESQ-NB de V1 sobre inglés se mantiene positiva y aproximadamente plana en los cinco buckets de SNR, mientras que sobre español decae de forma sostenida a medida que sube el SNR.">
+          <g stroke="var(--line-soft)" stroke-width="1">
+            <line x1="66" y1="67.4"  x2="620" y2="67.4"/>
+            <line x1="66" y1="122.1" x2="620" y2="122.1"/>
+            <line x1="66" y1="176.8" x2="620" y2="176.8"/>
+            <line x1="66" y1="286.3" x2="620" y2="286.3"/>
+          </g>
+          <g class="mono" font-size="11" fill="var(--ink-mute)" text-anchor="end">
+            <text x="56" y="71">+0,6</text>
+            <text x="56" y="126">+0,4</text>
+            <text x="56" y="181">+0,2</text>
+            <text x="56" y="236">0,0</text>
+            <text x="56" y="290">−0,2</text>
+          </g>
+          <text x="18" y="176" font-size="11.5" fill="var(--ink-mute)" transform="rotate(-90 18 176)" text-anchor="middle">Δ PESQ-NB vs ruidoso</text>
+
+          <!-- zero line -->
+          <line x1="66" y1="231.6" x2="620" y2="231.6" stroke="var(--ink-mute)" stroke-width="1.5"/>
+          <text x="620" y="227" class="mono" font-size="10.5" fill="var(--ink-mute)" text-anchor="end">sin mejora sobre no procesar</text>
+
+          <!-- x labels -->
+          <g class="mono" font-size="11" fill="var(--ink-mute)" text-anchor="middle">
+            <text x="100" y="326">[−5, 0]</text>
+            <text x="205" y="326">[0, 5]</text>
+            <text x="310" y="326">[5, 10]</text>
+            <text x="415" y="326">[10, 15]</text>
+            <text x="520" y="326">[15, 20]</text>
+          </g>
+          <text x="310" y="344" font-size="11" fill="var(--ink-mute)" text-anchor="middle">bucket de SNR (dB) — 50 pares cada uno</text>
+
+          <!-- EN -->
+          <polyline points="100,111.4 205,79.4 310,60.5 415,88.5 520,137.7" fill="none" stroke="var(--mine)" stroke-width="2" stroke-linejoin="round"/>
+          <g>
+            <circle class="hit" cx="100" cy="111.4" r="4.5" fill="var(--mine)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="inglés  +0,439"/>
+            <circle class="hit" cx="205" cy="79.4"  r="4.5" fill="var(--mine)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="inglés  +0,556"/>
+            <circle class="hit" cx="310" cy="60.5"  r="4.5" fill="var(--mine)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="inglés  +0,625"/>
+            <circle class="hit" cx="415" cy="88.5"  r="4.5" fill="var(--mine)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="inglés  +0,523"/>
+            <circle class="hit" cx="520" cy="137.7" r="4.5" fill="var(--mine)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="inglés  +0,343"/>
+          </g>
+          <text x="536" y="134" class="mono" font-size="11.5" fill="var(--mine)" font-weight="600">+0,343</text>
+
+          <!-- ES -->
+          <polyline points="100,147.6 205,158.5 310,130.9 415,211.6 520,277.3" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linejoin="round"/>
+          <g>
+            <circle class="hit" cx="100" cy="147.6" r="4.5" fill="var(--warn)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="español  +0,307"/>
+            <circle class="hit" cx="205" cy="158.5" r="4.5" fill="var(--warn)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="español  +0,267"/>
+            <circle class="hit" cx="310" cy="130.9" r="4.5" fill="var(--warn)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="español  +0,368"/>
+            <circle class="hit" cx="415" cy="211.6" r="4.5" fill="var(--warn)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="español  +0,073"/>
+            <circle class="hit" cx="520" cy="277.3" r="4.5" fill="var(--warn)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="español  −0,167"/>
+          </g>
+          <text x="536" y="281" class="mono" font-size="11.5" fill="var(--warn)" font-weight="600">−0,167</text>
+        </svg>
+        <div id="tip"></div>
+      </div>
+      <figcaption>Mismo modelo (V1), mismos buckets, dos test sets sellados. En inglés la ganancia se
+        mantiene plana en torno a +0,5 en todo el rango. En español <b>decae con el SNR</b> de forma
+        sostenida en los cinco buckets. Chequeado el confound obvio: <b>no es efecto
+        techo</b> — el PESQ del ruidoso es casi idéntico por bucket (2,962 EN vs 3,033 ES en el
+        último).</figcaption>
+    </figure>
+
+    <p>La correlación de Spearman entre Δ PESQ-NB y el SNR confirma lo que el gráfico insinúa, con una
+      prueba que sobrevive corrección por comparaciones múltiples (Holm, m = 3 dentro de la familia):
+      en inglés la ganancia de V1 <strong>no depende del SNR</strong> (ρ = −0,065, n = 250,
+      p<sub>Holm</sub> = 0,305 — no distinguible de cero). En español sí decae, y de forma marcada
+      (ρ = −0,262, n = 250, p<sub>Holm</sub> = 8,33 × 10⁻⁵). La diferencia entre las dos pendientes,
+      apareada por <code>pair_id</code> contra el SNR, también es significativa (ρ = 0,173, n = 250,
+      p<sub>Holm</sub> = 0,0124): la brecha entre idiomas crece con el SNR de forma sostenida, no es
+      el artefacto de un solo bucket.</p>
+
+    <div class="box">
+      <span class="lbl">El mecanismo — esto es el aporte conceptual</span>
+      <p>A SNR bajo la tarea está dominada por <strong>remover ruido</strong>, que es agnóstica al
+        idioma. A SNR alto está dominada por <strong>preservar la estructura de la voz</strong>, que no
+        lo es. Por eso Zhang et al. no lo vieron: promediando sobre SNR, el efecto se diluye.</p>
+    </div>
+
+    <p>Además, esto <strong>refina</strong> a Pascual en vez de contradecirlo sin más. Ellos reportan
+      que el sistema inglés sin adaptar <em>«is always below the dotted black line, corresponding to the
+      noisy test data without processing»</em> — transferencia negativa uniforme en catalán y coreano.
+      En español obtengo transferencia positiva en promedio pero negativa en SNR alto. La historia
+      completa —positiva salvo donde importa preservar— es más rica que cualquiera de las dos
+      versiones sueltas.</p>
+
+    <div class="box warn">
+      <span class="lbl">Salvedad que un revisor va a encontrar — reforzada, no solo salvada</span>
+      <p>El entrenamiento usa <code>random.uniform(-5, 15)</code>: el bucket [15, 20] queda
+        <strong>fuera del rango de SNR de entrenamiento</strong>, y ahí la caída en español es más
+        marcada (media Δ = −0,167, IC95 [−0,337, −0,017], que no cruza cero). Pero ese mismo bucket,
+        mirado con el test de signo, no es igual de contundente: 24 de los 50 pares mejoran
+        (p = 0,888, binomial bilateral), y la mediana es −0,090 contra la media de −0,167. No es una
+        contradicción, es <strong>potencia</strong>: con 50 pares por bucket, el test de signo no
+        alcanza para establecer dirección, mientras que el intervalo de la media sí excluye cero. La
+        asimetría acá es leve (skew ≈ −0,6) y la mediana también es negativa — no es el patrón de
+        cola pesada de F3 (olvido selectivo), es simplemente un n chico. <strong>Es exactamente por
+        esto que el titular del hallazgo es la interacción de F1 sobre los 250 pares del test
+        completo, y no este bucket aislado.</strong></p>
+      <p style="margin-top:.5rem">La divergencia entre idiomas, de todas formas, ya arranca un
+        bucket antes, en [10, 15] — <strong>dentro</strong> del rango de entrenamiento: inglés sigue
+        en +0,523 (IC95 [0,425, 0,634]) mientras español cae a +0,073 (IC95 [−0,078, 0,196], que sí
+        cruza cero). Los intervalos de esos dos buckets no se superponen. La extrapolación fuera de
+        rango agrava la caída del bucket más alto, pero no origina la interacción.</p>
+      <p style="margin-top:.5rem">Chequeo de robustez adicional sobre el looping: 4 de los 50 pares
+        del bucket [15, 20] en español tienen <code>speech_offset == 0</code> en
+        <code>test_v2_metadata.json</code> — el clip de voz es más corto que los 4 s de la mezcla y
+        <code>pad_or_crop</code> lo repite (<code>repeat()</code>) en vez de recortarlo. Si esos 4
+        pares fueran los responsables de la caída, excluirlos debería atenuarla. Pasa lo contrario:
+        sin ellos, la media de los 46 pares restantes de ese bucket es <strong>−0,188</strong>, más
+        negativa que el −0,167 con los 50 incluidos. El looping no explica la caída.</p>
+      <p style="margin-top:.5rem"><small>Estadísticos de signo, mediana, skew y el recomputo del
+        looping de este bucket: <code>analysis/hueco_bucket_checks.py</code>, sobre
+        <code>results/v1_v2_es.json</code> y <code>seal_test_metadata/test_v2_metadata.json</code> —
+        no forman parte de <code>results/reanalysis_stats.json</code>.</small></p>
+    </div>
+  </section>
+
+  <section>
+    <span class="snum">05 — El aporte</span>
+    <h2>Cinco afirmaciones que nadie cubrió</h2>
+    <div class="claims">
+      <div class="claim">
+        <div class="ct">La transferencia zero-shot es positiva en promedio, y decae con el SNR de
+          forma significativa en español — no en inglés</div>
+        <div class="cw">Refina a Pascual (que la encontró uniformemente negativa) y refuta a Zhang et al.
+          (que concluye que el idioma no importa, desde habla sintética con voces inglesas). Detalle
+          estadístico (F1) en la sección 04.</div>
+      </div>
+      <div class="claim">
+        <div class="ct">Adaptación al español: difusa — mejora a la enorme mayoría de los archivos</div>
+        <div class="cw">En las tres variantes de fine-tuning, entre 84,8 % y 90,0 % de los 250 pares
+          del test español mejora en PESQ-NB (V3: 89,2 %; V3b: 84,8 %; V3e: 90,0 %; sign test,
+          p<sub>Holm</sub> ≤ 1,75 × 10⁻³⁰ en las tres), con una ganancia media de entre +0,152 (V3b) y
+          +0,230 (V3). P(mejora) y media apuntan al mismo lado — acá no hace falta pelear por el
+          estimando correcto.</div>
+      </div>
+      <div class="claim">
+        <div class="ct">Olvido del inglés: selectivo — un costo concentrado, no un corrimiento parejo</div>
+        <div class="cw">En inglés el test de signo no distingue a ninguna de las tres variantes de una
+          moneda (V3: 51,2 % mejora; V3b: 47,2 %; V3e: 52,8 %; p<sub>Holm</sub> = 1 en las tres) y la
+          mediana apenas se mueve. Pero la media sí está desplazada y su IC95 no cruza cero en ninguna
+          (V3: −0,079 [−0,131, −0,040]; V3b: −0,028 [−0,046, −0,014]; V3e: −0,031 [−0,060, −0,008])
+          porque una cola izquierda pesada la arrastra (skew entre −2,2 y −3,5). El estimando correcto
+          no es esa media: es la fracción de archivos que se rompen (PESQ-NB cae más de 0,2), y ahí el
+          orden es monótono con la agresividad del entrenamiento: V3 17,6 % · V3e 11,6 % · V3b 6,8 %.</div>
+      </div>
+      <div class="claim">
+        <div class="ct">Validación downstream en ASR con emparejamiento de idioma</div>
+        <div class="cw">La literatura SE→ASR pregunta «¿el enhancement ayuda al ASR?». Acá la pregunta
+          es más filosa: <strong>¿el enhancement emparejado al idioma ayuda más que el desemparejado?</strong>
+          Nadie lo hizo en español, y es una pregunta hoy en disputa.</div>
+      </div>
+      <div class="claim">
+        <div class="ct">Causal y verificado en el hardware objetivo</div>
+        <div class="cw">Close usa BLSTM bidireccional (imposible en tiempo real), Pascual usa SEGAN no
+          causal. El eje de despliegue no lo cubre nadie del entorno cercano.</div>
+      </div>
+    </div>
+
+    <h3>Por qué el test de signo y el intervalo de la media no se contradicen</h3>
+    <p>Los dos estimandos contestan preguntas distintas. El test de signo (y la mediana) preguntan si
+      la <em>mayoría</em> de los archivos se movió en una dirección — y en inglés no lo hicieron: la
+      moneda sale cara casi la mitad de las veces. El intervalo de la media pregunta si el
+      <em>promedio</em> se movió — y sí, porque un promedio es sensible a una cola, y estas
+      distribuciones tienen colas izquierdas marcadas (skew de hasta −3,5). Con esa asimetría, la
+      hipótesis nula del test de rango con signo de Wilcoxon (simetría de la distribución de
+      diferencias alrededor de un centro) no corresponde a ninguno de los dos estimandos que importan
+      acá. El que sí corresponde a la pregunta «¿hay olvido real?» es el tercero: qué fracción de
+      archivos cruza un umbral de deterioro perceptible.</p>
+
+    <h3>La defensa del eje de olvido: F5</h3>
+    <p>Contra dos controles del mismo idioma — <code>v4b_placebo_epoch_03</code> (el mismo V1, unas
+      pocas épocas más de entrenamiento sobre el mismo inglés, sin ningún término de español) y V2 (un
+      modelo distinto entrenado desde cero, también en inglés) — la fracción de archivos rotos
+      (umbral −0,2) es prácticamente nula: 0,0 % en ambos. Contra el control primario, la diferencia
+      con las tres variantes de fine-tuning a español es exacta y unidireccional (McNemar apareado por
+      <code>pair_id</code>: nunca hay un caso donde el control rompe y el tratamiento no): V3 rompe
+      17,6 puntos más que el control (p<sub>Holm</sub> = 1,02 × 10⁻¹²), V3b 6,8 puntos más
+      (p<sub>Holm</sub> = 4,58 × 10⁻⁵), V3e 11,6 puntos más (p<sub>Holm</sub> = 2,24 × 10⁻⁸).</p>
+    <p>Los archivos que se rompen, además, son <strong>los mismos</strong> entre variantes muy por
+      encima de lo esperable por azar (hipergeométrica sobre los conjuntos rotos): V3∩V3b comparte 12
+      archivos contra 2,99 esperados (p<sub>Holm</sub> = 3,52 × 10⁻⁶), V3∩V3e comparte 20 contra 5,10
+      esperados (p<sub>Holm</sub> = 2,77 × 10⁻¹⁰), V3b∩V3e comparte 14 contra 1,97 esperados
+      (p<sub>Holm</sub> = 1,19 × 10⁻¹¹). Es una propiedad de esos archivos, no ruido independiente de
+      cada corrida. (Estos seis p<sub>Holm</sub> y los tres de F5.d más abajo salen de la misma
+      corrección Holm, sobre una familia de 9 tests: 3 McNemar contra el control, 3 solapamientos
+      hipergeométricos, 3 McNemar estratificados. F5.c queda afuera de esta familia — es descriptiva,
+      no confirmatoria.)</p>
+    <p>El chequeo de regresión a la media —¿los archivos que se rompen son los que V1 puntuaba más
+      alto?— cambió de resultado al corregir la potencia. La comparación original enfrentaba solo los
+      10 archivos rotos en las tres variantes a la vez contra el resto (240 archivos): con esa
+      potencia, no rechazar la nula no probaba nada (diferencia +0,046, IC95 [−0,239, 0,383],
+      Mann-Whitney p = 0,829, sin corregir). Recomputado con el contraste de máxima potencia
+      disponible —la unión de los 54 archivos rotos en al menos una variante contra los 196 que nunca
+      se rompen— la asociación aparece y es significativa: PESQ-NB de V1 medio 2,866 en los rotos
+      contra 2,590 en el resto, diferencia +0,276 (IC95 [0,077, 0,480], Mann-Whitney p = 0,009, sin
+      corregir por no ser parte de la familia confirmatoria). Una segunda comparación subpotenciada
+      (los 10 contra los 196 que nunca se rompen, en vez de contra los 240) da el mismo patrón:
+      diferencia +0,104, IC95 [−0,188, 0,444], p = 0,596. Las dos comparaciones de 10 archivos quedan
+      como evidencia de que la no-detección original era falta de potencia, no ausencia de efecto —
+      vale más decirlo antes que lo encuentre el jurado.</p>
+    <p>Esto convierte a F5.c en un <strong>confusor medido</strong>, no en un control negativo
+      aprobado: el nivel basal de V1 sí predice qué archivos se rompen. Pero medido no es lo mismo que
+      suficiente. El refutador real es F5.d: dentro del cuartil de PESQ-NB basal más alto de V1 —los 63
+      archivos más expuestos al confusor, con corte en 3,1448— los controles del mismo idioma no
+      rompen ningún archivo (<code>v4b_placebo_epoch_03</code>: 0,0 %; V2: 0,0 %, ambos del perfil
+      estratificado), mientras los tratamientos rompen una fracción sustancial: V3 28,6 %
+      (p<sub>Holm</sub> = 3,05 × 10⁻⁵), V3e 19,0 % (p<sub>Holm</sub> = 9,77 × 10⁻⁴), V3b 9,5 % — este
+      último el más débil de los nueve tests de F5, pasa Holm por poco (p<sub>Holm</sub> = 0,03125,
+      contra los otros ocho que pasan por varios órdenes de magnitud más). El control que carga el
+      peso de este argumento es V2, no el placebo: el placebo es casi idéntico a V1 —el mismo
+      checkpoint continuado unas pocas épocas más, sin término de español— así que su cola vacía se
+      explica en parte por no ser un sorteo independiente de otro proceso de entrenamiento. V2 está
+      entrenado desde cero con otra loss —la mayor distancia a V1 disponible en el proyecto— y tampoco
+      rompe los archivos de PESQ alto. Eso es lo que descarta que «cualquier cambio grande de modelo
+      rompe los archivos de PESQ alto»: el confusor está presente y medido, y no alcanza para explicar
+      el efecto una vez controlado.</p>
+    <p>El perfil completo por cuartil, de todas formas, no es un gradiente limpio: en V3 la proporción
+      rota va 11,1 % → 17,7 % → 12,9 % → 28,6 % entre los cuartiles 1 y 4 — sube en el extremo pero no
+      monótonamente, y el mismo patrón no monótono aparece en V3b y en V3e. Un efecto techo puro
+      predeciría un aumento monótono con el nivel basal; esta forma tampoco encaja con eso. La
+      asociación promedio es real, pero qué la produce no se puede establecer con estos datos.</p>
+
+    <div class="box warn">
+      <span class="lbl">Este reanálisis es exploratorio, por diseño</span>
+      <p>Las hipótesis de F1 a F5 salieron de mirar estos mismos datos, no de un preregistro anterior a
+        verlos. La corrección de Holm dentro de cada familia arregla el conteo de comparaciones que se
+        hicieron sobre estos datos; no convierte un hallazgo exploratorio en confirmatorio. La
+        confirmación fuera de muestra queda pendiente sobre un test set en español nuevo, con el canal
+        de grabación controlado. Es el diseño elegido para esta etapa, no una salvedad de último
+        momento.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="snum">06 — El plan</span>
+    <h2>Orden de trabajo, con el porqué de cada posición</h2>
+    <div class="plan">
+
+      <div class="step">
+        <div class="ord">1</div>
+        <div>
+          <div class="hd"><span class="ttl">Escribir <code>tests/test_causality.py</code></span><span class="cost">horas</span></div>
+          <div class="why">
+            <p><strong>Va primero porque tapa un hueco del que depende todo el paper.</strong> El archivo
+              no existe en el repo, ni siquiera en el historial de git, pese a que <code>CLAUDE.md</code>
+              lo declara verificado desde el sprint inicial. La causalidad estricta está aseverada pero
+              no testeada, y es la base de la afirmación 4.</p>
+            <p>Input de referencia contra input modificado en <code>t ≥ T/2</code>; verificar diferencia
+              bit-exacta nula en los frames anteriores.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="ord">2</div>
+        <div>
+          <div class="hd"><span class="ttl">Evaluación downstream sobre STT</span><span class="cost">el diferencial</span></div>
+          <div class="why">
+            <p><strong>Todos los activos ya están.</strong> Verificado: las <strong>250/250</strong>
+              referencias del test sellado se recuperan haciendo join por <code>speech_file</code> contra
+              <code>test_manifest.tsv</code>. Cero transcripción manual. Y hay <strong>248 hablantes
+              únicos</strong> en 250 pares, con acentos México / Caribe / Andino-Pacífico / España.</p>
+            <p>Comparación de cuatro puntos: limpio (piso) · ruidoso · V1 (solo inglés) · V3e
+              (fine-tuneado a español). Eso testea la hipótesis central sobre una métrica de tarea —
+              y de paso esquiva el problema de proxy gaming documentado en la fase anterior, porque el
+              WER no se puede gamear igual.</p>
+            <p><strong>No usar solo una API comercial.</strong> Es una caja negra que puede traer
+              denoising propio: si no aparece diferencia, no se sabe si es mi modelo o el suyo. Y las
+              versiones cambian, así que no es reproducible. Whisper local versionado + una API
+              comercial: si coinciden, robusto; si difieren, ya es hallazgo.</p>
+            <p>WER <strong>y CER</strong> (el CER importa en español por tildes y ñ). Normalizar texto
+              antes. Wilcoxon signed-rank sobre el WER por utterance —son 250 pares apareados—, no
+              comparación de medias. Reportar por bucket: el sign-flip predice que la brecha V1 vs V3e
+              crece con el SNR.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="ord">3</div>
+        <div>
+          <div class="hd"><span class="ttl">Escuchar los archivos que se rompen en las tres variantes</span><span class="cost">media tarde</span></div>
+          <div class="why">
+            <p>Más barato que comprometer una corrida de entrenamiento, y contesta una pregunta que la
+              metadata no contesta. F5 (sección 05) ya identificó <strong>10 archivos</strong> que se
+              rompen (PESQ-NB cae más de 0,2) en V3, V3b y V3e a la vez, y <strong>54</strong> en la
+              unión de las tres — muy por encima de lo esperable por azar. Ni la categoría de ruido ni
+              el bucket de SNR los distinguen del resto: lo que tienen en común no está en la
+              metadata, y una escucha dirigida de esos archivos puede contestarlo en una tarde, antes
+              de gastar una corrida entera averiguándolo a ciegas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="ord">4</div>
+        <div>
+          <div class="hd"><span class="ttl">Fine-tuning parcial con capas congeladas</span><span class="cost">1 corrida</span></div>
+          <div class="why">
+            <p>Con el encuadre corregido de la sección 03 y el eje de olvido ya cuantificado (F3/F5,
+              sección 05), esto deja de ser una hipótesis difusa: tiene un endpoint medible. Congelar
+              el encoder convolucional y adaptar solo LSTM + decoder debería <strong>bajar la fracción
+              de archivos rotos en inglés</strong> (umbral −0,2; V3e está en 11,6 %, V3 en 17,6 %)
+              <strong>sin perder</strong> la ganancia en español (V3e: 90,0 % de mejora, media +0,221).</p>
+            <p>Evaluar sobre los dos test sets sellados y comparar directamente contra V3e en esos dos
+              ejes — no con el score compuesto anterior, que los mezclaba.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="ord">5</div>
+        <div>
+          <div class="hd"><span class="ttl">Latencia real en streaming</span><span class="cost">bajo</span></div>
+          <div class="why">
+            <p><code>benchmarks/measure_rtf.py</code> usa <code>torch.randn</code>: mide throughput sobre
+              ruido blanco sintético en un clip entero. Para el paper falta correrlo sobre audio real
+              del test sellado, medir frame a frame en vez de batch de 4 s, y separar dos números que
+              los revisores piden por separado:</p>
+            <p><strong>Latencia algorítmica</strong> (ventana + lookahead = 20 ms por construcción) vs
+              <strong>latencia de procesamiento por frame</strong>. El RTF dice que le sigue el ritmo;
+              la latencia dice si es usable en una conversación.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="ord">6</div>
+        <div>
+          <div class="hd"><span class="ttl">Alucinación del STT sobre ruido puro</span><span class="cost">bajo</span></div>
+          <div class="why">
+            <p>De las tres lecturas posibles de «falso positivo de activación» —VAD, wake-word, o el STT
+              inventando texto sobre audio sin habla— la tercera es la más medible y la más publicable.
+              Whisper es notorio por eso.</p>
+            <p>Armar segmentos de <strong>solo ruido</strong> desde las mismas fuentes MUSAN/ESC-50 del
+              test sellado, pasarlos crudos y filtrados, contar tokens alucinados. La salida correcta es
+              cadena vacía, así que la métrica es limpia. Conecta directo con el caso de uso de VoxHub.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="ord">7</div>
+        <div>
+          <div class="hd"><span class="ttl">Rioplatense</span><span class="cost">si sobra tiempo</span></div>
+          <div class="why">
+            <p>El ángulo más único que hay —nadie hizo enhancement para rioplatense— pero también el más
+              riesgoso: 3 % de Common Voice ES ≈ 9-10 k clips ≈ 13 h, y ya está documentado el riesgo de
+              dataset chico que causó el output collapse en V0.</p>
+            <p>Con los números de Pascual (codo a los 10 min) y Xu (72 s ya suficiente), 13 h dejan de
+              parecer poco. Pero eso es extrapolar desde otras arquitecturas, así que va último.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <span class="snum">07 — Descartado</span>
+    <h2>Lo que se decidió no hacer, para no volver a discutirlo</h2>
+
+    <h3>Curva de eficiencia de datos en español</h3>
+    <p>Como experimento aislado es replicar a Pascual, y una replicación no es un diferencial. Se baja.</p>
+    <p><strong>Pero hace falta una respuesta, no el experimento.</strong> Un revisor va a comparar las
+      55,6 h usadas contra el codo de 10 min de Pascual y los 72 s de Xu — dos o tres órdenes de
+      magnitud de diferencia. La salida cuesta cero: documentarlo como decisión deliberada de
+      comparabilidad del ablation, mismo volumen que V1 para que la única variable entre V1 y V3 sea el
+      idioma. Es una razón metodológica válida y se escribe en un párrafo.</p>
+    <p>Solo se reconsidera si se va por rioplatense, donde «¿alcanzan 13 h?» deja de ser académico.</p>
+
+    <h3>Data augmentation al estilo Braun &amp; Tashev</h3>
+    <p>El SNR continuo ya está (<code>random.uniform(-5,15)</code>). Faltan el filtrado espectral
+      aleatorio, la augmentation de nivel —que de hecho se elimina activamente con la normalización RMS
+      + peak 0,9— y la mezcla on-the-fly, que multiplicaría el dataset efectivo sin datos nuevos: 50 k
+      realizaciones fijas × 30 épocas pasarían a ser 1,5 M distintas. Es real pero es refactor de
+      pipeline más re-entrenar todo, y no produce una afirmación nueva. Queda fuera del alcance para
+      diciembre.</p>
+  </section>
+
+  <section>
+    <span class="snum">08 — Anticipar</span>
+    <h2>Lo que van a preguntar</h2>
+    <ul>
+      <li><strong>«¿Por qué 55 horas si la literatura dice que satura en 10 minutos?»</strong> →
+        comparabilidad del ablation con V1. Párrafo, sección 07.</li>
+      <li><strong>«El bucket [15,20] está fuera de tu rango de entrenamiento.»</strong> → cierto, pero
+        la divergencia entre idiomas ya arranca un bucket antes, en [10,15], que sí está dentro del
+        rango de entrenamiento — y sobrevive a excluir los pares con clip repetido por looping. Es la
+        interacción SNR×idioma, no el SNR solo ni un artefacto de mezcla. Detalle en la sección 04.</li>
+      <li><strong>«Xu ya evalúa los dos idiomas.»</strong> → evalúa adaptación bidireccional, no olvido.
+        Enunciarlo con precisión desde el principio.</li>
+      <li><strong>«Zhang et al. dice que el idioma no importa.»</strong> → su habla multilingüe es
+        sintética con voces inglesas, y ellos mismos concluyen que la diversidad de hablante sí importa.
+        Le sacaron a la variable «idioma» justo la dimensión que declaran importante.</li>
+      <li><strong>«¿Es reproducible?»</strong> → V1, V2 y V3 se entrenaron sin
+        <code>cudnn.deterministic</code>. Está documentado como limitación en <code>decisions.md</code>;
+        no se corrige retroactivamente.</li>
+      <li><strong>«¿Cómo suena?»</strong> → falta la escucha dirigida. Es barata y conviene tenerla
+        hecha antes de mandar.</li>
+      <li><strong>«Tu cola puede ser ruido de medición, no olvido.»</strong> → es la objeción más
+        filosa contra el aporte 2, y la respuesta tiene dos capas: el confusor está medido y es real
+        —los archivos rotos parten de un PESQ-NB de V1 más alto que el resto (F5.c, +0,276, IC95 no
+        cruza cero)— pero no alcanza para explicar el efecto. Dentro del cuartil de PESQ basal más
+        alto, los controles del mismo idioma (el placebo y V2) no rompen ningún archivo, mientras los
+        tratamientos rompen una fracción sustancial (F5.d). Sección 05.</li>
+      <li><strong>«¿Por qué ese umbral de rotura y no otro?»</strong> → porque la conclusión no
+        depende de él: el barrido de sensibilidad corre cuatro umbrales (−0,1 a −0,5) y el orden entre
+        variantes (V3 &gt; V3e &gt; V3b) se mantiene en los cuatro.</li>
+      <li><strong>«Esto es post-hoc.»</strong> → sí, y está declarado como tal en la sección 05: las
+        hipótesis salieron de estos mismos datos. La confirmación fuera de muestra queda pendiente
+        sobre un test set en español con el canal de grabación controlado.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Verificado contra fuente primaria: Xu, Du, Dai &amp; Lee 2014 (PDF original, staff.ustc.edu.cn) ·
+    Pascual, Park, Serrà, Bonafonte &amp; Ahn 2017 (arXiv 1712.06340) ·
+    Close, Hain &amp; Goetze 2023 (WASPAA) · Zhang, Zhang, Li &amp; Qian 2024 (arXiv 2412.14890) ·
+    Sach et&nbsp;al. 2025 (URGENT, arXiv 2507.11306) · Parra 2024 (FieldMatters) ·
+    Cheng et&nbsp;al. 2025 (arXiv 2503.07078) · Braun &amp; Tashev 2020 (arXiv 2008.06412).<br>
+    Números propios recomputados desde <code>results/v1_v1_en.json</code> y
+    <code>results/v1_v2_es.json</code>. Join de transcripciones verificado 250/250 contra
+    <code>data/interim/cv26_es/test_manifest.tsv</code>.
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var tip = document.getElementById('tip');
+    if (!tip) return;
+    var wrap = tip.parentNode;
+    function show(el) {
+      var r = el.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+      tip.textContent = el.getAttribute('data-t');
+      tip.style.left = (r.left - w.left + r.width / 2) + 'px';
+      tip.style.top = (r.top - w.top) + 'px';
+      tip.classList.add('on');
+    }
+    function hide() { tip.classList.remove('on'); }
+    Array.prototype.forEach.call(document.querySelectorAll('.hit'), function (el) {
+      el.addEventListener('mouseenter', function () { show(el); });
+      el.addEventListener('mouseleave', hide);
+      el.addEventListener('focus', function () { show(el); });
+      el.addEventListener('blur', hide);
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -45,3 +45,11 @@ doubts.md
 !data/test_v2_metadata.json
 
 
+# Bibliografía de referencia (material publicado, no artefacto del proyecto)
+Papers/
+Papers V4/
+PapersAporteFinal/
+*.zip
+
+# Logs de entrenamiento (CLAUDE.md ya los daba por ignorados)
+logs/

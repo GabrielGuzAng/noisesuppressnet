@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>El Proxy Engañado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+
+<style>
+  :root {
+    --ground:      #F4F6F8;
+    --surface:     #FFFFFF;
+    --surface-2:   #EDF1F4;
+    --ink:         #121C24;
+    --ink-mid:     #3C4B58;
+    --ink-mute:    #59697A;
+    --line:        #DCE3E9;
+    --line-soft:   #E8EDF1;
+    --proxy:       #B45309;
+    --proxy-soft:  #FBEEDF;
+    --real:        #0D9488;
+    --real-soft:   #DFF1EE;
+    --shadow:      0 1px 2px rgba(18, 28, 36, .05), 0 8px 24px -16px rgba(18, 28, 36, .28);
+
+    --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --sans:  "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono:  "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --measure: 68ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:     #0E151A;
+      --surface:    #161F26;
+      --surface-2:  #1D2831;
+      --ink:        #DFE7EE;
+      --ink-mid:    #B3C1CD;
+      --ink-mute:   #8B9BA8;
+      --line:       #2A3844;
+      --line-soft:  #222E38;
+      --proxy:      #C97B24;
+      --proxy-soft: #2E2415;
+      --real:       #14A99A;
+      --real-soft:  #102A2A;
+      --shadow:     0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:     #0E151A;
+    --surface:    #161F26;
+    --surface-2:  #1D2831;
+    --ink:        #DFE7EE;
+    --ink-mid:    #B3C1CD;
+    --ink-mute:   #8B9BA8;
+    --line:       #2A3844;
+    --line-soft:  #222E38;
+    --proxy:      #C97B24;
+    --proxy-soft: #2E2415;
+    --real:       #14A99A;
+    --real-soft:  #102A2A;
+    --shadow:     0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 6rem;
+  }
+
+  .col { max-width: var(--measure); }
+
+  /* ---------- masthead ---------- */
+
+  .masthead { margin-bottom: clamp(2.5rem, 6vw, 4rem); }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.1rem;
+    align-items: baseline;
+    padding-bottom: .9rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1.8rem;
+  }
+  .kicker .sep { color: var(--line); }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(2.4rem, 6.5vw, 3.9rem);
+    line-height: 1.06;
+    letter-spacing: -.02em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: var(--serif);
+    font-size: clamp(1.08rem, 2.3vw, 1.28rem);
+    line-height: 1.55;
+    color: var(--ink-mid);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { margin-top: clamp(3rem, 7vw, 4.5rem); }
+
+  .snum {
+    font-family: var(--mono);
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    color: var(--proxy);
+    display: block;
+    margin-bottom: .55rem;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3.4vw, 1.95rem);
+    line-height: 1.2;
+    letter-spacing: -.012em;
+    margin: 0 0 1.1rem;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.02rem;
+    letter-spacing: -.005em;
+    margin: 2rem 0 .6rem;
+  }
+
+  p { margin: 0 0 1.1rem; max-width: var(--measure); }
+
+  a { color: var(--real); text-underline-offset: .18em; }
+
+  strong { font-weight: 600; }
+
+  em.term {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 2px solid var(--proxy-soft);
+    padding-bottom: 1px;
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: .875em;
+    background: var(--surface-2);
+    padding: .12em .38em;
+    border-radius: 3px;
+  }
+
+  ul { max-width: var(--measure); padding-left: 1.15rem; margin: 0 0 1.1rem; }
+  li { margin-bottom: .5rem; }
+  li::marker { color: var(--ink-mute); }
+
+  /* ---------- callout ---------- */
+
+  .note {
+    max-width: var(--measure);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--proxy);
+    border-radius: 4px;
+    padding: 1.05rem 1.25rem;
+    margin: 1.6rem 0;
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .note-label {
+    font-family: var(--mono);
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--proxy);
+    display: block;
+    margin-bottom: .4rem;
+  }
+  .note.real { border-left-color: var(--real); }
+  .note.real .note-label { color: var(--real); }
+
+  blockquote {
+    max-width: var(--measure);
+    margin: 1.5rem 0;
+    padding-left: 1.2rem;
+    border-left: 2px solid var(--line);
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-mid);
+    font-size: 1.02rem;
+  }
+  blockquote p { margin-bottom: .5rem; }
+  blockquote cite {
+    display: block;
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: .74rem;
+    letter-spacing: .04em;
+    color: var(--ink-mute);
+  }
+
+  /* ---------- figures ---------- */
+
+  figure {
+    margin: 2rem 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  figure .fig-body { padding: 1.4rem clamp(.9rem, 3vw, 1.6rem); overflow-x: auto; }
+  figcaption {
+    font-size: .84rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+    padding: .85rem clamp(.9rem, 3vw, 1.6rem);
+    border-top: 1px solid var(--line-soft);
+    background: var(--surface-2);
+  }
+  figcaption b { color: var(--ink-mid); font-weight: 600; }
+
+  svg { display: block; max-width: 100%; height: auto; }
+  svg text { font-family: var(--sans); }
+  svg .mono { font-family: var(--mono); }
+
+  /* ---------- legend ---------- */
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+    font-size: .82rem;
+    color: var(--ink-mid);
+    margin-bottom: 1rem;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: .45rem; }
+  .swatch { width: 13px; height: 3px; border-radius: 2px; flex: none; }
+  .swatch.dash {
+    height: 0; border-top: 2px dashed var(--ink-mute); width: 15px; border-radius: 0;
+  }
+
+  /* ---------- tables ---------- */
+
+  .tablewrap { overflow-x: auto; margin: 1.6rem 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 480px;
+    font-size: .89rem;
+    background: var(--surface);
+  }
+  caption {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-bottom: .6rem;
+  }
+  th, td {
+    padding: .58rem .8rem;
+    text-align: right;
+    border-bottom: 1px solid var(--line-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  th:first-child, td:first-child { text-align: left; font-variant-numeric: normal; }
+  thead th {
+    font-family: var(--mono);
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tr.hi td { background: var(--surface-2); font-weight: 600; }
+  td.pos { color: var(--real); }
+  td.neg { color: var(--proxy); }
+  .rowlabel { font-family: var(--mono); font-size: .82rem; }
+
+  /* ---------- 2x2 ---------- */
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 1.6rem 0;
+    font-size: .88rem;
+  }
+  .grid2 > * { background: var(--surface); padding: .85rem 1rem; }
+  .grid2 .hdr {
+    font-family: var(--mono);
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    background: var(--surface-2);
+  }
+  .grid2 .cell .v {
+    font-family: var(--mono);
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .grid2 .cell .n { font-size: .76rem; color: var(--ink-mute); font-family: var(--mono); }
+  .grid2 .cell.empty { color: var(--ink-mute); font-size: .8rem; }
+  .grid2 .cell.best .v { color: var(--real); }
+  .grid2 .cell .v.bad { color: var(--proxy); }
+
+  /* ---------- key figure ---------- */
+
+  .keyfig {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem 2.6rem;
+    align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1.4rem 1.6rem;
+    margin: 1.8rem 0;
+    max-width: var(--measure);
+  }
+  .keyfig .big {
+    font-family: var(--mono);
+    font-size: clamp(2rem, 6vw, 2.7rem);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--proxy);
+    font-variant-numeric: tabular-nums;
+  }
+  .keyfig .lbl {
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: .35rem;
+  }
+  .keyfig .txt { flex: 1 1 20ch; font-size: .92rem; line-height: 1.55; color: var(--ink-mid); }
+  .keyfig .txt p { margin: 0; }
+
+  /* ---------- tooltip ---------- */
+
+  .chartwrap { position: relative; }
+  #tip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--ground);
+    font-family: var(--mono);
+    font-size: .74rem;
+    line-height: 1.45;
+    padding: .4rem .55rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    transform: translate(-50%, -125%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    z-index: 5;
+  }
+  #tip.on { opacity: 1; }
+
+  .hit { cursor: pointer; }
+  .hit:focus-visible { outline: 2px solid var(--real); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  footer {
+    margin-top: clamp(3.5rem, 8vw, 5rem);
+    padding-top: 1.3rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: .74rem;
+    line-height: 1.7;
+    color: var(--ink-mute);
+    max-width: var(--measure);
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="kicker">
+      <span>NoiseSuppressNet</span><span class="sep">/</span>
+      <span>V4 · V4b</span><span class="sep">/</span>
+      <span>Revisión conceptual</span><span class="sep">/</span>
+      <span>1 sep 2026</span>
+    </div>
+    <h1>El proxy engañado</h1>
+    <p class="standfirst">Quisimos entrenar contra la calidad percibida. Usamos una red que estima PESQ
+      porque PESQ real no da gradiente. El modelo aprendió a subir el estimador sin mejorar el audio —
+      y después montamos el experimento con controles que separa cuánto de eso fue culpa del método
+      y cuánto del proxy en sí.</p>
+  </header>
+
+  <section>
+    <span class="snum">01 — El problema</span>
+    <h2>MSE optimiza fidelidad numérica, no percepción</h2>
+    <p>V1 y V2 se entrenaron minimizando error cuadrático medio sobre la magnitud del espectrograma.
+      Es una elección sólida y reproducible, pero mide una cosa distinta de la que nos importa: el MSE
+      trata todos los errores por igual, mientras que el oído no. Un error de la misma magnitud
+      numérica puede ser inaudible en una zona enmascarada del espectro y molestísimo en otra.</p>
+    <p>La métrica que sí modela eso es <strong>PESQ</strong> (ITU-T P.862): alinea la señal degradada
+      contra la limpia, las pasa por un modelo del sistema auditivo y agrega las diferencias de forma
+      ponderada perceptualmente. Es el estándar con el que reportamos resultados en todo el proyecto.</p>
+    <p>La idea de la Fase 4 era la obvia: si PESQ es lo que nos importa, ¿por qué no entrenar
+      directamente contra PESQ?</p>
+  </section>
+
+  <section>
+    <span class="snum">02 — El obstáculo</span>
+    <h2>PESQ no se puede derivar</h2>
+    <p>Entrenar una red por descenso de gradiente exige que la función de pérdida sea
+      <em class="term">diferenciable</em>: hay que poder calcular cuánto cambia la pérdida ante un
+      cambio infinitesimal de cada peso, y propagar eso hacia atrás. PESQ no cumple. Su algoritmo
+      incluye pasos discretos — alineación temporal por búsqueda, decisiones con umbrales — que no
+      tienen derivada útil. Se puede <em>calcular</em> PESQ sobre una salida, pero no se puede
+      <em>retropropagar</em> a través de él.</p>
+    <p>De ahí que en el proyecto PESQ viva en <code>evaluation/metrics.py</code> y no en
+      <code>training/losses.py</code>. Sirve para evaluar, no para entrenar.</p>
+  </section>
+
+  <section>
+    <span class="snum">03 — La solución candidata</span>
+    <h2>Un proxy: una red que imita a PESQ</h2>
+    <p>Si el problema es que PESQ no da gradiente, la salida conocida es reemplazarlo por algo que sí:
+      entrenar una red neuronal a <em>predecir</em> el puntaje PESQ. Como es una red, es diferenciable
+      por construcción. Eso es un <em class="term">proxy diferenciable</em>.</p>
+    <p>Usamos <strong>Squim</strong> (<code>SQUIM_OBJECTIVE</code> de torchaudio, Kumar et&nbsp;al. 2023,
+      Meta). Estima tres métricas a la vez — STOI, WB-PESQ y SI-SDR — sin necesitar la señal limpia de
+      referencia. Es un proxy bueno: sobre su conjunto de prueba alcanza correlación de Pearson
+      <strong>0,958</strong> con el WB-PESQ real y error absoluto medio de <strong>0,142</strong>
+      puntos. Para comparar: Quality-Net, el precedente de 2018, llega a 0,845.</p>
+    <p>La pérdida quedó combinada, no puro Squim:</p>
+    <div class="note">
+      <span class="note-label">La loss de V4</span>
+      <p><code>loss = α · MSE + (1−α) · (−pesq_hat)</code></p>
+      <p style="margin-top:.5rem">α pesa el término MSE. Con α&nbsp;=&nbsp;0,9 la pérdida es 90&nbsp;% reconstrucción
+        y 10&nbsp;% perceptual. El signo menos convierte «maximizar el PESQ estimado» en un problema de
+        minimización. Es la misma convención que usa Xu et&nbsp;al. 2022, el paper más cercano al nuestro.</p>
+    </div>
+    <p>El MSE queda como ancla: sin él, nada obliga al modelo a parecerse a la señal limpia, solo a
+      complacer al proxy. Barrimos α ∈ {0,95 · 0,9 · 0,8 · 0,7}, siempre con MSE dominante.</p>
+  </section>
+
+  <section>
+    <span class="snum">04 — El concepto central</span>
+    <h2>Medir no es lo mismo que optimizar</h2>
+    <p>Acá está el nudo de toda la fase, y es lo que hay que poder explicar. Un instrumento puede ser
+      excelente <em>midiendo</em> y volverse inútil apenas se lo usa como <em>objetivo</em>.</p>
+    <p>Cuando Squim mide, recibe audio que alguien más produjo y devuelve un número con un error típico
+      de ±0,14. Cuando Squim es la pérdida, el circuito se cierra: el modelo ve el número, ajusta sus
+      pesos y vuelve a preguntar, miles de veces por época. Ya no es un evaluador pasivo, es un blanco
+      que un algoritmo de búsqueda está sondeando sistemáticamente.</p>
+
+    <figure>
+      <div class="fig-body">
+        <svg viewBox="0 0 760 250" role="img" aria-label="Diagrama: medir es un flujo de una sola dirección; optimizar cierra el lazo y busca activamente el punto ciego del proxy.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-mute)"/>
+            </marker>
+            <marker id="arp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--proxy)"/>
+            </marker>
+          </defs>
+
+          <!-- divider -->
+          <line x1="380" y1="18" x2="380" y2="232" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>
+
+          <!-- ================= PANEL A : MEDIR ================= -->
+          <text x="28" y="34" class="mono" font-size="11" font-weight="600" letter-spacing="1.6" fill="var(--real)">MEDIR</text>
+          <text x="28" y="52" font-size="12.5" fill="var(--ink-mute)">flujo en una dirección</text>
+
+          <rect x="28" y="92" width="86" height="44" rx="4" fill="var(--surface-2)" stroke="var(--line)"/>
+          <text x="71" y="119" font-size="13" text-anchor="middle" fill="var(--ink)">audio</text>
+
+          <line x1="122" y1="114" x2="160" y2="114" stroke="var(--ink-mute)" stroke-width="1.5" marker-end="url(#ar)"/>
+
+          <rect x="168" y="92" width="86" height="44" rx="4" fill="var(--real-soft)" stroke="var(--real)"/>
+          <text x="211" y="119" font-size="13" text-anchor="middle" fill="var(--real)" font-weight="600">Squim</text>
+
+          <line x1="262" y1="114" x2="300" y2="114" stroke="var(--ink-mute)" stroke-width="1.5" marker-end="url(#ar)"/>
+          <text x="326" y="119" class="mono" font-size="15" text-anchor="middle" fill="var(--ink)" font-weight="600">3,9</text>
+
+          <text x="28" y="176" font-size="12.5" fill="var(--ink-mid)">El audio ya existe. Squim</text>
+          <text x="28" y="194" font-size="12.5" fill="var(--ink-mid)">solo lo describe.</text>
+          <text x="28" y="220" class="mono" font-size="11.5" fill="var(--real)">error típico ±0,14 · confiable</text>
+
+          <!-- ================= PANEL B : OPTIMIZAR ================= -->
+          <text x="412" y="34" class="mono" font-size="11" font-weight="600" letter-spacing="1.6" fill="var(--proxy)">OPTIMIZAR</text>
+          <text x="412" y="52" font-size="12.5" fill="var(--ink-mute)">lazo cerrado</text>
+
+          <rect x="412" y="92" width="86" height="44" rx="4" fill="var(--surface-2)" stroke="var(--line)"/>
+          <text x="455" y="119" font-size="13" text-anchor="middle" fill="var(--ink)">CRN</text>
+
+          <line x1="506" y1="114" x2="544" y2="114" stroke="var(--ink-mute)" stroke-width="1.5" marker-end="url(#ar)"/>
+
+          <rect x="552" y="92" width="86" height="44" rx="4" fill="var(--proxy-soft)" stroke="var(--proxy)"/>
+          <text x="595" y="119" font-size="13" text-anchor="middle" fill="var(--proxy)" font-weight="600">Squim</text>
+
+          <line x1="646" y1="114" x2="684" y2="114" stroke="var(--ink-mute)" stroke-width="1.5" marker-end="url(#ar)"/>
+          <text x="710" y="119" class="mono" font-size="15" text-anchor="middle" fill="var(--proxy)" font-weight="600">4,2</text>
+
+          <!-- feedback loop -->
+          <path d="M595 140 L595 162 Q595 170 587 170 L463 170 Q455 170 455 162 L455 142"
+                fill="none" stroke="var(--proxy)" stroke-width="1.8" marker-end="url(#arp)"/>
+          <text x="525" y="188" class="mono" font-size="11.5" text-anchor="middle" fill="var(--proxy)">gradiente</text>
+
+          <text x="412" y="212" font-size="12.5" fill="var(--ink-mid)">El modelo <tspan font-style="italic">elige</tspan> el audio para</text>
+          <text x="412" y="230" font-size="12.5" fill="var(--ink-mid)">maximizar el número. Busca dónde falla.</text>
+        </svg>
+      </div>
+      <figcaption>El mismo instrumento, dos usos. A la izquierda Squim describe un audio que ya existe.
+        A la derecha el audio es la variable libre y Squim es el objetivo: el gradiente explora el espacio
+        de salidas posibles y <b>encuentra sistemáticamente las regiones donde el proxy se equivoca</b>.
+        La precisión promedio del proxy sobre audio natural no protege contra eso.</figcaption>
+    </figure>
+
+    <p>El nombre de este fenómeno es la <em class="term">ley de Goodhart</em>: «cuando una medida se
+      convierte en objetivo, deja de ser una buena medida». En aprendizaje por refuerzo se lo llama
+      <em>reward hacking</em>; en mejora de voz, de Oliveira et&nbsp;al. lo bautizaron —con humor— el
+      modelo <em>PESQetarian</em>. La formulación más precisa que encontramos es de ellos, y no habla de
+      redes en absoluto:</p>
+
+    <blockquote>
+      <p>«Cualquier error ante el cual PESQ sea ciego pasará inadvertido para el procedimiento de
+        optimización, y cualquier artefacto que de algún modo mejore el puntaje PESQ será amplificado.»</p>
+      <cite>de Oliveira, Welker, Richter &amp; Gerkmann (2024), Interspeech — sección 4.3</cite>
+    </blockquote>
+
+    <p>Ese párrafo describe un experimento donde ni siquiera hay red neuronal: optimizan las muestras
+      del audio directamente contra una implementación diferenciable de PESQ, y encuentran el mismo tipo
+      de explotación. Es la evidencia de que el problema no está en la arquitectura del modelo ni en la
+      calidad del proxy, sino en la estructura misma del lazo cerrado.</p>
+  </section>
+
+  <section>
+    <span class="snum">05 — Lo que pasó</span>
+    <h2>El estimador subió, el audio empeoró</h2>
+    <p>V4 corrió cinco entrenamientos (un control con MSE puro y cuatro valores de α) sobre el dataset
+      completo en inglés, 3 épocas cada uno. El patrón apareció desde la primera época en las cuatro
+      corridas con Squim y fue monótono: cuanto más peso perceptual, peor el resultado real.</p>
+
+    <figure>
+      <div class="fig-body chartwrap">
+        <div class="legend">
+          <span><i class="swatch" style="background:var(--proxy)"></i> PESQ que Squim <b style="font-weight:600">cree</b> haber producido</span>
+          <span><i class="swatch" style="background:var(--real)"></i> PESQ-WB real medido sobre el test sellado</span>
+          <span><i class="swatch dash"></i> referencias</span>
+        </div>
+        <svg viewBox="0 0 720 372" role="img" aria-label="Gráfico de líneas: a lo largo de tres épocas el PESQ estimado por Squim sube de 3,61 a 3,94 mientras el PESQ-WB real medido se mantiene plano en torno a 1,57, por debajo de la señal ruidosa sin procesar.">
+          <!-- gridlines -->
+          <g stroke="var(--line-soft)" stroke-width="1">
+            <line x1="56" y1="336" x2="600" y2="336"/>
+            <line x1="56" y1="255" x2="600" y2="255"/>
+            <line x1="56" y1="174" x2="600" y2="174"/>
+            <line x1="56" y1="93"  x2="600" y2="93"/>
+          </g>
+          <g class="mono" font-size="11" fill="var(--ink-mute)" text-anchor="end">
+            <text x="46" y="340">1,0</text>
+            <text x="46" y="259">2,0</text>
+            <text x="46" y="178">3,0</text>
+            <text x="46" y="97">4,0</text>
+          </g>
+          <text x="16" y="182" font-size="11.5" fill="var(--ink-mute)" transform="rotate(-90 16 182)" text-anchor="middle">WB-PESQ</text>
+
+          <!-- ceiling -->
+          <line x1="56" y1="41" x2="600" y2="41" stroke="var(--ink-mute)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".65"/>
+          <text x="600" y="36" class="mono" font-size="11" fill="var(--ink-mute)" text-anchor="end">techo estructural de Squim · 4,64</text>
+
+          <!-- noisy baseline -->
+          <line x1="56" y1="289" x2="600" y2="289" stroke="var(--ink-mute)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".65"/>
+          <text x="600" y="305" class="mono" font-size="11" fill="var(--ink-mute)" text-anchor="end">señal ruidosa sin procesar · 1,583</text>
+
+          <!-- gap band -->
+          <path d="M130 124.4 L320 104.8 L510 98.0 L510 289.2 L320 291.3 L130 289.6 Z"
+                fill="var(--proxy)" opacity=".07"/>
+          <text x="320" y="205" font-size="12.5" text-anchor="middle" fill="var(--ink-mute)">la brecha</text>
+          <text x="320" y="222" class="mono" font-size="12.5" text-anchor="middle" fill="var(--proxy)" font-weight="600">+2,36</text>
+
+          <!-- axis -->
+          <line x1="56" y1="336" x2="600" y2="336" stroke="var(--line)" stroke-width="1.5"/>
+          <g class="mono" font-size="11.5" fill="var(--ink-mute)" text-anchor="middle">
+            <text x="130" y="358">época 1</text>
+            <text x="320" y="358">época 2</text>
+            <text x="510" y="358">época 3</text>
+          </g>
+
+          <!-- proxy series -->
+          <polyline points="130,124.4 320,104.8 510,98.0" fill="none" stroke="var(--proxy)" stroke-width="2" stroke-linejoin="round"/>
+          <g>
+            <circle class="hit" cx="130" cy="124.4" r="4.5" fill="var(--proxy)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="Squim estima 3,611"/>
+            <circle class="hit" cx="320" cy="104.8" r="4.5" fill="var(--proxy)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="Squim estima 3,852"/>
+            <circle class="hit" cx="510" cy="98.0"  r="4.5" fill="var(--proxy)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="Squim estima 3,936"/>
+          </g>
+          <text x="524" y="94" class="mono" font-size="12" fill="var(--proxy)" font-weight="600">3,936</text>
+
+          <!-- real series -->
+          <polyline points="130,289.6 320,291.3 510,289.2" fill="none" stroke="var(--real)" stroke-width="2" stroke-linejoin="round"/>
+          <g>
+            <circle class="hit" cx="130" cy="289.6" r="4.5" fill="var(--real)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="PESQ-WB real 1,572"/>
+            <circle class="hit" cx="320" cy="291.3" r="4.5" fill="var(--real)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="PESQ-WB real 1,552"/>
+            <circle class="hit" cx="510" cy="289.2" r="4.5" fill="var(--real)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-t="PESQ-WB real 1,577"/>
+          </g>
+          <text x="524" y="285" class="mono" font-size="12" fill="var(--real)" font-weight="600">1,577</text>
+        </svg>
+        <div id="tip"></div>
+      </div>
+      <figcaption>Corrida <b>v4b_main</b> (α&nbsp;=&nbsp;0,9). Ambas series son la misma magnitud —WB-PESQ,
+        un solo eje— pero una la afirma el proxy y la otra se midió con el algoritmo real sobre el test
+        sellado. La brecha final es de <b>+2,36 puntos</b>, unas <b>16 veces</b> el error nominal de Squim
+        (0,142). No es descalibración del proxy: es explotación.</figcaption>
+    </figure>
+
+    <p>Dos detalles que refuerzan la lectura. Primero, el techo: la cabeza PESQ de Squim está acotada
+      por construcción en [1 · 4,64] mediante una sigmoide, y la corrida más agresiva llegó a 4,217 —a
+      0,42 puntos del máximo alcanzable. Segundo, la comparación se hace contra PESQ-<strong>WB</strong>,
+      no NB, porque es la banda que Squim estima; usar NB inflaría la brecha artificialmente.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>V4 · barrido de α — test_v1_en, n = 250, Δ contra la señal ruidosa</caption>
+        <thead>
+          <tr><th>Corrida</th><th>Δ PESQ-NB</th><th>Δ STOI</th><th>Δ SI-SDR</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi"><td class="rowlabel">control (MSE puro)</td><td class="pos">+0,081</td><td class="pos">+0,027</td><td class="pos">+4,15 dB</td></tr>
+          <tr><td class="rowlabel">α = 0,95</td><td class="neg">−0,343</td><td class="neg">−0,069</td><td class="pos">+2,29 dB</td></tr>
+          <tr><td class="rowlabel">α = 0,90</td><td class="neg">−0,806</td><td class="neg">−0,169</td><td class="neg">−0,63 dB</td></tr>
+          <tr><td class="rowlabel">α = 0,80</td><td class="neg">−0,943</td><td class="neg">−0,252</td><td class="neg">−4,00 dB</td></tr>
+          <tr><td class="rowlabel">α = 0,70</td><td class="neg">−0,846</td><td class="neg">−0,251</td><td class="neg">−4,56 dB</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>El control con MSE puro, al mismo presupuesto de épocas, es el único que mejora en las cuatro
+      métricas reales. Todo lo que agrega Squim, resta.</p>
+  </section>
+
+  <section>
+    <span class="snum">06 — La duda honesta</span>
+    <h2>¿Era el proxy o era cómo lo entrenamos?</h2>
+    <p>Antes de cerrar la línea con un resultado negativo había que descartar una explicación
+      alternativa: quizá el problema no era Squim sino nuestro protocolo. V4 corrió el régimen más
+      inestable posible — pesos aleatorios desde cero, learning rate alto, un update por minibatch.
+      Un modelo que arranca produciendo basura le da a Squim exactamente el tipo de entrada donde su
+      estimación no vale nada.</p>
+    <p>Xu et&nbsp;al. 2022 —el paper cuya pérdida es estructuralmente idéntica a la nuestra— usa cuatro
+      mecanismos estabilizadores. Y describe nuestro mismo síntoma citando trabajo previo de Fu et&nbsp;al.:</p>
+
+    <blockquote>
+      <p>«el PESQNet fijo resultó ser <em>engañado</em> por el DNS actualizado (los puntajes PESQ
+        estimados suben mientras los reales bajan) tras entrenar unos pocos minibatches […] causado
+        principalmente por que el Quality-Net fijo <em>no había visto el habla mejorada que genera el
+        DNS actualizado</em>.»</p>
+      <cite>Xu, Strake &amp; Fingscheidt (2022), IEEE/ACM TASLP — sección III</cite>
+    </blockquote>
+
+    <div class="note">
+      <span class="note-label">Un matiz que importa</span>
+      <p>La causa que señala Xu no es que el proxy se haya entrenado con pocos datos. Squim vio, en su
+        propio entrenamiento, salidas de sistemas de mejora de voz «con grados de desempeño variables»
+        —lo verificamos en la fuente. El problema es que el proxy queda <em>desactualizado</em> respecto
+        de un modelo que se mueve: el modelo deriva hacia regiones que ningún conjunto de entrenamiento
+        fijo cubre, por ancho que sea. Es un problema de deriva, no de amplitud.</p>
+    </div>
+
+    <p>De los cuatro mecanismos de Xu, tres no exigen reentrenar el proxy. V4 no tenía ninguno.
+      <strong>V4b los probó.</strong></p>
+    <ul>
+      <li><strong>Arrancar desde un modelo ya convergido</strong> con MSE, en vez de pesos aleatorios. Sale gratis: <code>init_checkpoint</code> ya existía.</li>
+      <li><strong>Learning rate diez veces menor</strong> en la etapa perceptual (2·10⁻⁵ en vez de 2·10⁻⁴). Es un cambio de configuración.</li>
+      <li><strong>Acumulación de gradiente</strong> hasta un único update de pesos por época. <em>Descartado con motivo</em>: con 3 épocas serían 3 updates totales partiendo de un modelo convergido, no se movería nada y el resultado nulo sería trivial.</li>
+      <li><strong>Reentrenar el proxy alternadamente</strong> con el modelo. Fuera de alcance — es reimplementar el aporte central de otro paper.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="snum">07 — El experimento</span>
+    <h2>Por qué hacía falta un placebo</h2>
+    <p>V4b corrió tres entrenamientos de 3 épocas (8,02 h en total), todos partiendo del checkpoint de
+      V1. El diseño es un 2×2 con tres celdas llenas —la cuarta, pesos aleatorios con learning rate
+      diminuto, no entrenaría nada— y salió así:</p>
+
+    <div class="grid2">
+      <div class="hdr"></div>
+      <div class="hdr">lr = 2·10⁻⁴</div>
+      <div class="hdr">lr = 2·10⁻⁵</div>
+
+      <div class="hdr">pesos aleatorios</div>
+      <div class="cell"><span class="v bad">−0,806</span><span class="n">V4 · α = 0,90</span></div>
+      <div class="cell empty">no aplica</div>
+
+      <div class="hdr">desde V1 convergido</div>
+      <div class="cell"><span class="v bad">−0,263</span><span class="n">v4b_lr2e4</span></div>
+      <div class="cell"><span class="v bad">−0,059</span><span class="n">v4b_main</span></div>
+    </div>
+
+    <p>Leído así, contra la señal ruidosa, parece que el protocolo casi arregló el problema: de −0,806
+      a −0,059. <strong>Esa lectura es falsa</strong>, y por eso el tercer entrenamiento era
+      imprescindible. Lo que cambió también fue el punto de partida: V1 convergido ya venía de +0,497.</p>
+    <p>El <em class="term">placebo</em> mide exactamente eso. Es el mismo protocolo —mismo checkpoint
+      inicial, mismo learning rate, mismas épocas— con α&nbsp;=&nbsp;1, es decir sin término perceptual.
+      Responde a la pregunta: ¿cuánto habría mejorado el modelo por seguir entrenando, sin Squim?</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>V4b · época 3 — test_v1_en, n = 250, Δ contra la señal ruidosa</caption>
+        <thead>
+          <tr><th>Corrida</th><th>Δ PESQ-NB</th><th>Δ PESQ-WB</th><th>Δ STOI</th><th>Δ SI-SDR</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi"><td class="rowlabel">placebo · α = 1</td><td class="pos">+0,539</td><td class="pos">+0,486</td><td class="pos">+0,054</td><td class="pos">+6,10 dB</td></tr>
+          <tr><td class="rowlabel">main · α = 0,9 · lr 2e−5</td><td class="neg">−0,059</td><td class="neg">−0,006</td><td class="neg">−0,029</td><td class="pos">+3,83 dB</td></tr>
+          <tr><td class="rowlabel">lr2e4 · α = 0,9 · lr 2e−4</td><td class="neg">−0,263</td><td class="neg">−0,132</td><td class="neg">−0,048</td><td class="pos">+3,32 dB</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="keyfig">
+      <div>
+        <div class="lbl">Costo del término Squim</div>
+        <div class="big">−0,598</div>
+        <div class="lbl" style="margin-top:.3rem;letter-spacing:.06em">PESQ-NB</div>
+      </div>
+      <div class="txt">
+        <p>El mismo fine-tuning, con y sin el término perceptual. El placebo gana +0,539; con Squim el
+          modelo termina en −0,059. La diferencia es lo que cuesta agregar el proxy a la pérdida — se
+          come toda la ganancia y sigue de largo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="snum">08 — El resultado</span>
+    <h2>Dos tercios del daño sobreviven al protocolo</h2>
+    <p>Con el placebo se puede comparar el daño <em>atribuible</em> al término perceptual en los dos
+      regímenes, cosa que la comparación contra la señal ruidosa no permite:</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Daño atribuible al término Squim, por régimen</caption>
+        <thead>
+          <tr><th>Régimen</th><th>Control</th><th>Con Squim</th><th>Atribuible</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowlabel">V4 · aleatorio, lr 2e−4</td><td class="pos">+0,081</td><td class="neg">−0,806</td><td class="neg">−0,887</td></tr>
+          <tr><td class="rowlabel">V4b · desde V1, lr 2e−5</td><td class="pos">+0,539</td><td class="neg">−0,059</td><td class="neg">−0,598</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Los dos estabilizadores recuperaron cerca de un tercio del daño. <strong>Los otros dos tercios
+      sobreviven al protocolo completo de Xu menos la alternancia.</strong> Es evidencia directa de que
+      lo que hace funcionar el esquema de Xu es específicamente reentrenar el proxy para que no quede
+      desactualizado — no el arranque pre-entrenado ni el learning rate bajo. Que es, exactamente, lo
+      que él afirma.</p>
+
+    <div class="note real">
+      <span class="note-label">Cómo se enuncia el resultado</span>
+      <p>El término perceptual con proxy fijo no aporta ni siquiera bajo el protocolo estabilizado que
+        prescribe la literatura. La degradación catastrófica del régimen inestable es atribuible en un
+        tercio a los pesos aleatorios y el learning rate alto, y en dos tercios a la explotación del
+        proxy en sí. Eso es <strong>atribución causal con controles</strong>, no observación bruta —
+        y es lo que distingue un resultado negativo publicable de un experimento que simplemente
+        salió mal.</p>
+    </div>
+
+    <h3>Un hallazgo lateral</h3>
+    <p>El placebo dejó algo que no buscábamos: V1 no estaba del todo convergido. Dos épocas más a
+      learning rate bajo, sin ningún cambio de pérdida, dan PESQ-NB 2,716 contra los 2,650 de V1 —mejor
+      en las cuatro métricas— pese a que su MSE de validación es <em>peor</em>. El criterio de selección
+      de checkpoint por mínimo de MSE no está alineado con PESQ. Queda como decisión abierta: los
+      números de V1 ya están etiquetados y son la base de todas las comparaciones.</p>
+  </section>
+
+  <section>
+    <span class="snum">09 — Los límites</span>
+    <h2>Qué no sabemos</h2>
+    <p>Vale tenerlo claro antes de defender el resultado, porque son las preguntas que van a hacer.</p>
+    <ul>
+      <li><strong>No escuchamos los audios.</strong> Sabemos cómo se ve la firma del gaming en las
+        métricas, no cómo suena en nuestro modelo. PESQetarian reporta artefactos agudos y metálicos en
+        el suyo; nosotros no lo verificamos. Es barato de cerrar y conviene hacerlo antes del informe.</li>
+      <li><strong>No medimos qué estima Squim sobre un modelo sin gamear.</strong> El argumento de la
+        brecha se apoya en el error nominal publicado (0,142), no en una medición propia sobre la salida
+        del placebo. El orden de magnitud es tan grande que la conclusión no cambia, pero es un número
+        que falta.</li>
+      <li><strong>Tres épocas, no veinticinco.</strong> La segunda etapa de Xu corre 25 épocas. Nuestro
+        presupuesto de cómputo no da, y eso limita cuánto se puede extrapolar.</li>
+      <li><strong>Sin bit-exactitud.</strong> Las corridas usan <code>cudnn_deterministic = False</code>
+        a propósito, para ser comparables con el barrido de V4 que se corrió así.</li>
+      <li><strong>No probamos la alternancia de Xu.</strong> Es la única variante que quedó sin explorar,
+        descartada por alcance con razones documentadas. Nuestro resultado es evidencia indirecta de que
+        es justamente la pieza que importa.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Fuentes primarias leídas completas: Kumar et&nbsp;al. 2023 (TorchAudio-Squim, ICASSP) ·
+    de Oliveira, Welker, Richter &amp; Gerkmann 2024 (The PESQetarian, Interspeech) ·
+    Xu, Strake &amp; Fingscheidt 2022 (IEEE/ACM TASLP) · Fu et&nbsp;al. 2018/2019 (Quality-Net).<br>
+    Registro completo con tablas y decisiones en <code>docs/decisions.md</code>, entradas
+    «Cierre de V4» (31 ago 2026) y «V4b» (1 sep 2026).
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var tip = document.getElementById('tip');
+    if (!tip) return;
+    var wrap = tip.parentNode;
+
+    function show(el) {
+      var r = el.getBoundingClientRect();
+      var w = wrap.getBoundingClientRect();
+      tip.textContent = el.getAttribute('data-t');
+      tip.style.left = (r.left - w.left + r.width / 2) + 'px';
+      tip.style.top = (r.top - w.top) + 'px';
+      tip.classList.add('on');
+    }
+    function hide() { tip.classList.remove('on'); }
+
+    Array.prototype.forEach.call(document.querySelectorAll('.hit'), function (el) {
+      el.addEventListener('mouseenter', function () { show(el); });
+      el.addEventListener('mouseleave', hide);
+      el.addEventListener('focus', function () { show(el); });
+      el.addEventListener('blur', hide);
+    });
+  })();
+</script>
+
+</body>
+</html>

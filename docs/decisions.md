@@ -599,3 +599,79 @@ GCRN (ver `docs/PLAN_GCRN.md`) — no es la prioridad actual.
 que prueba el protocolo estabilizado de Xu sin reentrenar el proxy. Después de V4b se pasa a GCRN
 (Tan & Wang 2020, IEEE/ACM TASLP) — evolución directa del propio paper base del proyecto (Tan & Wang
 2018), con complex spectral mapping + GLU + LSTM agrupada. Plan completo en `docs/PLAN_GCRN.md`.
+
+
+## V4b: el protocolo estabilizado de Xu reduce el daño un tercio, pero no rescata el término perceptual — cierre definitivo de la línea de proxy (01/09/2026)
+
+V4 corrió el régimen máximamente inestable (init random, lr 2e-4, update por minibatch). Xu et al. 2022
+(sección IV-B) usa cuatro elementos estabilizadores; **tres no requieren reentrenar el proxy**, y V4 no
+tenía ninguno. V4b los prueba. Script: `scripts/v4b_protocol_check.py` + `..._evaluate.py`. 3 corridas ×
+3 épocas = 8.02h, arranque desde `checkpoints/v1/best.pt`, dataset EN, `save_every_n_epochs=1`.
+
+**Qué se probó y qué no:**
+- ✅ Arranque desde modelo convergido con MSE (`init_checkpoint`, no init random).
+- ✅ lr 10x más bajo en la etapa perceptual (2e-5, el valor de Xu, vs. 2e-4 del proyecto).
+- ❌ Gradient accumulation a **un update de pesos por época**. Descartado con justificación, no por
+  descuido: con 3 épocas serían 3 updates totales partiendo de V1 convergido — no se movería nada y el
+  nulo sería trivial. Incompatible con el presupuesto de cómputo.
+- ❌ Alternancia ⟨1-1⟩ reentrenando el PESQNet — ya descartada por alcance (entrada del 30/08).
+
+**Diseño 2×2 (tres celdas; la cuarta, init random + lr 2e-5, es inútil porque casi no entrenaría).**
+Motivado explícitamente por la lección de V3b (épocas y lr quedaron confundidos y no se pudo atribuir):
+
+| Δ PESQ-NB vs Noisy | lr = 2e-4 | lr = 2e-5 |
+|---|---|---|
+| **init random** | −0.806 (`alpha_090`, Fase 3) | — |
+| **init V1 convergido** | −0.263 (`v4b_lr2e4`) | **−0.059** (`v4b_main`) |
+
+**La tabla contra Noisy engaña, y por eso el placebo de Xu era imprescindible.** −0.059 parece "casi
+arreglado", pero el punto de partida cambió: V1 convergido ya daba +0.497. El control correcto es
+`v4b_placebo` (α=1, mismo `init_checkpoint`, mismo lr 2e-5, mismas épocas, sin término perceptual):
+
+| corrida (época 3) | ΔPESQ-NB | ΔPESQ-WB | ΔSTOI | ΔSI-SDR | `pesq_hat` | brecha |
+|---|---|---|---|---|---|---|
+| `v4b_placebo` (α=1) | **+0.539** | +0.486 | +0.054 | +6.10 dB | — | — |
+| `v4b_main` (α=0.9, lr 2e-5) | −0.059 | −0.006 | −0.029 | +3.83 dB | 3.936 | +2.36 |
+| `v4b_lr2e4` (α=0.9, lr 2e-4) | −0.263 | −0.132 | −0.048 | +3.32 dB | 4.217 | +2.77 |
+
+**Resultado central: el término Squim cuesta −0.598 PESQ-NB** respecto del mismo fine-tuning sin él.
+Comparando el daño *atribuible* entre ambos regímenes:
+
+- V4 (init random, lr 2e-4): `control_mse` +0.081 vs `alpha_090` −0.806 → **−0.887**
+- V4b (V1 convergido, lr 2e-5): `v4b_placebo` +0.539 vs `v4b_main` −0.059 → **−0.598**
+
+Los dos estabilizadores recuperan ~33% del daño; **dos tercios del gaming sobreviven al protocolo de Xu
+menos la alternancia**. Es evidencia directa de que lo que hace funcionar el esquema de Xu es
+específicamente el reentrenamiento del proxy — consistente con lo que él mismo afirma y con lo que
+reporta de su trabajo previo [24]/[31] para proxy fijo.
+
+**La brecha descarta el confound de descalibración.** Se había marcado que parte de la brecha
+`pesq_hat − PESQ-WB real` podía ser error de calibración de Squim y no gaming. No es el caso: el MAE
+nominal de Squim para WB-PESQ es **0.142** (Kumar et al. 2023, Tabla 2, "Ours with MTL"), y las brechas
+observadas (+2.36 y +2.77) son ~16-20× ese error, creciendo monótonamente época a época en las dos
+corridas con Squim (2.04→2.30→2.36 y 2.59→2.70→2.77). Nota metodológica: la comparación se hace contra
+PESQ-**WB**, no NB, porque la cabeza de Squim estima WB-PESQ (Kumar et al. 2023: *"the term PESQ will
+refer to WB-PESQ throughout this paper"*), acotado por construcción en [1, 4.64] vía sigmoide (ec. 5).
+`v4b_lr2e4` llegó a 4.217, a 0.42 puntos del techo estructural.
+
+**Hallazgo lateral con valor propio: V1 no estaba del todo convergido.** `v4b_placebo` en la época 2
+(V1 + 2 épocas a lr 2e-5, sin ningún cambio de loss) da PESQ-NB **2.716 / PESQ-WB 2.102 / STOI 0.906 /
+SI-SDR 13.945**, mejor que V1 (**2.650 / 2.021 / 0.904 / 13.805**) en las cuatro métricas — pese a que su
+`val_loss` MSE es *peor* (0.0836 vs 0.0724). El criterio de selección de checkpoint por mínimo de val MSE
+no está alineado con PESQ. Dos implicancias: (a) los números reportados de V1 son levemente pesimistas;
+(b) el placebo es un control fuerte, no un modelo degradado, lo que refuerza la atribución de −0.598.
+
+**Decisión: se cierra definitivamente la línea de proxy perceptual (V4/V4b), sin más variantes.** El
+espacio de decisión quedó cubierto: régimen inestable (V4, destruye el modelo) y régimen estabilizado
+según la propia literatura (V4b, sigue destruyendo dos tercios). Lo único no probado es la alternancia
+de Xu, ya descartada por alcance con razones documentadas. Construir un proxy PESQ propio queda como
+posibilidad remota, solo si sobra tiempo después de GCRN (`docs/PLAN_GCRN.md`, Fase 10).
+
+**Resultado para el informe:** el término perceptual con proxy fijo no aporta ni bajo el protocolo
+estabilizado que prescribe la literatura; la degradación catastrófica del régimen inestable es
+atribuible en ~1/3 a init random + lr alto, y en ~2/3 al gaming del proxy en sí. Eso es atribución
+causal con controles, no observación bruta.
+
+**Limitaciones de V4b:** `cudnn_deterministic=False` en las tres corridas, elegido a propósito para ser
+comparable con `alpha_090` (que se corrió así en el sweep de Fase 3) — ninguna de las dos es bit-exacta.
+3 épocas por corrida, no 25 como la segunda etapa de Xu.

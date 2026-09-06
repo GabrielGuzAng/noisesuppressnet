@@ -1,0 +1,32 @@
+{
+  "n_epochs": 3,
+  "alpha": 0.9,
+  "init_checkpoint": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v1/best.pt",
+  "total_time_hours": 8.023250574933158,
+  "runs": [
+    {
+      "nombre": "v4b_main",
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v4b/v4b_main",
+      "loss": "mse_plus_squim",
+      "lr": 2e-05,
+      "time_min": 194.3541313012441,
+      "status": "success"
+    },
+    {
+      "nombre": "v4b_placebo",
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v4b/v4b_placebo",
+      "loss": "mse_magnitude",
+      "lr": 2e-05,
+      "time_min": 93.43658531506857,
+      "status": "success"
+    },
+    {
+      "nombre": "v4b_lr2e4",
+      "checkpoint_dir": "/home/gabriel/Desktop/nosiesuppressnet/checkpoints/v4b/v4b_lr2e4",
+      "loss": "mse_plus_squim",
+      "lr": 0.0002,
+      "time_min": 193.6036392649015,
+      "status": "success"
+    }
+  ]
+}

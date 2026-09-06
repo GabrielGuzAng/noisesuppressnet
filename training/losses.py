@@ -5,11 +5,13 @@ Funciones de loss para las distintas variantes.
 - mse_magnitude: V1 (baseline reproducible del paper Tan & Wang 2018)
 - si_sdr_loss:   componente temporal para V2
 - mse_plus_sisdr: V2 (combinada, α * MSE + (1-α) * SI-SDR)
+- mse_plus_squim: V4 (combinada, α * MSE + (1-α) * -PESQ_hat de Squim)
 
 Referencias:
 - Tan & Wang 2018: MSE sobre magnitud STFT
 - Le Roux et al. 2019: "SDR — Half-baked or Well Done?" ICASSP 2019
 - Braun & Tashev 2021: combinación de losses en speech enhancement
+- Kumar et al. 2023: TorchAudio-Squim, ICASSP (proxy diferenciable de PESQ)
 """
 import torch
 import torch.nn as nn
@@ -102,10 +104,50 @@ def mse_plus_sisdr(mag_est, mag_clean, audio_est, audio_clean, alpha=0.7,
     }
 
 
+def mse_plus_squim(mag_est, mag_clean, pesq_hat, alpha=0.9, squim_scale=None):
+    """
+    Loss combinada: α * MSE_magnitud + (1-α) * (-PESQ_hat) * squim_scale.
+
+    pesq_hat es la salida de SQUIM_OBJECTIVE sobre audio_est, ya computada
+    por el caller (trainer.py posee el modelo Squim frozen y el contexto
+    `cudnn.flags(enabled=False)` alrededor de ese forward) — losses.py se
+    mantiene stateless, igual que el resto del archivo.
+
+    squim_scale no tiene un default calibrado: sale del mini-sweep de
+    Fase 3 de docs/PLAN_V4.md. Mientras no esté calibrado, se usa 1.0 sin
+    documentar como resultado citable (ver decisions.md 30/08/2026).
+
+    Args:
+        mag_est: magnitud estimada [B, 1, T_frames, F_bins]
+        mag_clean: magnitud clean [B, 1, T_frames, F_bins]
+        pesq_hat: PESQ estimado por Squim sobre audio_est, [B] o escalar
+        alpha: peso del MSE (0.9 = 90% MSE, 10% término perceptual)
+        squim_scale: factor de normalización de escala del término Squim;
+            None -> 1.0 sin calibrar (placeholder, ver Fase 3 del plan)
+    Returns:
+        (loss_total, dict con componentes para logging)
+    """
+    if squim_scale is None:
+        squim_scale = 1.0
+
+    mse_val = mse_magnitude(mag_est, mag_clean)
+    squim_val = -pesq_hat.mean()
+
+    loss = alpha * mse_val + (1 - alpha) * squim_val * squim_scale
+
+    return loss, {
+        "mse_component": mse_val.item(),
+        "squim_component": squim_val.item(),  # -PESQ_hat (negativo, minimizar = maximizar PESQ_hat)
+        "squim_scaled": (squim_val * squim_scale).item(),
+        "pesq_hat_mean": pesq_hat.mean().item(),
+    }
+
+
 # Factory para elegir loss según config
 LOSS_REGISTRY = {
     "mse_magnitude": "mse_magnitude",
     "mse_plus_sisdr": "mse_plus_sisdr",
+    "mse_plus_squim": "mse_plus_squim",
 }
 
 
@@ -150,4 +192,19 @@ if __name__ == "__main__":
     print(f"    MSE component:   {components['mse_component']:.4f}")
     print(f"    SI-SDR component: {components['sisdr_component']:.4f} dB")
     print(f"    SI-SDR scaled:    {components['sisdr_scaled']:.4f}")
+
+    # Test mse_plus_squim (pesq_hat dummy, no hace falta levantar Squim real acá)
+    mag_est_grad2 = torch.rand(B, 1, n_frames, F_bins, requires_grad=True)
+    pesq_hat_dummy = (torch.rand(B) * 3 + 1).requires_grad_()  # rango físico [1, 4], leaf tensor
+    loss_squim, components_squim = mse_plus_squim(
+        mag_est_grad2, mag_clean, pesq_hat_dummy, alpha=0.9
+    )
+    loss_squim.backward()
+    print(f"  Squim loss: {loss_squim.item():.4f}, "
+          f"grad mag OK: {mag_est_grad2.grad.norm().item():.2e}, "
+          f"grad pesq_hat OK: {pesq_hat_dummy.grad.norm().item():.2e}")
+    print(f"    MSE component:    {components_squim['mse_component']:.4f}")
+    print(f"    Squim component:  {components_squim['squim_component']:.4f}")
+    print(f"    Squim scaled:     {components_squim['squim_scaled']:.4f}")
+
     print("✓ All losses functional")

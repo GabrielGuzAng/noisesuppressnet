@@ -1,0 +1,45 @@
+{
+  "control": {
+    "nombre": "control_mse",
+    "pesq_nb": 2.2332314858436586,
+    "pesq_wb": 1.5644940614700318,
+    "stoi": 0.8797082862397492,
+    "sisdr": 12.002886772155762,
+    "epoch1_check": "sin se\u00f1ales de inestabilidad"
+  },
+  "candidatos": [
+    {
+      "nombre": "alpha_070",
+      "pesq_nb": 1.3068965916633606,
+      "pesq_wb": 1.1132221322059632,
+      "stoi": 0.6008288798569749,
+      "sisdr": 3.2986483573913574,
+      "epoch1_check": "salto ep1->ep2: -0.9067 -> -0.9351"
+    },
+    {
+      "nombre": "alpha_080",
+      "pesq_nb": 1.2096362719535827,
+      "pesq_wb": 1.071215588092804,
+      "stoi": 0.6002107235141363,
+      "sisdr": 3.8559062480926514,
+      "epoch1_check": "salto ep1->ep2: -0.4805 -> -0.5211"
+    },
+    {
+      "nombre": "alpha_090",
+      "pesq_nb": 1.3463344597816467,
+      "pesq_wb": 1.133132691860199,
+      "stoi": 0.68331672367399,
+      "sisdr": 7.225182056427002,
+      "epoch1_check": "sin se\u00f1ales de inestabilidad"
+    },
+    {
+      "nombre": "alpha_095",
+      "pesq_nb": 1.8095956416130066,
+      "pesq_wb": 1.3622928304672242,
+      "stoi": 0.783036879747763,
+      "sisdr": 10.150728225708008,
+      "epoch1_check": "sin se\u00f1ales de inestabilidad"
+    }
+  ],
+  "validos_por_criterio": []
+}

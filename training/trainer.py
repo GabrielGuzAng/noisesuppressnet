@@ -2,7 +2,8 @@
 import numpy as np
 import torch
 import torch.nn as nn
-from training.losses import mse_magnitude, mse_plus_sisdr, get_loss_name
+from torchaudio.pipelines import SQUIM_OBJECTIVE
+from training.losses import mse_magnitude, mse_plus_sisdr, mse_plus_squim, get_loss_name
 from torch.utils.data import DataLoader
 from torch.optim import Adam
 from torch.optim.lr_scheduler import StepLR
@@ -93,10 +94,24 @@ class Trainer:
         self.loss_name = get_loss_name(config)
         self.loss_alpha = config.get("loss_alpha", 0.7)
         self.sisdr_scale = config.get("sisdr_scale", 0.03)
+        self.squim_alpha = config.get("squim_alpha", 0.9)
+        self.squim_scale = config.get("squim_scale")
         print(f"Loss: {self.loss_name}")
         if self.loss_name == "mse_plus_sisdr":
             print(f"  alpha (MSE weight): {self.loss_alpha}")
             print(f"  sisdr_scale:        {self.sisdr_scale}")
+        if self.loss_name == "mse_plus_squim":
+            print(f"  alpha (MSE weight): {self.squim_alpha}")
+            print(f"  squim_scale:        {self.squim_scale}")
+            # Squim frozen: eval() + requires_grad_(False) en todos los params,
+            # cudnn desactivado solo alrededor del forward (ver _compute_loss)
+            # -- solución (1) validada en tests/test_squim_differenciable.py.
+            self.squim_model = SQUIM_OBJECTIVE.get_model().to(self.device)
+            self.squim_model.eval()
+            for p in self.squim_model.parameters():
+                p.requires_grad_(False)
+
+        self.save_every_n_epochs = config.get("save_every_n_epochs")
 
         self.history = {"train_loss": [], "val_loss": [], "epoch_time_s": []}
         self.best_val = float("inf")
@@ -149,8 +164,25 @@ class Trainer:
             if return_components:
                 return loss, components
             return loss
-    
-        else:   
+
+        elif self.loss_name == "mse_plus_squim":
+            # Reconstruir audio para Squim (mismo mecanismo que mse_plus_sisdr)
+            audio_est = self.stft.from_spec(mag_est, phase_noisy, length=noisy.shape[-1])
+            # cuDNN desactivado SOLO alrededor de este forward -- no debe
+            # interferir con cudnn_deterministic/cudnn.benchmark que ya
+            # configura el LSTM del propio CRN (ver docs/PLAN_V4.md Fase 2).
+            with torch.backends.cudnn.flags(enabled=False):
+                _, pesq_hat, _ = self.squim_model(audio_est)
+            loss, components = mse_plus_squim(
+                mag_est, mag_clean, pesq_hat,
+                alpha=self.squim_alpha,
+                squim_scale=self.squim_scale,
+            )
+            if return_components:
+                return loss, components
+            return loss
+
+        else:
             raise ValueError(f"Loss desconocida: {self.loss_name}")
 
 
@@ -160,8 +192,9 @@ class Trainer:
         total = 0.0
         total_mse = 0.0
         total_sisdr = 0.0
+        total_squim = 0.0
         n_batches = 0
-    
+
         for noisy, clean in self.train_loader:
             noisy = noisy.to(self.device)
             clean = clean.to(self.device)
@@ -172,12 +205,14 @@ class Trainer:
             total += loss.item()
             total_mse += components.get("mse_component", components.get("mse", 0.0))
             total_sisdr += components.get("sisdr_component", 0.0)
+            total_squim += components.get("squim_component", 0.0)
             n_batches += 1
-    
+
         return {
             "loss": total / n_batches,
             "mse": total_mse / n_batches,
             "sisdr": total_sisdr / n_batches,
+            "squim": total_squim / n_batches,
         }
 
     @torch.no_grad()
@@ -187,8 +222,9 @@ class Trainer:
         total = 0.0
         total_mse = 0.0
         total_sisdr = 0.0
+        total_squim = 0.0
         n_batches = 0
-    
+
         for noisy, clean in self.val_loader:
             noisy = noisy.to(self.device)
             clean = clean.to(self.device)
@@ -196,12 +232,14 @@ class Trainer:
             total += loss.item()
             total_mse += components.get("mse_component", components.get("mse", 0.0))
             total_sisdr += components.get("sisdr_component", 0.0)
+            total_squim += components.get("squim_component", 0.0)
             n_batches += 1
-    
+
         return {
             "loss": total / n_batches,
             "mse": total_mse / n_batches,
             "sisdr": total_sisdr / n_batches,
+            "squim": total_squim / n_batches,
         }
 
 
@@ -212,9 +250,10 @@ class Trainer:
             "train_loss": [], "val_loss": [],
             "train_mse": [], "val_mse": [],
             "train_sisdr": [], "val_sisdr": [],
+            "train_squim": [], "val_squim": [],
             "epoch_time_s": [],
         }
-    
+
         for epoch in range(1, self.n_epochs + 1):
             t0 = time.time()
             tr = self.train_epoch()
@@ -222,39 +261,55 @@ class Trainer:
             if self.sched is not None:
                 self.sched.step()
             elapsed = time.time() - t0
-        
+
             self.history["train_loss"].append(tr["loss"])
             self.history["val_loss"].append(va["loss"])
             self.history["train_mse"].append(tr["mse"])
             self.history["val_mse"].append(va["mse"])
             self.history["train_sisdr"].append(tr["sisdr"])
             self.history["val_sisdr"].append(va["sisdr"])
+            self.history["train_squim"].append(tr["squim"])
+            self.history["val_squim"].append(va["squim"])
             self.history["epoch_time_s"].append(elapsed)
-        
+
             # Print adaptado según loss
             if self.loss_name == "mse_plus_sisdr":
                 print(f"Epoch {epoch:02d}/{self.n_epochs}  "
                     f"train={tr['loss']:.4f} (mse={tr['mse']:.4f}, sisdr={tr['sisdr']:+.2f}dB)  "
                     f"val={va['loss']:.4f} (mse={va['mse']:.4f}, sisdr={va['sisdr']:+.2f}dB)  "
                     f"t={elapsed:.1f}s  lr={self.opt.param_groups[0]['lr']:.2e}")
+            elif self.loss_name == "mse_plus_squim":
+                print(f"Epoch {epoch:02d}/{self.n_epochs}  "
+                    f"train={tr['loss']:.4f} (mse={tr['mse']:.4f}, squim={tr['squim']:+.4f})  "
+                    f"val={va['loss']:.4f} (mse={va['mse']:.4f}, squim={va['squim']:+.4f})  "
+                    f"t={elapsed:.1f}s  lr={self.opt.param_groups[0]['lr']:.2e}")
             else:
                 print(f"Epoch {epoch:02d}/{self.n_epochs}  "
                     f"train={tr['loss']:.4f}  val={va['loss']:.4f}  "
                     f"t={elapsed:.1f}s  lr={self.opt.param_groups[0]['lr']:.2e}")
-        
+
+            checkpoint_payload = {
+                "epoch": epoch,
+                "model_state": self.model.state_dict(),
+                "opt_state": self.opt.state_dict(),
+                "val_loss": va["loss"],
+                "val_mse": va["mse"],
+                "val_sisdr": va["sisdr"],
+                "val_squim": va["squim"],
+                "loss_name": self.loss_name,
+            }
+
             # Guardar el mejor modelo (por val_loss combinada)
             if va["loss"] < self.best_val:
                 self.best_val = va["loss"]
-                torch.save({
-                    "epoch": epoch,
-                    "model_state": self.model.state_dict(),
-                    "opt_state": self.opt.state_dict(),
-                    "val_loss": va["loss"],
-                    "val_mse": va["mse"],
-                    "val_sisdr": va["sisdr"],
-                    "loss_name": self.loss_name,
-                }, self.checkpoint_dir / "best.pt")
-        
+                torch.save(checkpoint_payload, self.checkpoint_dir / "best.pt")
+
+            # Checkpoints periódicos (necesario para monitor_correlation.py
+            # y el chequeo cruzado de gaming de V4 -- ver docs/PLAN_V4.md
+            # Fase 2/7. No se activa salvo que la config lo pida.
+            if self.save_every_n_epochs and epoch % self.save_every_n_epochs == 0:
+                torch.save(checkpoint_payload, self.checkpoint_dir / f"epoch_{epoch:02d}.pt")
+
             # Guardar historial en cada época
             with open(self.checkpoint_dir / "history.json", "w") as f:
                 json.dump(self.history, f, indent=2)

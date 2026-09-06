@@ -285,3 +285,317 @@ Bonus de velocidad: cuando `cudnn_deterministic=False`, el trainer activa
 `cudnn.benchmark=True` — como todos los segmentos de audio miden
 exactamente 64.000 samples (shape fija), cuDNN autotunea una vez el
 kernel más rápido para ese tamaño y lo reusa.
+
+
+## Diseño de V4: MSE + Squim (proxy aprendido) sobre PMSQE (aproximación cerrada), con monitoreo obligatorio de gaming (30/08/2026)
+
+Antes de escribir código para V4 ("V1 + PESQNet loss (EN)" en el roadmap
+de `EXPERIMENTS.md`) se evaluaron dos familias de loss perceptual
+diferenciable candidatas, con literatura descargada y leída
+íntegramente (carpeta `Papers V4`, no citas de segunda mano): **Squim**
+(`torchaudio.pipelines.SQUIM_OBJECTIVE`, proxy aprendido — red entrenada
+para predecir PESQ/STOI/SI-SDR sin referencia) vs **PMSQE** (Martín-Doñas
+et al. 2018, IEEE SPL — aproximación de forma cerrada derivada
+matemáticamente del propio algoritmo PESQ, con términos de disturbance
+simétrico/asimétrico en escala Bark/sone).
+
+**Decisión: V4 usa una loss combinada `mse_plus_squim` (MSE sobre
+magnitud STFT + término Squim, ponderados), no PMSQE.** V4 es rama
+paralela a V2 (no fine-tuning de V1, no stack sobre V2): init random,
+mismo dataset EN y mismos hiperparámetros que V1, única variable que
+cambia es la loss — misma disciplina de ablation limpio que V1→V2.
+
+**Razones del diseño, con evidencia verificada (no intuición):**
+
+1. **PMSQE pierde contra alternativas más simples en un benchmark
+   independiente.** López-Espejo, Edraki, Chan, Tan & Jensen (2023,
+   *Speech Communication* 150, "On the deficiency of intelligibility
+   metrics as proxies for subjective intelligibility") entrenaron PMSQE
+   contra SI-SDR, SI-SDR+preénfasis, STOI, ESTOI, STGI y STGI+SI-SDR
+   sobre WSJ0, misma arquitectura FCNN. Resultado textual (p. 15):
+   *"despite PMSQE being an approximation of PESQ (Martín-Doñas et al.,
+   2018), $\mathcal{L}_{PMSQE}$ clearly yields the worst PESQ results
+   among all the evaluated loss functions, which is consistent with
+   previous findings in Kolbæk et al. (2020)."* Con números: a SNR
+   −10dB, PMSQE (PESQ 1,30) casi no mejora sobre noisy (1,31), mientras
+   SI-SDR solo ya llega a 1,55–1,90 en ese mismo rango; a 20dB, PMSQE
+   queda en 2,99 contra 3,79 de STGI+SI-SDR. La aproximación
+   matemáticamente más "fiel" a PESQ da, en la práctica, el peor PESQ de
+   las seis losses comparadas.
+2. **Optimizar directo contra ese mismo linaje de aproximación cerrada
+   es explotable de forma demostrada.** de Oliveira, Welker, Richter &
+   Gerkmann (2024, Interspeech, "The PESQetarian: On the Relevance of
+   Goodhart's Law for Speech Enhancement") entrenaron un modelo contra
+   `torch-pesq`, implementación diferenciable basada en Martín-Doñas
+   2018 + Kim et al. 2019 — el mismo linaje que PMSQE. Resultado: PESQ
+   3,82 (top-4 en el leaderboard de VB-DMD a la fecha del paper)
+   mientras SI-SDR cae de +8,4dB (noisy) a **−19,8dB**, POLQA cae de
+   3,11 a 1,46, y en la variante más agresiva (PESQ+SDR) el modelo
+   aprende a insertar un click de amplitud extrema al inicio del audio
+   que exploda un bug de estimación de nivel en el propio cómputo de
+   PESQ (saturación por outlier en la suma de cuadrados + el click cae
+   en la muestra 0, multiplicada por 0 por la ventana Hann del STFT
+   interno de PESQ — invisible para la métrica). Un "modelo" de un solo
+   parámetro (click fijo c=666, sin red neuronal) ya alcanza PESQ 3,46
+   por sí solo.
+3. **Squim es de otra familia (proxy aprendido, no fórmula cerrada) y ya
+   está validada como diferenciable en este repo**
+   (`tests/test_squim_differenciable.py`, gradient norm 3.11e-01).
+   Quality-Net (Fu et al. 2018) — precedente de la misma familia, red
+   BLSTM entrenada para predecir PESQ sin referencia — muestra
+   correlación alta con PESQ real (LCC 0,905 en audio noisy/clean), con
+   la salvedad de que esa correlación cae a LCC 0,816 específicamente
+   sobre audio *procesado por un modelo de enhancement* — el régimen
+   que importa acá.
+4. **Combinada (MSE + Squim), no Squim puro.** En el propio experimento
+   de PESQetarian, el modelo baseline entrenado solo con MSE fue el
+   mejor en *todas* las demás métricas (POLQA, SI-SDR, ESTOI, DNSMOS)
+   salvo PESQ — el ancla de reconstrucción importa. Quality-Net cita a
+   su vez el precedente de Talebi & Milanfar (NIMA / learned perceptual
+   image enhancement) de combinar assessment-loss con reconstruction-loss
+   en vez de usar el assessment solo. `alpha` alto (MSE dominante, Squim
+   como refinamiento) es la lectura conservadora de ambos papers.
+
+**Salvaguardas que pasan de "buena práctica" a obligatorias para V4, con
+justificación puntual:**
+
+- `evaluation/monitor_correlation.py` debe medir la correlación
+  Squim-vs-PESQ real **sobre la salida del CRN (audio enhanced) en cada
+  checkpoint**, no solo sobre los pares noisy/clean del test set
+  sellado — justificado por la caída de LCC 0,905→0,816 de Quality-Net
+  específicamente en audio procesado. Medir solo sobre noisy/clean mide
+  el régimen fácil del proxy, no el relevante.
+- Chequeo cruzado por época: si el componente Squim de la loss mejora
+  mientras el SI-SDR o el STOI de validación caen (por debajo del batch
+  anterior o por debajo de Noisy), es señal de alarma de gaming — no una
+  posibilidad remota, es el patrón de falla exacto que documentó
+  PESQetarian (PESQ↑ con todo lo demás↓).
+- Escucha dirigida de 5-10 archivos del test set al cierre de V4,
+  motivada por dos papers independientes (no uno): buscar
+  específicamente artefactos agudos/metálicos de alta frecuencia (firma
+  reportada del modelo PESQetarian puro) y clicks o saltos abruptos de
+  rango dinámico al inicio del archivo (firma del exploit de nivel del
+  modelo PESQ-SDR). López-Espejo et al. 2023 aporta una segunda
+  confirmación independiente, con metodología estadística real (26
+  oyentes, test de Kruskal-Wallis), de que ganancias en la métrica de
+  entrenamiento no garantizan mejora perceptual.
+
+**Lo que sigue siendo hipótesis propia, no precedente publicado —
+aclarado a propósito para no repetir el error de sobre-atribución
+bibliográfica de un análisis previo de otro agente sobre este mismo
+tema:** el mini-sweep de calibración de `alpha`/`squim_scale` y la
+posibilidad de warm-start con MSE puro antes de introducir el término
+Squim. Ningún paper de `Papers V4` prueba esto específicamente — es
+diseño razonado a partir del riesgo de inestabilidad en época 1 (CRN con
+pesos random alimentando audio-basura a Squim), y se valida
+empíricamente con el mismo criterio que el sweep de lr de V3b, no se da
+por sentado.
+
+**Implicancias:**
+- `training/losses.py` necesita `mse_plus_squim(mag_est, mag_clean,
+  audio_est, squim_pesq_hat, alpha, squim_scale)`, mismo patrón que
+  `mse_plus_sisdr`.
+- `training/trainer.py` necesita cargar `SQUIM_OBJECTIVE` frozen,
+  `.eval()`, con `torch.backends.cudnn.flags(enabled=False)` alrededor
+  únicamente del forward de Squim (no de todo el training step) — la
+  solución (1) validada en `tests/test_squim_differenciable.py`,
+  preferida sobre `.train()` con pesos congelados porque evita que
+  BatchNorm/estado interno de Squim mute entre corridas.
+- `evaluation/monitor_correlation.py` no existe todavía — hay que
+  construirlo con el diseño de dos regímenes descrito arriba antes de
+  poder cerrar V4 de forma responsable.
+- Detalle del roadmap completo, fases y orden de ejecución en
+  `docs/PLAN_V4.md`.
+
+
+## V4: por qué Squim queda fijo, sin warm-start desde V1 ni reentrenamiento
+alternado del proxy (30/08/2026)
+
+Al completar Fase 0/1/2 del plan de V4 se releyó Xu, Strake & Fingscheidt
+(2022, *Deep Noise Suppression Maximizing Non-Differentiable PESQ
+Mediated by a Non-Intrusive PESQNet*, IEEE/ACM TASLP — carpeta `Papers`,
+no `Papers V4`) con más detalle, porque es estructuralmente el paper más
+parecido a `mse_plus_squim`: su loss (ec. 9) es literalmente
+`α·MSE + (1−α)·PESQNet_loss`, misma convención de `α` que la nuestra
+(`α` pesa el término MSE).
+
+**Hallazgo que tensiona la decisión del 30/08 de arriba:** Xu barre
+`α ∈ {0, 0.5, 1}` en su segunda etapa de fine-tuning y encuentra que
+`α=0` (0% MSE, 100% término perceptual) da el mejor resultado — PESQ
+3.45 vs. 3.37 del baseline MSE puro en DNS1-dev, mejor DNSMOS en casi
+todas las condiciones. `α=1` ("placebo") rinde igual que el baseline
+MSE. Esto contradice, en el paper estructuralmente más cercano al
+nuestro, la lectura "alpha alto es la opción conservadora" que se venía
+aplicando (basada en PESQetarian y Quality-Net/NIMA, ver entrada de
+arriba).
+
+**Por qué ese resultado no es transferible sin más — dos diferencias de
+protocolo, no de arquitectura:**
+
+1. El modelo de Xu parte de un checkpoint **ya preentrenado con MSE**
+   antes del barrido de `α` (fine-tuning de segunda etapa) — no de init
+   random como V4.
+2. Usan un **protocolo de entrenamiento alternado**: DNS y PESQNet se
+   reentrenan turnándose a nivel de época (con gradient accumulation
+   para estabilizar), de forma que el PESQNet nunca queda "stale"
+   respecto a la distribución de salidas del DNS actual. Citan su propio
+   trabajo previo (`FCRN/PESQNet [24]`) donde, sin ese esquema alternado
+   — PESQNet **fijo**, igual que nuestro Squim — la mejora de PESQ fue
+   "muy limitada... incluso ninguna mejora en datos sintéticos". Ese es
+   el régimen que V4 tiene planeado.
+
+**Decisión: NO se implementa el esquema alternado de Xu, ni se
+warm-startea V4 desde `checkpoints/v1/best.pt`.** Razones:
+
+- **Squim no está construido para esto.** `SQUIM_OBJECTIVE` es un
+  pipeline de inferencia de torchaudio con pesos publicados fijos, sin
+  receta de fine-tuning documentada. Replicar el esquema de Xu
+  requeriría computar PESQ real (no diferenciable, vía el paquete
+  `pesq` ya usado en `evaluation/metrics.py`) sobre la salida del CRN
+  periódicamente y reentrenar los pesos de Squim contra eso — no es un
+  flag de config, es reimplementar el contenido central de ese paper
+  (su título es literalmente "Novel Training Loss/**Protocol**"), fuera
+  de alcance para una sola variante de un ablation study de tesis.
+- **Rompe la disciplina de ablation del proyecto.** V4 está fijado como
+  rama paralela a V2 (init random, única variable: la loss). Un
+  warm-start desde V1 o una alternancia de reentrenamiento cambiarían
+  el mecanismo de entrenamiento además de la loss — no se podría
+  atribuir un resultado a una sola causa, violando la restricción dura
+  de `CLAUDE.md` ("una sola variable cambia por vez").
+- **Desproporcionado al presupuesto de cómputo/tiempo disponible.** Xu
+  corre 25 épocas de fine-tuning alternado sobre un modelo ya
+  preentrenado, más una etapa de pretraining separada del propio
+  PESQNet — sobre una sola GPU (RTX 4060) y con V5 + comparaciones
+  contra RNNoise/DeepFilterNet2 todavía pendientes antes del 29/12/2026.
+- **La mitigación elegida es detectar, no prevenir — y ya está
+  planeada.** `evaluation/monitor_correlation.py` (Fase 4) + el chequeo
+  cruzado por checkpoint (Fase 7) + la escucha dirigida (Fase 8) no
+  evitan que el proxy quede stale, pero lo detectan si pasa. Es una
+  estrategia proporcional al alcance de un TP de grado: si aparece
+  gaming, es un resultado negativo caracterizado y válido como material
+  de tesis (ya lo dice el criterio de cierre de `docs/PLAN_V4.md`), no
+  hay que perseguir "que funcione" reimplementando el mecanismo
+  completo de otro paper.
+
+**Consecuencia práctica para Fase 3:** como V4 no tiene la red de
+seguridad que hizo segura la zona perceptual-dominante en Xu, la
+calibración de `alpha` se mantiene en zona MSE-dominante — doblemente
+justificado ahora (PESQetarian/Quality-Net **y** ausencia del mecanismo
+estabilizador de Xu) — pero se amplía la grilla del sweep de
+{0.95, 0.9, 0.8} a {0.95, 0.9, 0.8, **0.7**} para poder ver si aparece
+una inflexión visible en el chequeo cruzado (SI-SDR/STOI cayendo) antes
+de acercarse a esa zona, sin llegar a probar el régimen de Xu sin su
+mecanismo estabilizador.
+
+El calentamiento "con/sin warm-start" que ya contemplaba Fase 3 (2-3
+épocas de MSE puro antes de activar el término Squim, dentro de la
+misma corrida random-init) no es lo mismo que lo descartado acá y se
+mantiene sin cambios — es un detalle de curriculum dentro de V4, no un
+cambio del punto de partida ni un mecanismo de reentrenamiento del
+proxy.
+
+
+## Paso 1 de V4 acotado a 3 épocas (30/08/2026)
+
+`scripts/squim_scale_sweep.py` (Paso 1 del mini-sweep de Fase 3) estaba
+escrito con `N_EPOCHS_SWEEP = 4`, presupuesto medido ~14.8h (control
+~1.6h + 4 candidatos × ~3.3h, a razón de ~24.2 min/época sin Squim y
+~49.5 min/época con Squim — números de la propia Fase 3). Se acotó a
+**3 épocas**, bajando el presupuesto a **~11.1h** (control ~1.2h + 4
+candidatos × ~2.47h), para reducir el costo de cómputo de una corrida
+exploratoria/descartable sin cambiar el diseño (misma cobertura de
+alpha, mismo control, mismo criterio de selección).
+
+**Por qué 3 y no menos:** con 2 épocas el chequeo de inestabilidad en
+época 1 (parte del criterio de selección de Paso 1 y del criterio para
+decidir si Paso 2/warm-start es prioritario) queda con un solo punto de
+comparación posterior — insuficiente para distinguir tendencia real de
+ruido entre épocas. 3 épocas conserva ese margen a un costo intermedio
+entre las ~14.8h originales y las ~7.4h de un recorte a 2.
+
+**Implicancia en Paso 2 (`scripts/squim_warmstart_check.py`):** estaba
+hardcodeado a 2 épocas de warmup (`mse_magnitude`) + 2 épocas de
+`mse_plus_squim` = 4 total, exactamente para igualar el presupuesto de
+los candidatos de Paso 1 y poder comparar "con warm-start" vs "sin
+warm-start" al mismo total de épocas (ver Fase 3 de `PLAN_V4.md`). Bajar
+Paso 1 a 3 sin tocar Paso 2 hubiera roto esa paridad. Se ajustó a 1
+época de warmup + 2 épocas de `mse_plus_squim` (total 3) — se mantiene
+al menos 1 época de warmup porque esa es la mitigación completa del
+riesgo que motiva Paso 2 (inestabilidad en época 1 por audio-basura del
+CRN random alimentando a Squim), y se prioriza no recortar más las
+épocas con Squim activo (2, igual que antes) ya que son las que
+efectivamente comparan contra el resultado sin warm-start de Paso 1.
+
+
+## Cierre de V4: Squim frozen confirma Goodhart's Law con datos propios — no se avanza con `mse_plus_squim` (31/08/2026)
+
+Paso 1 del mini-sweep (5 corridas, 3 épocas, `scripts/squim_scale_sweep_evaluate.py`) dio resultado
+inequívoco sobre `test_v1_en` (n=250):
+
+| Corrida | PESQ-NB Δ vs Noisy | STOI Δ | SI-SDR Δ |
+|---|---|---|---|
+| control_mse (α=1.0, sin Squim) | **+0.081** | +0.027 | +4.15 dB |
+| alpha_095 | −0.343 | −0.069 | +2.29 dB |
+| alpha_090 | −0.806 | −0.169 | −0.63 dB |
+| alpha_080 | −0.943 | −0.252 | −4.00 dB |
+| alpha_070 | −0.846 | −0.251 | −4.56 dB |
+
+`control_mse` es la única corrida que mejora sobre Noisy en las cuatro métricas reales. Las cuatro
+corridas con Squim degradan, con una relación dosis-respuesta razonable en `alpha` (más peso a Squim,
+peor resultado real, salvo un cruce menor entre 070/080). **Ningún candidato pasa el criterio de
+selección de Fase 3** (PESQ-NB real por encima del control, sin que SI-SDR/STOI reales caigan por
+debajo).
+
+**Diagnóstico, con evidencia propia (no solo cita bibliográfica):** los `history.json` de cada corrida
+muestran que `val_squim` (≈ `-pesq_hat` estimado por Squim sobre la salida del propio modelo) llega a
+−4.0/−4.4 hacia la época 3 — Squim cree que su propia salida tiene PESQ ≈ 4.0–4.4, mejor que cualquier
+variante real entrenada en este proyecto. El PESQ real medido cae a 1.1–1.8, **por debajo de Noisy**
+(2.15). El patrón ya está instalado desde época 1 en las cinco corridas (incluidas `alpha_090`/`alpha_095`,
+que el chequeo automático marcó "sin señales de inestabilidad") — no es un pico transitorio de pesos
+random que warm-start pueda mitigar, es un exploit que se refuerza cada época. Coincide con el patrón
+de gaming documentado en de Oliveira et al. 2024 (PESQetarian), ya citado en la entrada de diseño de V4
+del 30/08.
+
+**Corrección a una hipótesis explorada y descartada:** se evaluó si el fallo tenía además una causa
+distribucional específica — la hipótesis de que `SQUIM_OBJECTIVE` nunca vio, en su propio entrenamiento,
+salidas de una red parcialmente entrenada con artefactos propios (ruido musical, huecos espectrales),
+y que por eso evalúa "fuera de distribución" desde el primer batch. **Se verificó contra la fuente
+primaria (Kumar et al. 2023, sección 4.4.1) y no se sostiene tal como se planteó**: el dataset de
+entrenamiento de Squim (DNS Challenge 2020) incluye explícitamente salidas de sistemas de enhancement
+basados en arquitectura GCRN "with varying degree of performances due to different configurations" —
+es decir, Squim sí vio salidas de enhancement imperfectas como parte de su entrenamiento. No se agrega
+esta hipótesis a los hallazgos confirmados del proyecto; el diagnóstico de Goodhart's Law/gaming (arriba)
+es el que queda respaldado por evidencia directa.
+
+**Precisión sobre el mecanismo (agregada 31/08/2026 tras releer Xu et al. 2022, sección III):** la
+pregunta "¿la distribución de entrenamiento de Squim era demasiado angosta?" resultó ser la pregunta
+equivocada, pero por una razón más interesante que la de arriba. Xu, describiendo el trabajo previo de
+Fu et al. [31], reporta el mismo fenómeno que observamos: *"the fixed PESQNet was reported to be **fooled**
+by the updated DNS (**estimated PESQ scores increase while true PESQ scores decrease**) after training
+for several minibatches. In [31], this was mainly caused by the fixed Quality-Net **not having seen the
+enhanced speech signal generated by the updated DNS**."* La causa que identifica no es la amplitud del
+dataset original del proxy, sino que el proxy queda **stale** respecto de un modelo que se mueve: el
+DNS deriva hacia regiones que ningún dataset fijo cubre, por ancho que sea. Nuestro resultado es una
+replicación independiente de [31] con otro proxy (Squim en vez de Quality-Net) y otra arquitectura.
+
+**Limitación de esta evaluación (detectada 31/08/2026, aplica retroactivamente):** los cinco checkpoints
+de Paso 1 se evaluaron desde `best.pt`, que `Trainer` elige por `val_loss` mínima — y para
+`mse_plus_squim` esa `val_loss` **incluye** el término `(1-α)·(-pesq_hat)`. Más gameado = mayor
+`pesq_hat` = menor `val_loss` = "mejor" checkpoint. El criterio de selección está contaminado por
+exactamente lo que se quería medir: `alpha_070` guardó la época 3 (`val_squim` −4.43, el más inflado) y
+`alpha_080` la época 2. No cambia la conclusión — la tendencia era monótona en las tres épocas de las
+cuatro corridas — pero los números de la tabla de arriba son, en rigor, los del punto más gameado de
+cada corrida. V4b (abajo) evalúa época por época para no repetir el sesgo.
+
+**Decisión:** se cierra la línea `mse_plus_squim` para V4. No se corre Paso 2 (warm-start) — ataca
+inestabilidad de época 1, que no es la causa observada. No se sub-barre `squim_scale` — el desbalance
+entre `mse_component` y `squim_component` crece *durante* el entrenamiento (autoreforzado), no es una
+mala calibración estática que un factor de escala distinto resuelva. Construir un proxy PESQ propio
+(entrenado explícitamente sobre salidas de redes parcialmente entrenadas, no solo mezclas ruidosas
+naturales) queda como posibilidad de investigación abierta, a intentar solo si sobra tiempo después de
+GCRN (ver `docs/PLAN_GCRN.md`) — no es la prioridad actual.
+
+**Próximo paso (actualizado 01/09/2026):** antes de cerrar la línea del proxy se corrió V4b (abajo),
+que prueba el protocolo estabilizado de Xu sin reentrenar el proxy. Después de V4b se pasa a GCRN
+(Tan & Wang 2020, IEEE/ACM TASLP) — evolución directa del propio paper base del proyecto (Tan & Wang
+2018), con complex spectral mapping + GLU + LSTM agrupada. Plan completo en `docs/PLAN_GCRN.md`.

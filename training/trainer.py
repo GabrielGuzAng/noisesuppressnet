@@ -318,7 +318,9 @@ class Trainer:
 
 if __name__ == "__main__":
     # Cambiamos a importación absoluta para evitar problemas con -m
-    from .config import CONFIG_V1, CONFIG_V2, CONFIG_V3, CONFIG_V3B, CONFIG_V3E
+    from .config import (CONFIG_V1, CONFIG_V2, CONFIG_V3, CONFIG_V3B, CONFIG_V3E,
+                         CONFIG_V5, CONFIG_V5_S43, CONFIG_V5_S44, CONFIG_V5_SMOKE,
+                         CONFIG_V5_SMOKE_LR5E5, CONFIG_V5_SMOKE_LR2E4)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="V1",
@@ -331,6 +333,12 @@ if __name__ == "__main__":
         "V3": CONFIG_V3,
         "V3B": CONFIG_V3B,
         "V3E": CONFIG_V3E,
+        "V5": CONFIG_V5,
+        "V5S43": CONFIG_V5_S43,
+        "V5S44": CONFIG_V5_S44,
+        "V5SMOKE": CONFIG_V5_SMOKE,
+        "V5SMOKE_LR5E5": CONFIG_V5_SMOKE_LR5E5,
+        "V5SMOKE_LR2E4": CONFIG_V5_SMOKE_LR2E4,
     }
     if args.config not in configs:
         print(f"Configuración '{args.config}' no encontrada. Las disponibles: {list(configs.keys())}")

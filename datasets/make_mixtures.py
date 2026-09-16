@@ -7,7 +7,10 @@ import random
 import pandas as pd
 
 SAMPLE_RATE = 16000
-SNR_RANGE = [0, 5, 10, 15, 20]
+# Rango de SNR de las mixturas de entrenamiento. El original (-5, 15) dejaba el
+# bucket [15,20] de los test sets sellados FUERA de distribución; el ancho (-5, 20)
+# lo mete en distribución y elimina la objeción de extrapolación (Braun & Tashev 2020).
+SNR_MIN, SNR_MAX = -5.0, 15.0
 TARGET_DURATION = 4.0
 N_TRAIN=50000
 N_VAL=2000
@@ -26,6 +29,9 @@ RAW_NOISE_DIRS = [
 ]
 PROCESSED = PROJECT_ROOT / "data" / "processed"
 PROCESSED_ES = PROJECT_ROOT / "data" / "processed_es"
+# Destino del dataset de rango ancho (V5). Directorio aparte a propósito:
+# processed_es es la fuente con la que se entrenaron V3, V3b y V3e y no se toca.
+PROCESSED_ES_WIDE = PROJECT_ROOT / "data" / "processed_es_wide"
 
 # Extensiones a buscar:
 SPEECH_EXTS = ("*.flac", "*.mp3")  
@@ -65,14 +71,19 @@ def pad_or_crop(x, target_len):
 
 def make_pairs(speech_files, noise_files, out_dir, n_pairs):
     out_dir = Path(out_dir)
+    if out_dir.exists() and any(out_dir.iterdir()):
+        raise RuntimeError(
+            f"ABORT: {out_dir} ya tiene contenido.\n"
+            "Regenerar pisaría datos con los que ya se entrenaron variantes y\n"
+            "rompería su reproducibilidad. Borralo a mano PRIMERO si estás seguro."
+        )
     out_dir.mkdir(parents=True, exist_ok=True)
     target_len = int(TARGET_DURATION * SAMPLE_RATE)
 
     for i in range(n_pairs):
         sp = load_resample_mono(random.choice(speech_files))
         ns = load_resample_mono(random.choice(noise_files))
-        #snr = random.choice(SNR_RANGE)
-        snr = random.uniform(-5, 15)
+        snr = random.uniform(SNR_MIN, SNR_MAX)
 
         sp = pad_or_crop(sp, target_len)
         ns = pad_or_crop(ns, target_len)
@@ -152,7 +163,12 @@ CV_MANIFEST_DIR = PROJECT_ROOT / "data" / "interim" / "cv26_es"
 if __name__ == "__main__":
     random.seed(SEED)  # reproducibilidad: TODAS las operaciones aleatorias de este script dependen de esta semilla
 
-    language = "es"  # o "en"
+    import argparse
+    parser = argparse.ArgumentParser(description="Genera las mixturas (noisy, clean)")
+    parser.add_argument("--lang", choices=["en", "es", "es_wide"], default="es",
+                        help="en/es: rango de SNR original. es_wide: [-5,20] a processed_es_wide")
+    language = parser.parse_args().lang
+    print(f"Modo: {language}")
 
     noise_files = []
     for d in RAW_NOISE_DIRS:
@@ -192,6 +208,21 @@ if __name__ == "__main__":
         make_pairs(train_speech, noise_files, PROCESSED_ES / "train", N_TRAIN)
         print("→ Generando val pairs...")
         make_pairs(val_speech, noise_files, PROCESSED_ES / "val", N_VAL)
+
+    elif language == "es_wide":
+        SNR_MIN, SNR_MAX = -5.0, 20.0
+        print(f"Rango de SNR ANCHO: [{SNR_MIN}, {SNR_MAX}] dB")
+        train_speech = collect_common_voice_files(
+            manifest_path=CV_MANIFEST_DIR / "train_manifest.tsv",
+            balance_gender=True, random_seed=42)
+        val_speech = collect_common_voice_files(
+            manifest_path=CV_MANIFEST_DIR / "dev_manifest.tsv",
+            balance_gender=True, random_seed=42)
+        print(f"Speech files train: {len(train_speech)}, val: {len(val_speech)}")
+        print("→ Generando train pairs (rango ancho)...")
+        make_pairs(train_speech, noise_files, PROCESSED_ES_WIDE / "train", N_TRAIN)
+        print("→ Generando val pairs (rango ancho)...")
+        make_pairs(val_speech, noise_files, PROCESSED_ES_WIDE / "val", N_VAL)
 
     else:
         raise ValueError(f"Idioma no soportado: {language}")

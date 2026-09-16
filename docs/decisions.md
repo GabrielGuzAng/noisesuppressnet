@@ -723,3 +723,210 @@ condiciones de ruido de `test_v1_en`, y evaluar V1, V2 y V3e sin reentrenar nada
 resultante permite separar el efecto de idioma del de canal en las mismas unidades. Las
 predicciones y los criterios de decisión están preregistrados fuera del repositorio, con
 el hash comprometido en `docs/preregistro_mls_es.sha256` antes de que el dato exista.
+
+
+## V5: la contingencia de R01 rinde más que la línea que reemplaza (07/09/2026)
+
+**Diseño.** V5 es la "propuesta completa" del anteproyecto, redefinida. Su definición
+original era «español + PESQNet»; PESQNet/Squim se descartó con evidencia propia (ver
+entradas de V4 y V4b). Era el riesgo R01 de la matriz —el más alto, con VME 3,5 días— y su
+contingencia declarada era caer a la loss combinada de V2. Esto es exactamente eso.
+
+**V5 NO es una celda del ablation, y hay que enunciarlo así.** La cadena V1→V2→V3e queda
+cerrada y es la que da la atribución causal, una variable por vez. V5 combina lo que
+funcionó y su rol es ser el mejor sistema. Dos cambios sobre V3e:
+
+1. **Arranca de `checkpoints/v2/best.pt` y conserva su loss combinada MSE + SI-SDR.** Van
+   juntos: fine-tunear con MSE puro desde un checkpoint que ganó +0,20 PESQ gracias a la
+   loss combinada desharía la mitad de esa ganancia. V3/V3b/V3e partieron de V1 con MSE puro
+   por disciplina de ablation, así que la línea española nunca había heredado la mejora de V2.
+2. **Entrena sobre `data/processed_es_wide`**, con SNR ~ uniform(-5, 20). El bucket [15,20]
+   de los test sellados quedaba entero fuera de la distribución de entrenamiento, y es donde
+   vive el hallazgo principal. Se declaró por adelantado que esto podía ATENUAR el efecto
+   observado: es un test de robustez, no un amplificador.
+
+Receta de optimización: la de V3e (lr 1e-4, 25 épocas, decay en la 12).
+
+**Un tercer cambio que se evaluó y se descartó: `center=False`.** Se creía que el lookahead
+de 10 ms venía del padding simétrico de la STFT. Se midió y no: el retardo sigue
+`n_fft − hop` y es idéntico con padding causal, porque lo impone el overlap-add de la
+síntesis, no el análisis. Verificado sobre cinco configuraciones de n_fft/hop en
+`tests/test_causality.py`. Como es la configuración STFT que especifica el paper base
+(ventana 20 ms, hop 10 ms), el sistema de referencia tiene idéntica latencia: no hay
+desviación, había una afirmación mal escrita en `CLAUDE.md`. V5 no lleva el cambio.
+
+**Screening de lr en vez de sweep, con criterio declarado antes de correr.** Tres corridas
+de 3 épocas (5e-5, 1e-4, 2e-4). La lección de V3b es que en este modelo un sweep corto elige
+por convergencia rápida y se equivoca: su ganador (5e-5) terminó peor que el candidato que a
+5 épocas no había convergido. Por eso el criterio escrito fue *descartar* el lr que degrade
+o diverja, y si los tres pasan usar 1e-4 por la evidencia de las corridas convergidas, NO
+por cuál queda más alto a 3 épocas.
+
+Resultado sobre `test_v2_es`: 5e-5 → 2,568; 1e-4 → 2,567; 2e-4 → 2,572. **Ninguna diferencia
+sobrevive un test apareado** (p entre 0,44 y 0,87). Se aplicó la regla y **se eligió 1e-4
+aunque 2e-4 quedó nominalmente más alto** — que es exactamente la situación para la que se
+escribió. Dato de respaldo: 2e-4 tuvo el `val_mse` de la época 1 en 0,0924 contra ~0,085 de
+los otros dos, la firma de un lr demasiado agresivo desde un checkpoint asentado.
+
+**Resultado.** 25 épocas, 13,2 h, `best.pt` en la época 21 (val_loss −0,0792).
+
+| test set | ruidoso | V1 | V2 | V3e | **V5** |
+|---|---|---|---|---|---|
+| español, Common Voice | 2,161 | 2,330 | 2,451 | 2,551 | **2,686** |
+| inglés, LibriSpeech | 2,152 | 2,650 | 2,849 | 2,619 | **2,774** |
+| español, audiolibro | 2,195 | 2,602 | — | 2,686 | **2,840** |
+
+En español: **+0,136 sobre V3e** (p = 2e−17) y **+0,235 sobre V2** (p = 1e−29), apareado, y
+mejora en las cuatro métricas. **Cruza OP-1 (PESQ ≥ 2,5) en los tres test sets**, objetivo
+que hasta ahora solo se cumplía en inglés.
+
+**El olvido cambia de referencia y hay que reportarlo con cuidado.** V3/V3b/V3e partían de V1,
+así que su olvido se medía contra V1. V5 parte de V2, así que su referencia es V2:
+
+- contra V2: **−0,075** (p = 0,004), con **16,8 %** de archivos que caen más de 0,2
+- contra V1: **+0,125** (p = 1e−15), con 9,2 % de archivos rotos
+
+Las dos son ciertas y dicen cosas distintas. La honesta es la primera —V5 pierde algo
+respecto de su propio punto de partida— pero no hay que omitir la segunda: **V5 es mejor que
+V1 en inglés**, así que el fine-tuning al español no dejó al modelo peor que el baseline
+reproducible del paper. El 16,8 % está más cerca de V3 (17,6 %) que de V3e (11,6 %), lo cual
+es coherente: V5 corrió la receta más agresiva durante 25 épocas.
+
+**Limitación por error de configuración, declarada.** `CONFIG_V5` no definió
+`save_every_n_epochs`, así que solo quedó `best.pt`. En V4b se vio que el criterio de
+selección por mínima `val_loss` no está alineado con PESQ, y en V5 no se va a poder chequear
+si alguna otra época daba mejor PESQ que la 21. Las réplicas de semilla sí guardan cada 3
+épocas para cubrir ese hueco.
+
+
+## El control preregistrado idioma/canal: el efecto por SNR es lingüístico, la adaptación es mixta (07/09/2026)
+
+Se evaluaron V1, V3e y V5 sobre `test_v3_mls_es` (español, canal de audiolibro, condiciones
+de ruido reusadas verbatim de `test_v1_en`). Las predicciones y los criterios de decisión
+estaban escritos antes de que el test set existiera; el hash del preregistro está commiteado
+en `docs/preregistro_mls_es.sha256`. Toda la inferencia va **agrupada por hablante**: son ~6
+pares por cada uno de los 40 hablantes y los pares no son independientes.
+
+**P1 — la pendiente contra el SNR sigue al idioma, no al canal. Criterio: IDIOMA.**
+
+| V1 evaluado en | idioma | canal | rho |
+|---|---|---|---|
+| `test_v1_en` | inglés | audiolibro | −0,065 (n.s.) |
+| `test_v2_es` | español | crowdsourced | −0,262 |
+| `test_v3_mls_es` | español | audiolibro | **−0,212**, IC95 agrupado [−0,309, −0,115] |
+
+El criterio preregistrado pedía rho ≤ −0,15 con el intervalo sin cruzar cero: se cumple.
+Cambiar el **canal** manteniendo el idioma mueve la pendiente de −0,262 a −0,212; cambiar el
+**idioma** manteniendo el canal la lleva a −0,065, indistinguible de cero. Es la respuesta
+directa a Wang et al. 2022 en las unidades del proyecto: en este régimen el idioma no es
+despreciable frente al canal.
+
+**P2 — la ganancia del fine-tuning transfiere entre canales, pero atenuada. Criterio: PARCIAL.**
+
+Ganancia de V3e sobre V1: **+0,221** en Common Voice contra **+0,084** en audiolibro
+(IC95 agrupado [+0,056, +0,112]), con `prop_improve` 0,748 (IC95 [0,686, 0,806]). El umbral
+para "aprendió idioma" era media > +0,10 **y** prop_improve > 0,70: la proporción pasa, la
+media no. Cae en la zona intermedia declarada.
+
+Lectura: tres de cada cuatro archivos mejoran y el intervalo no toca cero, así que la
+adaptación **sí** es lingüística en parte — pero pierde ~62 % de su magnitud al cambiar de
+canal. **Lo que V3e aprendió fine-tuneando sobre Common Voice es en parte español y en parte
+ese canal.** Eso no estaba en las afirmaciones del proyecto, que hablan de adaptación al
+idioma, y obliga a reformular el aporte 2.
+
+**Hallazgo lateral, y es el más accionable: cuánto se retiene depende fuertemente de la receta.**
+
+| modelo | ganancia en Common Voice | en audiolibro | retiene |
+|---|---|---|---|
+| V3e | +0,221 | +0,084 | **38 %** |
+| V5 | +0,356 | +0,239 | **67 %** |
+
+V5 conserva casi el doble entrenando sobre un solo dataset, igual que V3e. Lo que cambió fue
+el punto de partida y el rango de SNR. Así que la dependencia del canal no es una propiedad
+inevitable del fine-tuning: es una propiedad de la receta, y se puede reducir. Queda como
+métrica para evaluar cualquier intento futuro de invariancia al canal (por ejemplo
+augmentación espectral al estilo de Braun & Tashev 2020, sección 5).
+
+**Limitación estructural, declarada en el preregistro antes de sellar.** 40 hablantes contra
+los ~248 de Common Voice, y no es corregible: un corpus de audiolibros son pocos lectores
+leyendo mucho, así que el canal que se quiere fijar causa esa estructura. La dirección del
+confusor se declaró por adelantado: 40 lectores de audiolibro son un dominio más fácil, así
+que **P1 es conservador** —el efecto sobrevive a pesar de la condición favorable— pero **P2
+es ambiguo en esa dirección**: parte de la atenuación podría ser diversidad de locutor y no
+canal.
+
+
+## Corrección: el costo del `cudnn_deterministic` no reproduce (07/09/2026)
+
+La entrada del 22/08/2026 afirma que activar `torch.backends.cudnn.deterministic` cuesta ~2x
+por época en este modelo, midiendo 1.886 s sin el flag contra 3.820 s con él durante el sweep
+de V3b. **Esa medición no se reproduce.** Tiempos por época medidos desde entonces:
+
+| corrida | determinism | loss | min/época |
+|---|---|---|---|
+| V2 | ON | combinada | 31,5 |
+| V3e | ON | MSE | 31,7 |
+| screening V5 | OFF | combinada | 32,0 |
+| V5 | ON | combinada | **31,0** |
+
+Con el flag activo la época tarda lo mismo que sin él. Los 3.820 s del sweep son el dato
+anómalo —probablemente había otra carga en la máquina— y no el costo real del determinism.
+
+Dos implicancias: **V3e corrió efectivamente determinista** (no hay una afirmación de
+reproducibilidad falsa sobre una variante taggeada), y **desaparece la justificación para
+desactivar el flag en corridas exploratorias**. De acá en más conviene dejarlo activo por
+defecto en todo, salvo que una medición nueva vuelva a mostrar un costo real.
+
+
+## El rendimiento por bucket de SNR es plano en inglés: la U invertida era efecto techo (06/09/2026)
+
+La mejora cruda de PESQ es máxima en SNR medio y cae en los extremos, lo que sugiere que
+convendría reforzar los buckets medios en el entrenamiento. **Normalizando por el margen
+disponible para mejorar** (techo nominal de PESQ-NB 4,5 menos el PESQ del ruidoso), la
+conclusión se invierte:
+
+| bucket | PESQ ruidoso | margen | V1 inglés | V1 español | V3e español |
+|---|---|---|---|---|---|
+| [5, 10] | 1,97 | 2,53 | **24,7 %** | 14,8 % | 21,4 % |
+| [10, 15] | 2,41 | 2,09 | **25,0 %** | 3,4 % | 19,8 % |
+| [15, 20] | 2,96 | 1,54 | **22,3 %** | **−11,4 %** | 8,6 % |
+
+**En inglés el rendimiento normalizado es plano** entre los buckets 2 y 4: el modelo recupera
+un ~22-25 % del margen disponible en todo el rango. La caída del delta crudo de +0,625 a
++0,343 no es que funcione peor a SNR alto, es que queda mucho menos para ganar. **En español
+no se disuelve**: 14,8 % → 3,4 % → −11,4 %.
+
+**Implicancia de diseño: no conviene reforzar los buckets medios en el entrenamiento.** En
+inglés no hay nada que corregir ahí, y en español el problema no es distribucional sino
+lingüístico. Reforzar el centro acentuaría el pico en vez de llenar los extremos. La palanca
+correcta para los extremos es más datos en los extremos, que es lo que hizo el cambio a
+uniform(-5, 20).
+
+**Y elimina la explicación alternativa más obvia del hallazgo principal.** Ante la objeción
+"la caída a SNR alto en español es porque no queda margen", la respuesta es que con el margen
+idéntico el inglés recupera el 22,3 % y el español da −11,4 %. Mismo margen, resultado
+opuesto. Es el mismo tipo de refutación condicionada al confusor que F5.d aplicó al nivel
+basal en el eje de olvido.
+
+Salvedad a declarar: el techo de 4,5 es el máximo nominal de PESQ-NB y la normalización
+asume margen lineal, lo cual es una simplificación. Va como análisis complementario, no como
+métrica principal.
+
+
+## `make_mixtures.py` no tenía guard de sobrescritura (06/09/2026)
+
+`make_pairs` escribía con `mkdir(exist_ok=True)` sin verificar si el destino ya tenía
+contenido. Un `--lang es` distraído habría pisado en silencio los 13 GB de
+`data/processed_es` —la fuente con la que se entrenaron V3, V3b y V3e— rompiendo la
+reproducibilidad de tres variantes ya taggeadas. Es una violación directa de la restricción
+dura del proyecto que estuvo latente desde el sprint de agosto.
+
+Ahora aborta si el destino tiene contenido, el rango de SNR pasó de literal enterrado a
+constantes con su justificación, y el modo de rango ancho escribe a un directorio separado
+(`data/processed_es_wide`) en vez de reusar el existente.
+
+De paso quedó cuantificado que el **0,13 %** de los pares tiene ruido digitalmente nulo
+(recortes que caen en tramos de silencio de MUSAN/ESC-50, con SNR efectivo infinito). La
+proporción es idéntica en `processed_es`, así que es una propiedad de los corpus de ruido
+y no algo que introduzca el rango ancho. A ese nivel es despreciable, pero conviene tenerlo
+registrado.

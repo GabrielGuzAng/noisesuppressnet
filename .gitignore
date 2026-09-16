@@ -62,3 +62,12 @@ DocsProfesores/
 
 # Plan de una línea descartada; la decisión y su razón están en docs/decisions.md
 docs/PLAN_GCRN.md
+
+# Plantillas y bases del journal (material externo, no artefacto del proyecto)
+JournalUNLP/
+
+# Oráculo: predicciones y valores esperados. Fuera del repo por diseño.
+nosiesuppressnet-oracle/
+
+# Documentos de trabajo personales, no artefactos del proyecto
+docs/reunion_*.html

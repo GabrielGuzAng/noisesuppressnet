@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T02:45:07.564969+00:00",
+  "generated_at": "2026-09-08T16:21:34.427227+00:00",
   "seed": 42,
   "n_resamples": 10000,
   "primary_metric": "pesq_nb",
@@ -1331,6 +1331,104 @@
             "-0.3": 0.0,
             "-0.5": 0.0
           }
+        }
+      ]
+    },
+    "F6": {
+      "label": "Control de idioma vs canal (test_v3_mls_es)",
+      "estimand": "pendiente de la ganancia contra el SNR, y transferencia de la ganancia del fine-tuning entre canales",
+      "correction": null,
+      "exploratory": false,
+      "preregistered": "docs/preregistro_mls_es.sha256",
+      "inference": "bootstrap percentil agrupado por hablante (los pares no son independientes: ~6 por cada uno de 40 hablantes)",
+      "n_speakers": 40,
+      "p1": {
+        "id": "P1",
+        "label": "¿La pendiente contra el SNR sigue al idioma o al canal?",
+        "slopes": [
+          {
+            "test_set": "v1_en",
+            "language": "inglés",
+            "channel": "audiolibro",
+            "rho": -0.06512014592233475,
+            "n": 250,
+            "p_value": 0.30509487858791157
+          },
+          {
+            "test_set": "v2_es",
+            "language": "español",
+            "channel": "crowdsourced",
+            "rho": -0.26173666778668453,
+            "n": 250,
+            "p_value": 2.7776337127562774e-05
+          },
+          {
+            "test_set": "v3_mls_es",
+            "language": "español",
+            "channel": "audiolibro",
+            "rho": -0.21172601161618584,
+            "n": 250,
+            "p_value_unclustered": 0.0007539157054572954,
+            "p_value_note": "sobre-confiado: ignora el agrupamiento por hablante. Usar ci95 para inferir.",
+            "ci95": {
+              "point": -0.21172601161618584,
+              "lo": -0.30859293161087886,
+              "hi": -0.11485041389395015,
+              "method": "percentil, remuestreo por hablante",
+              "n_clusters": 40,
+              "n_resamples": 10000,
+              "seed": 42
+            }
+          }
+        ],
+        "outcome": "idioma",
+        "thresholds": {
+          "language_rho": -0.15,
+          "channel_rho": -0.1
+        }
+      },
+      "p2": {
+        "id": "P2",
+        "label": "¿La ganancia del fine-tuning transfiere entre canales?",
+        "gain_crowdsourced": 0.22050765800476074,
+        "gain_audiobook": {
+          "point": 0.08424280309677123,
+          "lo": 0.057000197372689874,
+          "hi": 0.11260743524638972,
+          "method": "percentil, remuestreo por hablante",
+          "n_clusters": 40,
+          "n_resamples": 10000,
+          "seed": 42
+        },
+        "prop_improve": {
+          "point": 0.748,
+          "lo": 0.688,
+          "hi": 0.8048780487804879,
+          "method": "percentil, remuestreo por hablante",
+          "n_clusters": 40,
+          "n_resamples": 10000,
+          "seed": 42
+        },
+        "outcome": "parcial",
+        "thresholds": {
+          "language_mean": 0.1,
+          "language_prop": 0.7,
+          "channel_mean": 0.03,
+          "channel_prop": 0.55
+        }
+      },
+      "retention_by_recipe": [
+        {
+          "variant": "v3e",
+          "gain_crowdsourced": 0.22050765800476074,
+          "gain_audiobook": 0.08424280309677123,
+          "retained": 0.38204026045640754
+        },
+        {
+          "variant": "v5",
+          "gain_crowdsourced": 0.35613255882263184,
+          "gain_audiobook": 0.2389401273727417,
+          "retained": 0.6709303079804714
         }
       ]
     }

@@ -1,6 +1,6 @@
 # Reanalisis estadistico
 
-Generado: 2026-09-06T02:45:07.564969+00:00
+Generado: 2026-09-08T16:21:34.427227+00:00
 Seed: 42 | n_resamples: 10000 | metrica principal: pesq_nb | umbral de rotura: -0.2
 
 ## Integridad de los datos
@@ -189,3 +189,30 @@ Estimando: exceso de rotura del tratamiento sobre el control pareado; solapamien
 | v4b_placebo_epoch_02 | control | 0.0080 | 0.0040 | 0.0000 | 0.0000 |
 | v4b_placebo_epoch_03 | control | 0.0040 | 0.0000 | 0.0000 | 0.0000 |
 | v2 | control | 0.0120 | 0.0000 | 0.0000 | 0.0000 |
+
+
+## F6 - Control de idioma vs canal (preregistrado)
+
+Inferencia: bootstrap percentil agrupado por hablante (los pares no son independientes: ~6 por cada uno de 40 hablantes)
+Hablantes: 40 | Preregistro: docs/preregistro_mls_es.sha256
+
+### P1 - desenlace: **IDIOMA**
+
+| test set | idioma | canal | rho | inferencia |
+|---|---|---|---|---|
+| `v1_en` | inglés | audiolibro | -0.065 | p = 3.05e-01 |
+| `v2_es` | español | crowdsourced | -0.262 | p = 2.78e-05 |
+| `v3_mls_es` | español | audiolibro | -0.212 | IC95 agrupado [-0.309, -0.115] (p sin agrupar 7.54e-04, sobre-confiado) |
+
+### P2 - desenlace: **PARCIAL**
+
+- Ganancia de V3e sobre V1, canal crowdsourced: +0.221
+- Canal audiolibro: +0.084 (IC95 agrupado [+0.057, +0.113])
+- Proporcion que mejora: 0.748 (IC95 agrupado [0.688, 0.805])
+
+### Retencion de la ganancia entre canales, por receta
+
+| variante | crowdsourced | audiolibro | retiene |
+|---|---|---|---|
+| v3e | +0.221 | +0.084 | 38% |
+| v5 | +0.356 | +0.239 | 67% |

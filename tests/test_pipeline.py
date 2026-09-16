@@ -1,6 +1,6 @@
 # test_pipeline.py
 import torch
-from crn import CRN
+from models.crn import CRN
 from stft import STFTHelper  # tu wrapper
 
 # Simular 1 segundo de audio (lo que vendrá del DataLoader)

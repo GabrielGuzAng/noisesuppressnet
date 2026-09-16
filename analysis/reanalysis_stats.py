@@ -873,6 +873,198 @@ def family_f5(results_dir: Path, seed: int = SEED) -> dict:
     }
 
 
+
+# ---------------------------------------------------------------------------
+# F6 -- control de idioma vs canal sobre test_v3_mls_es.
+#
+# Responde a Wang et al. 2022 (Interspeech), que concluyen que en estas tareas
+# el canal de grabación domina y el idioma es despreciable. La comparación
+# EN/ES del proyecto confundía ambos: LibriSpeech es audiolibro, Common Voice
+# es crowdsourced. test_v3_mls_es fija el canal (audiolibro) y varía el idioma.
+#
+# TODA la inferencia de esta familia se agrupa por hablante. Son ~6 pares por
+# cada uno de los 40 hablantes, así que los pares NO son independientes y un
+# bootstrap sobre pares sería sobre-confiado: el N efectivo está más cerca de
+# 40 que de 250. Los intervalos salen más anchos que los de F1-F5 y eso es
+# correcto, no un defecto a corregir.
+#
+# Predicciones y umbrales fijados en el preregistro ANTES de que el test set
+# existiera (hash en docs/preregistro_mls_es.sha256).
+# ---------------------------------------------------------------------------
+
+CHANNEL_TEST_SET = "v3_mls_es"
+CHANNEL_METADATA = "test_v3_mls_es_metadata.json"
+
+# Umbrales preregistrados. No se tocan: cambiarlos después de ver el dato
+# invalidaría el ejercicio.
+P1_LANGUAGE_RHO = -0.15   # rho <= este valor, con IC sin cruzar cero -> idioma
+P1_CHANNEL_RHO = -0.10    # rho >= este valor -> canal
+P2_LANGUAGE_MEAN = 0.10   # media > este valor Y prop > P2_LANGUAGE_PROP -> idioma
+P2_LANGUAGE_PROP = 0.70
+P2_CHANNEL_MEAN = 0.03    # media <= este valor O prop <= P2_CHANNEL_PROP -> canal
+P2_CHANNEL_PROP = 0.55
+
+
+def p1_outcome(rho: float, ci_hi: float) -> str:
+    """Regla de decisión de P1, tal como quedó fijada en el preregistro.
+
+    El orden de las ramas importa. El caso "rho suficientemente negativo pero el
+    IC agrupado incluye cero" se resuelve como INDETERMINADO POR POTENCIA y
+    explícitamente NO como canal: con 40 clusters el intervalo puede ser ancho
+    sin que eso sea evidencia a favor del canal.
+    """
+    if rho <= P1_LANGUAGE_RHO:
+        return "idioma" if ci_hi < 0 else "indeterminado por potencia"
+    if rho >= P1_CHANNEL_RHO:
+        return "canal"
+    return "indeterminado"
+
+
+def p2_outcome(mean_gain: float, prop_improve: float) -> str:
+    """Regla de decisión de P2, tal como quedó fijada en el preregistro."""
+    if prop_improve > P2_LANGUAGE_PROP and mean_gain > P2_LANGUAGE_MEAN:
+        return "idioma"
+    if prop_improve <= P2_CHANNEL_PROP or mean_gain <= P2_CHANNEL_MEAN:
+        return "canal"
+    return "parcial"
+
+
+def load_speaker_ids(metadata_path: Path) -> dict[int, str]:
+    """pair_id -> speaker_id, desde la metadata del sellado."""
+    with open(metadata_path) as f:
+        return {p["id"]: str(p["speaker_id"]) for p in json.load(f)["pairs"]}
+
+
+def clustered_bootstrap_ci(
+    values: np.ndarray,
+    clusters: np.ndarray,
+    statistic: Callable[[np.ndarray], float],
+    seed: int = SEED,
+    n_resamples: int = N_RESAMPLES,
+) -> dict:
+    """IC95 percentil remuestreando CLUSTERS (hablantes), no observaciones.
+
+    Se usa percentil y no BCa a propósito: BCa necesita jackknife sobre las
+    unidades de remuestreo, y con 40 clusters su corrección de aceleración es
+    inestable. El percentil sobre clusters es el estimador honesto acá.
+    """
+    rng = np.random.default_rng(seed)
+    unique = np.unique(clusters)
+    index_by_cluster = {c: np.flatnonzero(clusters == c) for c in unique}
+    draws = []
+    for _ in range(n_resamples):
+        picked = rng.choice(unique, size=len(unique), replace=True)
+        idx = np.concatenate([index_by_cluster[c] for c in picked])
+        value = statistic(idx)
+        if np.isfinite(value):
+            draws.append(value)
+    draws = np.asarray(draws)
+    return {
+        "point": float(statistic(np.arange(len(values)))),
+        "lo": float(np.percentile(draws, 2.5)),
+        "hi": float(np.percentile(draws, 97.5)),
+        "method": "percentil, remuestreo por hablante",
+        "n_clusters": int(len(unique)),
+        "n_resamples": n_resamples,
+        "seed": seed,
+    }
+
+
+def family_f6(results_dir: Path, metadata_dir: Path, seed: int = SEED) -> dict:
+    """Control de idioma vs canal, con inferencia agrupada por hablante."""
+    speakers = load_speaker_ids(metadata_dir / CHANNEL_METADATA)
+    mls = {v: load_pairs(results_dir / f"{v}_{CHANNEL_TEST_SET}.json")
+           for v in ("v1", "v3e", "v5")}
+    ids = sorted(mls["v1"])
+    clusters = np.array([speakers[i] for i in ids])
+    snr = np.array([mls["v1"][i]["snr_db"] for i in ids], dtype=np.float64)
+
+    # --- P1: pendiente de V1 contra el SNR, en los tres test sets ---
+    slopes = []
+    for test_set, language, channel in (
+        ("v1_en", "inglés", "audiolibro"),
+        ("v2_es", "español", "crowdsourced"),
+        (CHANNEL_TEST_SET, "español", "audiolibro"),
+    ):
+        pairs = load_pairs(results_dir / f"v1_{test_set}.json")
+        order = sorted(pairs)
+        x = np.array([pairs[i]["snr_db"] for i in order], dtype=np.float64)
+        y = np.array([pairs[i][f"{PRIMARY_METRIC}_delta"] for i in order], dtype=np.float64)
+        spear = spearman_test(x, y)
+        # El p de scipy trata los 250 pares como independientes. En
+        # test_v3_mls_es NO lo son (~6 por hablante), así que ahí queda
+        # renombrado para que nadie lo lea como si fuera válido: la
+        # inferencia de ese set es el IC agrupado, no este p.
+        entry = {"test_set": test_set, "language": language, "channel": channel,
+                 "rho": spear["rho"], "n": spear["n"]}
+        if test_set == CHANNEL_TEST_SET:
+            entry["p_value_unclustered"] = spear["p_value"]
+            entry["p_value_note"] = ("sobre-confiado: ignora el agrupamiento por "
+                                     "hablante. Usar ci95 para inferir.")
+        else:
+            entry["p_value"] = spear["p_value"]
+        if test_set == CHANNEL_TEST_SET:
+            entry["ci95"] = clustered_bootstrap_ci(
+                y, clusters,
+                lambda idx: stats.spearmanr(x[idx], y[idx]).correlation,
+                seed=seed)
+        slopes.append(entry)
+
+    control = next(s for s in slopes if s["test_set"] == CHANNEL_TEST_SET)
+    rho, hi = control["rho"], control["ci95"]["hi"]
+    outcome_p1 = p1_outcome(rho, hi)
+
+    # --- P2: ¿la ganancia del fine-tuning transfiere de un canal al otro? ---
+    gain = np.array([mls["v3e"][i][f"{PRIMARY_METRIC}_est"]
+                     - mls["v1"][i][f"{PRIMARY_METRIC}_est"] for i in ids])
+    cv = {v: load_pairs(results_dir / f"{v}_v2_es.json") for v in ("v1", "v3e")}
+    cv_ids = sorted(cv["v1"])
+    gain_cv = float(np.mean([cv["v3e"][i][f"{PRIMARY_METRIC}_est"]
+                             - cv["v1"][i][f"{PRIMARY_METRIC}_est"] for i in cv_ids]))
+    mean_ci = clustered_bootstrap_ci(gain, clusters, lambda idx: float(gain[idx].mean()), seed=seed)
+    prop_ci = clustered_bootstrap_ci(gain, clusters, lambda idx: float((gain[idx] > 0).mean()), seed=seed)
+    mean_gain, prop = mean_ci["point"], prop_ci["point"]
+    outcome_p2 = p2_outcome(mean_gain, prop)
+
+    # --- Retención por receta: cuánto de la ganancia sobrevive al cambio de canal ---
+    retention = []
+    for variant in ("v3e", "v5"):
+        cv_v = load_pairs(results_dir / f"{variant}_v2_es.json")
+        g_cv = float(np.mean([cv_v[i][f"{PRIMARY_METRIC}_est"]
+                              - cv["v1"][i][f"{PRIMARY_METRIC}_est"] for i in cv_ids]))
+        g_ml = float(np.mean([mls[variant][i][f"{PRIMARY_METRIC}_est"]
+                              - mls["v1"][i][f"{PRIMARY_METRIC}_est"] for i in ids]))
+        retention.append({"variant": variant, "gain_crowdsourced": g_cv,
+                          "gain_audiobook": g_ml,
+                          "retained": g_ml / g_cv if g_cv else float("nan")})
+
+    return {
+        "label": "Control de idioma vs canal (test_v3_mls_es)",
+        "estimand": "pendiente de la ganancia contra el SNR, y transferencia de la "
+                    "ganancia del fine-tuning entre canales",
+        "correction": None,
+        "exploratory": False,
+        "preregistered": "docs/preregistro_mls_es.sha256",
+        "inference": "bootstrap percentil agrupado por hablante (los pares no son "
+                     "independientes: ~6 por cada uno de 40 hablantes)",
+        "n_speakers": int(len(np.unique(clusters))),
+        "p1": {"id": "P1", "label": "¿La pendiente contra el SNR sigue al idioma "
+                                    "o al canal?",
+               "slopes": slopes, "outcome": outcome_p1,
+               "thresholds": {"language_rho": P1_LANGUAGE_RHO,
+                              "channel_rho": P1_CHANNEL_RHO}},
+        "p2": {"id": "P2", "label": "¿La ganancia del fine-tuning transfiere entre canales?",
+               "gain_crowdsourced": gain_cv,
+               "gain_audiobook": mean_ci, "prop_improve": prop_ci,
+               "outcome": outcome_p2,
+               "thresholds": {"language_mean": P2_LANGUAGE_MEAN,
+                              "language_prop": P2_LANGUAGE_PROP,
+                              "channel_mean": P2_CHANNEL_MEAN,
+                              "channel_prop": P2_CHANNEL_PROP}},
+        "retention_by_recipe": retention,
+    }
+
+
 def _write_markdown(payload: dict, out_md: Path) -> None:
     """Render the JSON payload as a human-readable Spanish Markdown report."""
     lines: list[str] = []
@@ -1088,6 +1280,44 @@ def _write_markdown(payload: dict, out_md: Path) -> None:
         )
     lines.append("")
 
+    f6 = payload["families"].get("F6")
+    if f6:
+        lines.append("")
+        lines.append("## F6 - Control de idioma vs canal (preregistrado)")
+        lines.append("")
+        lines.append(f"Inferencia: {f6['inference']}")
+        lines.append(f"Hablantes: {f6['n_speakers']} | Preregistro: {f6['preregistered']}")
+        lines.append("")
+        lines.append(f"### P1 - desenlace: **{f6['p1']['outcome'].upper()}**")
+        lines.append("")
+        lines.append("| test set | idioma | canal | rho | inferencia |")
+        lines.append("|---|---|---|---|---|")
+        for sl in f6["p1"]["slopes"]:
+            if "ci95" in sl:
+                inf = (f"IC95 agrupado [{sl['ci95']['lo']:+.3f}, {sl['ci95']['hi']:+.3f}]"
+                       f" (p sin agrupar {sl['p_value_unclustered']:.2e}, sobre-confiado)")
+            else:
+                inf = f"p = {sl['p_value']:.2e}"
+            lines.append(f"| `{sl['test_set']}` | {sl['language']} | {sl['channel']} |"
+                         f" {sl['rho']:+.3f} | {inf} |")
+        p2 = f6["p2"]
+        lines.append("")
+        lines.append(f"### P2 - desenlace: **{p2['outcome'].upper()}**")
+        lines.append("")
+        lines.append(f"- Ganancia de V3e sobre V1, canal crowdsourced: {p2['gain_crowdsourced']:+.3f}")
+        lines.append(f"- Canal audiolibro: {p2['gain_audiobook']['point']:+.3f}"
+                     f" (IC95 agrupado [{p2['gain_audiobook']['lo']:+.3f}, {p2['gain_audiobook']['hi']:+.3f}])")
+        lines.append(f"- Proporcion que mejora: {p2['prop_improve']['point']:.3f}"
+                     f" (IC95 agrupado [{p2['prop_improve']['lo']:.3f}, {p2['prop_improve']['hi']:.3f}])")
+        lines.append("")
+        lines.append("### Retencion de la ganancia entre canales, por receta")
+        lines.append("")
+        lines.append("| variante | crowdsourced | audiolibro | retiene |")
+        lines.append("|---|---|---|---|")
+        for r in f6["retention_by_recipe"]:
+            lines.append(f"| {r['variant']} | {r['gain_crowdsourced']:+.3f} |"
+                         f" {r['gain_audiobook']:+.3f} | {100*r['retained']:.0f}% |")
+
     out_md.write_text("\n".join(lines), encoding="utf-8")
 
 
@@ -1117,6 +1347,7 @@ def run_all(
         "F3": family_f3(results_dir, seed=seed),
         "F4": family_f4(results_dir, seed=seed),
         "F5": family_f5(results_dir, seed=seed),
+        "F6": family_f6(results_dir, metadata_dir, seed=seed),
     }
 
     payload = {

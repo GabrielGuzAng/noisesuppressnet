@@ -68,19 +68,48 @@ class Trainer:
             batch_size=batch_size, shuffle=val_shuffle, num_workers=2
         )
 
-        self.model = CRN().to(self.device)
+        self.use_gate = config.get("gate", False)
+        self.model = CRN(gate=self.use_gate).to(self.device)
 
         init_checkpoint = config.get("init_checkpoint")
         if init_checkpoint:
             init_checkpoint = Path(init_checkpoint)
             print(f"Cargando pesos iniciales desde: {init_checkpoint}")
             ckpt = torch.load(init_checkpoint, map_location=self.device, weights_only=False)
-            self.model.load_state_dict(ckpt["model_state"])
+            if self.use_gate:
+                # El checkpoint de partida no tiene la cabeza de compuerta. Se
+                # permite que falte SOLO ella: cualquier otra clave ausente
+                # significa que el checkpoint no corresponde a esta arquitectura
+                # y tiene que romper acá, no 6 horas despues.
+                missing, unexpected = self.model.load_state_dict(
+                    ckpt["model_state"], strict=False)
+                expected_missing = {"conv_gate.weight", "conv_gate.bias"}
+                if set(missing) != expected_missing or unexpected:
+                    raise RuntimeError(
+                        f"Checkpoint incompatible. Faltan {sorted(missing)} "
+                        f"(se esperaba {sorted(expected_missing)}), sobran {sorted(unexpected)}")
+                print(f"  compuerta inicializada de cero (g0 = "
+                      f"{torch.sigmoid(self.model.conv_gate.bias).item():.4f})")
+            else:
+                self.model.load_state_dict(ckpt["model_state"])
 
         self.stft = STFTHelper(n_fft=320, hop_length=160)
         self.stft._window = torch.hamming_window(320).to(self.device)
 
-        self.opt = Adam(self.model.parameters(), lr=lr, amsgrad=False)
+        # La cabeza de compuerta es nueva sobre un backbone convergido, asi que
+        # lleva lr propio. Declarado en el preregistro como eleccion de diseno,
+        # no como hiperparametro barrido.
+        gate_lr = config.get("gate_lr")
+        if self.use_gate and gate_lr is not None:
+            gate_params = [p_ for n_, p_ in self.model.named_parameters()
+                           if n_.startswith("conv_gate")]
+            backbone = [p_ for n_, p_ in self.model.named_parameters()
+                        if not n_.startswith("conv_gate")]
+            self.opt = Adam([{"params": backbone, "lr": lr},
+                             {"params": gate_params, "lr": gate_lr}], amsgrad=False)
+            print(f"  lr backbone {lr:.1e} / lr compuerta {gate_lr:.1e}")
+        else:
+            self.opt = Adam(self.model.parameters(), lr=lr, amsgrad=False)
         # scheduler_step/scheduler_gamma ausentes en la config = lr fijo, sin decay
         # (usado por el sweep de V3b, que quiere medir el efecto de un lr constante)
         if lr_decay_factor is not None and lr_decay_period is not None:
@@ -113,6 +142,7 @@ class Trainer:
 
         self.save_every_n_epochs = config.get("save_every_n_epochs")
 
+        self._reset_gate_stats()
         self.history = {"train_loss": [], "val_loss": [], "epoch_time_s": []}
         self.best_val = float("inf")
 
@@ -145,7 +175,17 @@ class Trainer:
     
         mag_noisy, phase_noisy = self.stft.to_spec(noisy)
         mag_clean, _ = self.stft.to_spec(clean)
-        mag_est = self.model(mag_noisy)
+        if self.use_gate:
+            mag_est, g = self.model(mag_noisy, return_gate=True)
+            # Guarda de degeneracion (P4 del preregistro): si g colapsa a 0 la
+            # red se apago, si colapsa a 1 la compuerta nunca aprendio. Se mide
+            # epoca por epoca en vez de descubrirlo al evaluar.
+            self._gate_sum += g.mean().item()
+            self._gate_min = min(self._gate_min, g.min().item())
+            self._gate_max = max(self._gate_max, g.max().item())
+            self._gate_n += 1
+        else:
+            mag_est = self.model(mag_noisy)
     
         if self.loss_name == "mse_magnitude":
             loss = mse_magnitude(mag_est, mag_clean)
@@ -186,8 +226,19 @@ class Trainer:
             raise ValueError(f"Loss desconocida: {self.loss_name}")
 
 
+    def _reset_gate_stats(self):
+        self._gate_sum, self._gate_n = 0.0, 0
+        self._gate_min, self._gate_max = 1.0, 0.0
+
+    def _gate_stats(self):
+        if not self.use_gate or not self._gate_n:
+            return None
+        return {"mean": self._gate_sum / self._gate_n,
+                "min": self._gate_min, "max": self._gate_max}
+
     def train_epoch(self):
         """Entrena una época completa."""
+        self._reset_gate_stats()
         self.model.train()
         total = 0.0
         total_mse = 0.0
@@ -218,6 +269,7 @@ class Trainer:
     @torch.no_grad()
     def validate(self):
         """Evalúa el modelo en el conjunto de validación."""
+        self._reset_gate_stats()
         self.model.eval()
         total = 0.0
         total_mse = 0.0
@@ -240,6 +292,7 @@ class Trainer:
             "mse": total_mse / n_batches,
             "sisdr": total_sisdr / n_batches,
             "squim": total_squim / n_batches,
+            "gate": self._gate_stats(),
         }
 
 
@@ -271,13 +324,17 @@ class Trainer:
             self.history["train_squim"].append(tr["squim"])
             self.history["val_squim"].append(va["squim"])
             self.history["epoch_time_s"].append(elapsed)
+            if va.get("gate"):
+                self.history.setdefault("val_gate", []).append(va["gate"])
 
             # Print adaptado según loss
             if self.loss_name == "mse_plus_sisdr":
                 print(f"Epoch {epoch:02d}/{self.n_epochs}  "
                     f"train={tr['loss']:.4f} (mse={tr['mse']:.4f}, sisdr={tr['sisdr']:+.2f}dB)  "
                     f"val={va['loss']:.4f} (mse={va['mse']:.4f}, sisdr={va['sisdr']:+.2f}dB)  "
-                    f"t={elapsed:.1f}s  lr={self.opt.param_groups[0]['lr']:.2e}")
+                    f"t={elapsed:.1f}s  lr={self.opt.param_groups[0]['lr']:.2e}"
+                    + (f"  g=[{va['gate']['min']:.3f} {va['gate']['mean']:.4f} "
+                       f"{va['gate']['max']:.3f}]" if va.get("gate") else ""))
             elif self.loss_name == "mse_plus_squim":
                 print(f"Epoch {epoch:02d}/{self.n_epochs}  "
                     f"train={tr['loss']:.4f} (mse={tr['mse']:.4f}, squim={tr['squim']:+.4f})  "
@@ -297,6 +354,8 @@ class Trainer:
                 "val_sisdr": va["sisdr"],
                 "val_squim": va["squim"],
                 "loss_name": self.loss_name,
+                "gate": self.use_gate,
+                "val_gate": va.get("gate"),
             }
 
             # Guardar el mejor modelo (por val_loss combinada)
@@ -320,7 +379,9 @@ if __name__ == "__main__":
     # Cambiamos a importación absoluta para evitar problemas con -m
     from .config import (CONFIG_V1, CONFIG_V2, CONFIG_V3, CONFIG_V3B, CONFIG_V3E,
                          CONFIG_V5, CONFIG_V5_S43, CONFIG_V5_S44, CONFIG_V5_SMOKE,
-                         CONFIG_V5_SMOKE_LR5E5, CONFIG_V5_SMOKE_LR2E4)
+                         CONFIG_V5_SMOKE_LR5E5, CONFIG_V5_SMOKE_LR2E4,
+                         CONFIG_V6_GATE, CONFIG_V6_PLACEBO, CONFIG_V6_SMOKE,
+                         CONFIG_V7_GATE, CONFIG_V7_CONTROL)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="V1",
@@ -339,6 +400,11 @@ if __name__ == "__main__":
         "V5SMOKE": CONFIG_V5_SMOKE,
         "V5SMOKE_LR5E5": CONFIG_V5_SMOKE_LR5E5,
         "V5SMOKE_LR2E4": CONFIG_V5_SMOKE_LR2E4,
+        "V6GATE": CONFIG_V6_GATE,
+        "V6PLACEBO": CONFIG_V6_PLACEBO,
+        "V6SMOKE": CONFIG_V6_SMOKE,
+        "V7GATE": CONFIG_V7_GATE,
+        "V7CONTROL": CONFIG_V7_CONTROL,
     }
     if args.config not in configs:
         print(f"Configuración '{args.config}' no encontrada. Las disponibles: {list(configs.keys())}")

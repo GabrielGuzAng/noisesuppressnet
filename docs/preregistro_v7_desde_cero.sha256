@@ -1,0 +1,8 @@
+# Preregistro de V7: compuerta entrenada desde cero (screening).
+# Vive fuera del repositorio (~/nosiesuppressnet-oracle/preregistro_compuerta_desde_cero.md)
+# Escrito el 15/09/2026 ANTES de crear las configs de V7 y de correr nada desde cero.
+# Unica correccion previa al lanzamiento: un typo ("checkpugh" -> "checkpoint"),
+# sin datos existentes y sin tocar ninguna prediccion ni umbral.
+
+# v1 -- 15/09/2026, 12:32 ART.
+4f918035cdfc143559e29eea497a4e05f8f1b083a8798e09042306a083425d51  preregistro_compuerta_desde_cero.md

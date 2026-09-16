@@ -65,26 +65,44 @@ def load_variant(variant_name, device, checkpoint_path=None):
         raise FileNotFoundError(f"No existe checkpoint: {ckpt_path}")
     
     ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
-    model = CRN().to(device)
+    # La arquitectura se deduce del propio checkpoint, no de una config aparte:
+    # si trae la cabeza de compuerta, el modelo se instancia con compuerta.
+    has_gate = any(k.startswith("conv_gate") for k in ckpt["model_state"])
+    model = CRN(gate=has_gate).to(device)
     model.load_state_dict(ckpt["model_state"])
     model.eval()
     
     print(f"✓ {variant_name.upper()} cargado")
     print(f"  Época: {ckpt['epoch']}")
     print(f"  Val loss: {ckpt['val_loss']:.4f}")
+    if has_gate:
+        print(f"  Compuerta de paso directo: ACTIVA")
     return model, ckpt
 
 
 def infer_pair(model, stft, noisy_wav, device):
-    """Aplica el modelo a un par noisy → enhanced."""
+    """Aplica el modelo a un par noisy → enhanced.
+
+    Returns the enhanced waveform and, for gated models, the per-pair gate
+    statistics. The gate is the mechanism under test (P3 of the
+    preregistration: g must grow with SNR), so it travels with the metrics
+    instead of needing a second pass over the sealed set.
+    """
     with torch.no_grad():
         noisy = noisy_wav.to(device)
         if noisy.dim() == 1:
             noisy = noisy.unsqueeze(0)
         mag_noisy, phase_noisy = stft.to_spec(noisy)
-        mag_est = model(mag_noisy)
+        mag_est, g = model(mag_noisy, return_gate=True)
         audio_est = stft.from_spec(mag_est, phase_noisy, length=noisy.shape[-1])
-        return audio_est.squeeze(0).cpu()
+        gate_stats = None
+        if g is not None:
+            gate_stats = {"gate_mean": float(g.mean()),
+                          "gate_min": float(g.min()),
+                          "gate_max": float(g.max()),
+                          "gate_p10": float(torch.quantile(g.flatten(), 0.10)),
+                          "gate_p90": float(torch.quantile(g.flatten(), 0.90))}
+        return audio_est.squeeze(0).cpu(), gate_stats
 
 
 def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
@@ -133,7 +151,7 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
         assert sr_n == sr_c == SAMPLE_RATE, f"SR incorrecto en pair_{pair_id}"
         
         # Inferencia
-        enhanced = infer_pair(model, stft, noisy.squeeze(0), device)
+        enhanced, gate_stats = infer_pair(model, stft, noisy.squeeze(0), device)
         
         # Guardar audio si se pidió
         if estimates_dir is not None:
@@ -168,6 +186,8 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
             "sisdr_est": m_est["SI-SDR"],
             "sisdr_delta": m_est["SI-SDR"] - m_noisy["SI-SDR"],
         }
+        if gate_stats is not None:
+            result.update(gate_stats)
         all_results.append(result)
         
         if (pair_id + 1) % 25 == 0:

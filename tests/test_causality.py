@@ -39,9 +39,9 @@ SAMPLE_RATE = 16000
 SEED = 42
 
 
-def _model():
+def _model(gate=False):
     torch.manual_seed(SEED)
-    return CRN().eval()
+    return CRN(gate=gate).eval()
 
 
 def _measure_signal_lookahead(helper, transform, n_samples=16000, split=None):
@@ -71,10 +71,17 @@ def _measure_signal_lookahead(helper, transform, n_samples=16000, split=None):
 
 # ── Nivel 1: causalidad de frame ───────────────────────────────────────────
 
+@pytest.mark.parametrize("gate", [False, True], ids=["sin_compuerta", "con_compuerta"])
 @pytest.mark.parametrize("n_frames,split", [(101, 50), (101, 25), (200, 137), (60, 1)])
-def test_frame_level_causality_is_exact(n_frames, split):
-    """Perturbar frames >= split no altera la salida anterior, bit a bit."""
-    model = _model()
+def test_frame_level_causality_is_exact(n_frames, split, gate):
+    """Perturbar frames >= split no altera la salida anterior, bit a bit.
+
+    Se corre con y sin la compuerta de paso directo: la compuerta se predice
+    desde d2, los mismos features causales que alimentan conv1_t, y mezcla con
+    la ENTRADA del mismo frame, asi que no puede introducir lookahead. Este
+    test es lo que lo verifica en vez de asumirlo.
+    """
+    model = _model(gate=gate)
     torch.manual_seed(SEED)
     mag = torch.rand(1, n_frames, 161)
     mag_mod = mag.clone()
@@ -90,9 +97,10 @@ def test_frame_level_causality_is_exact(n_frames, split):
     )
 
 
-def test_frame_causality_first_changed_frame_is_the_perturbed_one():
+@pytest.mark.parametrize("gate", [False, True], ids=["sin_compuerta", "con_compuerta"])
+def test_frame_causality_first_changed_frame_is_the_perturbed_one(gate):
     """El cambio arranca exactamente en el frame perturbado, ni antes ni después."""
-    model = _model()
+    model = _model(gate=gate)
     torch.manual_seed(SEED)
     mag = torch.rand(1, 101, 161)
     mag_mod = mag.clone()

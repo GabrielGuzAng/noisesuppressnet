@@ -269,3 +269,149 @@ CONFIG_V5_SMOKE_LR2E4 = {
     "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v5_smoke_lr2e4",
     "description": "Screening de lr para V5: 2e-4 (el agresivo, lr de V1/V2/V3).",
 }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# V6 — compuerta causal de paso directo. Diseño tratamiento/placebo.
+#
+# El CRN hace mapeo espectral directo: la salida sale de softplus(conv1_t(d2))
+# y no toca nunca la magnitud de entrada. No hay camino barato para expresar
+# "dejá este frame como está". Se verificó leyendo el código oficial que su
+# sucesor publicado, el GCRN de Tan & Wang 2020, tampoco lo tiene: sus
+# compuertas son GLU entre capas, no un camino a la entrada.
+#
+# La compuerta agrega ese camino: M_out = g·M_hat + (1-g)·M_noisy, con g
+# causal y por banda, 193 parámetros sobre 17.579.459.
+#
+# POR QUÉ HAY PLACEBO Y NO ES "V6 CONTRA V2". Fine-tunear V2 con compuerta y
+# comparar contra V2 confunde la compuerta con las épocas extra, y el proyecto
+# ya midió que eso pesa: el placebo de V4b (V1 + 2 épocas a lr 2e-5, sin
+# término perceptual) superó a V1 en las cuatro métricas. Entrenar desde cero
+# y comparar contra el V2 existente también confunde, porque V2 se entrenó
+# antes de que el trainer tuviera cudnn_deterministic y np.random.seed().
+#
+# El estimando es TRATAMIENTO − PLACEBO, apareado. placebo − V2 mide el efecto
+# de las épocas extra y se reporta aparte.
+#
+# Se entrena SOLO en inglés: la afirmación es que la compuerta acota el daño
+# fuera de dominio SIN datos del dominio objetivo.
+#
+# Predicciones y umbrales en ~/nosiesuppressnet-oracle/preregistro_compuerta.md,
+# hash en docs/preregistro_compuerta.sha256, escrito antes de tocar crn.py.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_CONFIG_V6_BASE = {
+    "train_dir": PROJECT_ROOT / "data" / "processed" / "train",   # inglés
+    "val_dir": PROJECT_ROOT / "data" / "processed" / "val",
+    "loss": "mse_plus_sisdr",      # la de V2, sin cambios
+    "loss_alpha": 0.7,
+    "sisdr_scale": 0.03,
+    "init_checkpoint": PROJECT_ROOT / "checkpoints" / "v2" / "best.pt",
+    "n_epochs": 6,
+    "batch_size": 4,
+    "lr": 2e-5,                    # el estabilizado de V4b para partir de un convergido
+    "seed": 42,
+    "train_shuffle": True,
+    "val_shuffle": False,
+    "cudnn_deterministic": True,
+    # Sin scheduler: lr constante. Una cosa menos que difiera entre las dos ramas.
+    # save_every_n_epochs=1 porque con una arquitectura nueva hay que mirar
+    # época por época y no seleccionar por val_loss (lección de V4b y del
+    # barrido de época de V5).
+    "save_every_n_epochs": 1,
+}
+
+CONFIG_V6_PLACEBO = {
+    **_CONFIG_V6_BASE,
+    "variant": "V6placebo",
+    "gate": False,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v6_placebo",
+    "description": "Placebo: idéntico protocolo, sin compuerta. Aísla el efecto "
+                   "de las 6 épocas extra sobre V2.",
+}
+
+CONFIG_V6_GATE = {
+    **_CONFIG_V6_BASE,
+    "variant": "V6gate",
+    "gate": True,
+    "gate_lr": 1e-3,   # cabeza nueva sobre backbone convergido; declarado en el preregistro
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v6_gate",
+    "description": "Tratamiento: compuerta causal de paso directo por banda, "
+                   "entrenada solo en inglés.",
+}
+
+# Smoke de 1 época sobre el set de validación (2.000 pares en vez de 50.000):
+# verifica el pipeline entero en ~1 min antes de comprometer 6 h. Descartable.
+CONFIG_V6_SMOKE = {
+    **CONFIG_V6_GATE,
+    "variant": "V6smoke",
+    "train_dir": PROJECT_ROOT / "data" / "processed" / "val",
+    "n_epochs": 1,
+    "cudnn_deterministic": False,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v6_smoke",
+    "description": "Smoke descartable del pipeline de la compuerta.",
+}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# V7 — compuerta entrenada DESDE CERO. Screening, no confirmatorio.
+#
+# V6 atornilló la compuerta a un backbone ya convergido 20 épocas sin ella. Ese
+# backbone había aprendido mapeo espectral directo porque era la única solución
+# disponible sin camino de identidad, y 6 épocas a lr 2e-5 no alcanzan para
+# reorganizarse alrededor de la nueva libertad.
+#
+# V7 pregunta si con el camino de identidad disponible desde la inicialización
+# la red aprende una división del trabajo distinta — el decoder especializado en
+# corrección residual en vez de síntesis completa.
+#
+# POR QUÉ EL CONTROL SE REENTRENA Y NO SE REUSA V2. V2 se entrenó antes de que
+# el trainer tuviera cudnn_deterministic. Se verificó que np.random NO interviene
+# en el camino de datos del entrenamiento (solo en make_mixtures.py, offline) y
+# que el barajado usa el generador de torch, así que la única diferencia real es
+# la selección de kernels de cuDNN: otra trayectoria de punto flotante, del orden
+# de cambiar la semilla (sd 0,004-0,019 en las réplicas de V5). Del mismo tamaño
+# que el efecto buscado.
+#
+# SIN gate_lr SEPARADO. En V6 la cabeza llevaba lr propio porque era nueva sobre
+# un backbone convergido. Desde cero todo es nuevo: un solo lr para todo.
+#
+# Umbral de screening +0,050 sobre test_v2_es (≈3× la sd por checkpoint medida
+# en V6). Preregistro en ~/nosiesuppressnet-oracle/preregistro_compuerta_desde_cero.md,
+# hash en docs/preregistro_v7_desde_cero.sha256.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_CONFIG_V7_BASE = {
+    "train_dir": PROJECT_ROOT / "data" / "processed" / "train",   # inglés
+    "val_dir": PROJECT_ROOT / "data" / "processed" / "val",
+    "loss": "mse_plus_sisdr",
+    "loss_alpha": 0.7,
+    "sisdr_scale": 0.03,
+    # Sin init_checkpoint: inicialización aleatoria. Receta de optimización de V2.
+    "n_epochs": 20,
+    "batch_size": 4,
+    "lr": 2e-4,
+    "scheduler_step": 2,
+    "scheduler_gamma": 0.98,
+    "seed": 42,
+    "train_shuffle": True,
+    "val_shuffle": False,
+    "cudnn_deterministic": True,
+    "save_every_n_epochs": 1,   # la selección se hace después, por PESQ sobre val
+}
+
+CONFIG_V7_CONTROL = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7control",
+    "gate": False,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_control",
+    "description": "Control desde cero, sin compuerta. Receta de V2 con el trainer actual.",
+}
+
+CONFIG_V7_GATE = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7gate",
+    "gate": True,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_gate",
+    "description": "Compuerta de paso directo presente desde la inicialización.",
+}

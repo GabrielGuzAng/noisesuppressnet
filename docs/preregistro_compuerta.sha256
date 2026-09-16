@@ -1,0 +1,7 @@
+# Preregistro de la compuerta causal de paso directo (V6).
+# El archivo vive fuera del repositorio (~/nosiesuppressnet-oracle/preregistro_compuerta.md)
+# porque contiene predicciones y criterios de decision escritos ANTES de modificar
+# models/crn.py y antes de que existiera ninguna corrida.
+
+# v1 -- 14/09/2026, 23:45 ART.
+cc4ce6981cb7cd43e1dddf96381819e379f61aef320b2d255fec0417a2c0fbe1  preregistro_compuerta.md

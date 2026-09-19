@@ -146,11 +146,94 @@ class Trainer:
         self.history = {"train_loss": [], "val_loss": [], "epoch_time_s": []}
         self.best_val = float("inf")
 
-        # Guardar la configuración usada en el directorio de checkpoints
-        with open(self.checkpoint_dir / "config.json", "w") as f:
+        # Reanudación de una corrida cortada. Va al FINAL de __init__ a propósito:
+        # replica el hecho de que en la corrida original todo __init__ corrió antes
+        # de la primera época, así que el estado del RNG global que se replica acá
+        # es exactamente el que había al empezar la época 1.
+        self.start_epoch = 1
+        resume_from = config.get("resume_from")
+        if resume_from:
+            self._resume(Path(resume_from))
+
+        # Guardar la configuración usada en el directorio de checkpoints. Al
+        # reanudar NO se pisa la config original: es la evidencia de con qué se
+        # lanzó la corrida, y el preregistro apunta a ella.
+        config_name = ("config.json" if self.start_epoch == 1
+                       else f"config_resume_ep{self.start_epoch:02d}.json")
+        with open(self.checkpoint_dir / config_name, "w") as f:
             # Convertir rutas a string para JSON
             config_serializable = {k: str(v) if isinstance(v, Path) else v for k, v in config.items()}
             json.dump(config_serializable, f, indent=2)
+
+    def _resume(self, ckpt_path):
+        """Resume an interrupted run from a periodic checkpoint, bit-exactly.
+
+        Restores the model weights, the optimizer moments, the LR schedule and
+        the global CPU RNG stream, so that the remaining epochs see the same
+        data order they would have seen had the run never been interrupted.
+
+        The RNG state is not stored in the checkpoint, so it is replayed rather
+        than restored. ``RandomSampler.__iter__`` draws its per-epoch seed from
+        the global CPU generator, and so does each DataLoader iterator for its
+        worker base seed; nothing else in this training loop touches it (no
+        dropout, and the random crop in ``NSDataset`` runs inside the workers,
+        off that base seed). Rebuilding one train and one val iterator per
+        completed epoch therefore advances the generator by exactly what those
+        epochs consumed. It is done with the real loaders (~1 s for 14 epochs)
+        so that no assumption about the cost of an epoch is hardcoded.
+
+        The CUDA generator needs no replay: this model has no stochastic op on
+        the device, so ``torch.cuda.manual_seed_all`` in ``__init__`` leaves it
+        where the original run had it.
+        """
+        ckpt = torch.load(ckpt_path, map_location=self.device, weights_only=False)
+        done = ckpt["epoch"]
+        if ckpt.get("gate", False) != self.use_gate:
+            raise RuntimeError(
+                f"El checkpoint tiene gate={ckpt.get('gate')} y la config pide "
+                f"gate={self.use_gate}. No son la misma corrida.")
+        if done >= self.n_epochs:
+            raise RuntimeError(
+                f"El checkpoint ya está en la época {done} de {self.n_epochs}: "
+                f"no queda nada por reanudar.")
+
+        self.model.load_state_dict(ckpt["model_state"])
+        self.opt.load_state_dict(ckpt["opt_state"])
+
+        history_path = self.checkpoint_dir / "history.json"
+        with open(history_path) as f:
+            history = json.load(f)
+        if len(history["val_loss"]) < done:
+            raise RuntimeError(
+                f"{history_path} tiene {len(history['val_loss'])} épocas pero el "
+                f"checkpoint dice {done}. Historial incompleto.")
+        # history.json puede tener MÁS épocas que el checkpoint si el corte cayó
+        # entre un guardado periódico y el siguiente: se trunca al checkpoint,
+        # que es lo único de lo que se puede seguir.
+        self.history = {k: v[:done] for k, v in history.items()}
+        self.best_val = min(self.history["val_loss"])
+
+        # El lr ya viene restaurado dentro de opt_state: StepLR es MULTIPLICATIVO
+        # sobre el lr corriente (no lo recalcula desde initial_lr), así que
+        # replicar los step() lo decaería una segunda vez. Lo único que falta
+        # reponer es la fase del escalón, o sea last_epoch.
+        if self.sched is not None:
+            self.sched.last_epoch = done
+            self.sched._step_count = done + 1
+            self.sched._last_lr = [g["lr"] for g in self.opt.param_groups]
+
+        rng_before = torch.random.get_rng_state()
+        for _ in range(done):
+            it = iter(self.train_loader); del it
+            it = iter(self.val_loader); del it
+        rng_after = torch.random.get_rng_state()
+
+        self.start_epoch = done + 1
+        print(f"Reanudando desde {ckpt_path} (época {done} completa).")
+        print(f"  próxima época:  {self.start_epoch}/{self.n_epochs}")
+        print(f"  val_loss mejor: {self.best_val:.6f}")
+        print(f"  lr restaurado:  {self.opt.param_groups[0]['lr']:.2e}")
+        print(f"  RNG replayado:  {'avanzado' if not torch.equal(rng_before, rng_after) else 'SIN CAMBIO (revisar)'}")
 
     def _compute_loss(self, noisy, clean):
         """Calcula la pérdida MSE entre la magnitud estimada y la limpia."""
@@ -298,16 +381,18 @@ class Trainer:
 
     def fit(self):
         """Bucle principal de entrenamiento."""
-        # Extender history con componentes
-        self.history = {
-            "train_loss": [], "val_loss": [],
-            "train_mse": [], "val_mse": [],
-            "train_sisdr": [], "val_sisdr": [],
-            "train_squim": [], "val_squim": [],
-            "epoch_time_s": [],
-        }
+        # Extender history con componentes. Al reanudar, _resume ya dejó el
+        # historial de las épocas hechas: pisarlo las perdería.
+        if self.start_epoch == 1:
+            self.history = {
+                "train_loss": [], "val_loss": [],
+                "train_mse": [], "val_mse": [],
+                "train_sisdr": [], "val_sisdr": [],
+                "train_squim": [], "val_squim": [],
+                "epoch_time_s": [],
+            }
 
-        for epoch in range(1, self.n_epochs + 1):
+        for epoch in range(self.start_epoch, self.n_epochs + 1):
             t0 = time.time()
             tr = self.train_epoch()
             va = self.validate()
@@ -381,11 +466,17 @@ if __name__ == "__main__":
                          CONFIG_V5, CONFIG_V5_S43, CONFIG_V5_S44, CONFIG_V5_SMOKE,
                          CONFIG_V5_SMOKE_LR5E5, CONFIG_V5_SMOKE_LR2E4,
                          CONFIG_V6_GATE, CONFIG_V6_PLACEBO, CONFIG_V6_SMOKE,
-                         CONFIG_V7_GATE, CONFIG_V7_CONTROL)
+                         CONFIG_V7_GATE, CONFIG_V7_CONTROL,
+                         CONFIG_V7_GATE_S43, CONFIG_V7_CONTROL_S43,
+                         CONFIG_V7_GATE_S44, CONFIG_V7_CONTROL_S44)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="V1",
                         help="Nombre de la configuración a usar (V1, V2, ...)")
+    parser.add_argument("--resume-from", type=str, default=None,
+                        help="Checkpoint periódico desde el cual reanudar una "
+                             "corrida cortada (ej. checkpoints/v7_control/epoch_14.pt). "
+                             "No se toca la config: se reanuda la misma.")
     args = parser.parse_args()
 
     configs = {
@@ -405,11 +496,17 @@ if __name__ == "__main__":
         "V6SMOKE": CONFIG_V6_SMOKE,
         "V7GATE": CONFIG_V7_GATE,
         "V7CONTROL": CONFIG_V7_CONTROL,
+        "V7GATE_S43": CONFIG_V7_GATE_S43,
+        "V7CONTROL_S43": CONFIG_V7_CONTROL_S43,
+        "V7GATE_S44": CONFIG_V7_GATE_S44,
+        "V7CONTROL_S44": CONFIG_V7_CONTROL_S44,
     }
     if args.config not in configs:
         print(f"Configuración '{args.config}' no encontrada. Las disponibles: {list(configs.keys())}")
         sys.exit(1)
 
     config = configs[args.config]
+    if args.resume_from:
+        config = {**config, "resume_from": args.resume_from}
     trainer = Trainer(config)
     trainer.fit()

@@ -415,3 +415,49 @@ CONFIG_V7_GATE = {
     "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_gate",
     "description": "Compuerta de paso directo presente desde la inicialización.",
 }
+
+# --- Confirmación de V7 con réplicas de semilla ---
+# V7 es screening con n=1 por brazo: E1 = +0,0795 pasó el umbral de +0,050, y el
+# preregistro ata ese desenlace a confirmar con tres semillas. Estas cuatro
+# configs son las dos semillas nuevas (43 y 44) de los dos brazos; la 42 ya está
+# corrida y es la que disparó la confirmación.
+#
+# Nada cambia salvo la semilla: mismos datos, misma receta, mismas 20 épocas,
+# save_every_n_epochs=1 porque el estimando promedia las épocas 15-20 y hay que
+# tenerlas todas. Sobre si la semilla 42 entra o no en el estimando confirmatorio
+# decide el preregistro de la confirmación, no este archivo.
+CONFIG_V7_GATE_S43 = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7gate_s43",
+    "seed": 43,
+    "gate": True,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_gate_s43",
+    "description": "V7 compuerta, semilla 43 — réplica de confirmación.",
+}
+
+CONFIG_V7_CONTROL_S43 = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7control_s43",
+    "seed": 43,
+    "gate": False,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_control_s43",
+    "description": "V7 control, semilla 43 — réplica de confirmación.",
+}
+
+CONFIG_V7_GATE_S44 = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7gate_s44",
+    "seed": 44,
+    "gate": True,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_gate_s44",
+    "description": "V7 compuerta, semilla 44 — réplica de confirmación.",
+}
+
+CONFIG_V7_CONTROL_S44 = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7control_s44",
+    "seed": 44,
+    "gate": False,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_control_s44",
+    "description": "V7 control, semilla 44 — réplica de confirmación.",
+}

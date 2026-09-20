@@ -1,0 +1,22 @@
+# Preregistro de la confirmación de V7 con réplicas de semilla.
+# El archivo vive fuera del repositorio (~/nosiesuppressnet-oracle/preregistro_v7_semillas.md)
+# porque contiene los criterios de decisión y la tabla de desenlaces, que un agente
+# ejecutor no debe ver. Acá queda sólo el compromiso verificable.
+#
+# Declara: tres semillas nuevas (43, 44, 45), dos brazos cada una. El estimando
+# confirmatorio es la media no ponderada de los tres estimandos por semilla; la
+# semilla 42, que fue la del screening y la que disparó esta confirmación, se
+# reporta siempre y nunca entra en ese número.
+#
+# SECUENCIA, declarada para que la diferencia de fechas no se lea como que el
+# documento se acomodó al dato: las semillas 43 y 44 se lanzaron el 19/09/2026 a las
+# 00:03:28, antes de este hash. Cuando se hashea no existe ningún resultado sobre
+# ningún sellado ni puede existir: el barrido de evaluación corre recién al final de
+# los entrenamientos. Lo único visible entretanto es val_loss por época, que no
+# aparece en ningún criterio del documento.
+#
+# Cerrado tras una validación independiente: lo leyó un revisor que no lo escribió,
+# y sus hallazgos están incorporados en las secciones 3, 4, 5, 6, 7 y 8.
+
+# v1 — 19/09/2026.
+e2be83f178e5ecc9ad8e9d6b636405280c894ea6910a68ef5cce3d9ad6f372a0  preregistro_v7_semillas.md

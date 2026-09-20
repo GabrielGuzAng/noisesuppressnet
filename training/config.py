@@ -461,3 +461,21 @@ CONFIG_V7_CONTROL_S44 = {
     "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_control_s44",
     "description": "V7 control, semilla 44 — réplica de confirmación.",
 }
+
+CONFIG_V7_GATE_S45 = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7gate_s45",
+    "seed": 45,
+    "gate": True,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_gate_s45",
+    "description": "V7 compuerta, semilla 45 — tercera réplica de confirmación.",
+}
+
+CONFIG_V7_CONTROL_S45 = {
+    **_CONFIG_V7_BASE,
+    "variant": "V7control_s45",
+    "seed": 45,
+    "gate": False,
+    "checkpoint_dir": PROJECT_ROOT / "checkpoints" / "v7_control_s45",
+    "description": "V7 control, semilla 45 — tercera réplica de confirmación.",
+}

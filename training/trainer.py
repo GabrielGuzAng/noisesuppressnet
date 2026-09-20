@@ -468,7 +468,8 @@ if __name__ == "__main__":
                          CONFIG_V6_GATE, CONFIG_V6_PLACEBO, CONFIG_V6_SMOKE,
                          CONFIG_V7_GATE, CONFIG_V7_CONTROL,
                          CONFIG_V7_GATE_S43, CONFIG_V7_CONTROL_S43,
-                         CONFIG_V7_GATE_S44, CONFIG_V7_CONTROL_S44)
+                         CONFIG_V7_GATE_S44, CONFIG_V7_CONTROL_S44,
+                         CONFIG_V7_GATE_S45, CONFIG_V7_CONTROL_S45)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="V1",
@@ -500,6 +501,8 @@ if __name__ == "__main__":
         "V7CONTROL_S43": CONFIG_V7_CONTROL_S43,
         "V7GATE_S44": CONFIG_V7_GATE_S44,
         "V7CONTROL_S44": CONFIG_V7_CONTROL_S44,
+        "V7GATE_S45": CONFIG_V7_GATE_S45,
+        "V7CONTROL_S45": CONFIG_V7_CONTROL_S45,
     }
     if args.config not in configs:
         print(f"Configuración '{args.config}' no encontrada. Las disponibles: {list(configs.keys())}")

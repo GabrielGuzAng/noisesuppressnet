@@ -1,6 +1,6 @@
 # Capítulo 8 — Gestión del proyecto
 
-**Extensión estimada**: 14 pp · **Estado**: parcial
+**Extensión estimada**: 14 pp · **Estado**: BLOQUEADO
 **Fuentes primarias**: `DocsProfesores/` (anteproyecto, EDT, Gantt, riesgos,
 calidad, gestión de tiempos, FODA), `DESVIACIONES.md`,
 `analysis/training_cost_report.py`, `results/*_training_cost.json`.
@@ -12,11 +12,26 @@ decir dónde y por qué.
 
 ---
 
-## Pendiente de clasificar
+## Bloqueo: falta la línea base contra la cual medir el desvío
 
-Dos documentos en `DocsProfesores/` que ninguna fuente del proyecto menciona:
-`Gestion_Tiempos.docx` y `NoiseSuppressNet_Descripcion_FODA (1).docx`. Hay que
-ver qué son y si entran al cuerpo o a anexos.
+El anteproyecto (§3.3) cita un documento **"EDT v3 — NoiseSuppressNet"** con 65
+paquetes de trabajo en 8 ramas. En `DocsProfesores/` sólo existe
+`EDT_v2_NoiseSuppressNet.docx`. Tampoco está la presentación de la defensa del
+preproyecto, que `CLAUDE.md` da por entregada.
+
+**Sin resolver esto el capítulo no arranca**, y no lo destraban los datos de
+costo: el costo es un insumo del §8.4, mientras que el bloqueo es sobre §8.1 y
+§8.2 —la EDT y el cronograma planificado contra el real—. Son cosas distintas y
+el capítulo necesita las dos. Dos salidas:
+
+1. Aparece el v3 en otro lado y se escribe contra él.
+2. Se declara que la v2 es la versión vigente y que el anteproyecto la cita mal.
+   Es defendible, pero hay que decirlo, no disimularlo.
+
+Pendiente aparte, menor: dos documentos en `DocsProfesores/` que ninguna fuente
+del proyecto menciona —`Gestion_Tiempos.docx` y
+`NoiseSuppressNet_Descripcion_FODA (1).docx`—. Hay que ver qué son y si entran al
+cuerpo o a anexos.
 
 ---
 
@@ -66,19 +81,25 @@ ver qué son y si entran al cuerpo o a anexos.
 
 - **Afirma**: horas de GPU, kWh y costo equivalente en nube, por variante y total.
 - **Fuente**: `analysis/training_cost_report.py`; `results/*_training_cost.json`.
-- **Disponible hoy** (19/09/2026): doce corridas reportadas, 128,09 h de GPU,
-  22,415 kWh, 6,73 kg CO₂, USD 44,83 de equivalente en nube. Tabla completa en
-  `FUENTES.md`.
-- **Falta**: los 8 brazos de V4 y V4b, los 5 del sweep de lr de V3b, V0 y las
-  4 corridas smoke. Ver `FUENTES.md` para la ubicación de cada `history.json`.
+- **Disponible** (20/09/2026): 20 corridas medidas, **150,69 h de GPU,
+  26,370 kWh, 7,91 kg CO₂, USD 52,74** de equivalente en nube. Desglose completo
+  en `FUENTES.md`.
+- **La línea de proxy perceptual se reporta como la suma de sus 8 brazos**:
+  22,60 h, 3,955 kWh, USD 7,91. V4 y V4b nunca fueron una corrida única, y ese es
+  el precio de haber cerrado la línea con diseño experimental —sweep de α más
+  2×2 con placebo— en vez de con una sola corrida. Es el número que hay que poner
+  al lado del resultado negativo del capítulo 6.
+- **Falta**: V0, los 5 brazos del sweep de lr de V3b y las 4 corridas smoke.
 - **Decisión pendiente**: si los sweeps y los smoke entran en el total. La
   recomendación es reportar dos totales — "corridas reportadas" y "total de
   proyecto"— y explicar la diferencia.
-- **Punto a desarrollar, no sólo a tabular**: la eficiencia útil varía entre
-  33,3 % (placebo de V6) y 95,0 % (V2). La dispersión no es ruido: mide cuánto se
-  entrenó de más después de la mejor época, y es consecuencia directa del
-  problema de selección de checkpoint del §4.7. Las dos corridas de V6 están en
-  ~33 % porque `best.pt` cayó en la época 2 de 6.
+- **La eficiencia útil se reporta sólo para las 8 corridas seleccionadas por
+  `best.pt`**, donde mide entrenamiento gastado después del checkpoint que
+  efectivamente se usó: va de 48,0 % (V5 s43) a 95,0 % (V2). En V6 y V7 **no se
+  reporta**, porque el estimando es la trayectoria promediada y las épocas
+  posteriores al mínimo de `val_loss` no son desperdicio sino el dato; en V4 y
+  V4b tampoco, porque son corridas de 3 épocas evaluadas época por época. Ver
+  `FUENTES.md`, "Sobre la métrica de eficiencia útil".
 - **Supuestos a declarar**: 105 W de GPU + 70 W de sistema = 175 W;
   0,3 kg CO₂/kWh (Cammesa, mix argentino 2024); USD 0,35/h (GCP T4).
 - **Limitación a declarar**: el consumo es estimado a partir de potencia nominal

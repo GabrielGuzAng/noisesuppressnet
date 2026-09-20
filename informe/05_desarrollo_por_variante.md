@@ -57,6 +57,32 @@ mensaje del commit `7f7884d` pero no en la bitácora.
   único punto del proyecto donde existe comparación contra el Butterworth.
 - **Falta**: nada para redactar. Figura de PSD ya disponible.
 
+## 5.1.b Baseline no-DL: Butterworth pasabajo
+
+- **Pregunta**: ¿cuánto de la mejora del CRN se consigue con procesamiento de
+  señales clásico, y qué le hace al audio un pasabajo de 4 kHz?
+- **Diseño**: Butterworth orden 5, corte en 4 kHz, sobre los tres sellados, en
+  modo causal (primario) y de fase cero. n = 250 por sellado.
+- **Resultado**: el filtro es **prácticamente una operación nula sobre PESQ**
+  —entre +0,001 y +0,011 puntos de PESQ-NB sobre el ruidoso— y entre 0,000 y
+  −0,001 en STOI. Lo único que mueve de forma apreciable es SI-SDR, hacia abajo:
+  −7,50 dB en modo causal sobre `test_v1_en`.
+- **Fuente**: `results/butterworth_{causal,zerophase}_{v1_en,v2_es,v3_mls_es}.json`;
+  tabla completa en `FUENTES.md`.
+- **Qué queda**: OP-6 cerrado, todas las variantes del CRN lo superan en los tres
+  sellados. Y la respuesta empírica a la sugerencia de la defensa del preproyecto
+  sobre aplicar un pasabajo: medida sobre material sellado, no argumentada por
+  analogía.
+- **Dato a no pasar por alto**: en `test_v2_es`, V1 supera al baseline en PESQ-NB
+  por 0,167 puntos (2,330 contra 2,163). Es el margen más chico de toda la
+  matriz, y aparece exactamente donde el modelo entrenado sólo en inglés está en
+  su peor terreno. No cambia el veredicto de OP-6, pero es el dato que hace
+  concreto por qué el fine-tuning por idioma no es opcional: sin él, el CRN se
+  acerca al rendimiento de un pasabajo de orden 5.
+- **Falta**: nada.
+
+---
+
 ## 5.2 V1 — Escalado del dataset
 
 - **Pregunta**: ¿cuánto del colapso de V0 era falta de datos?

@@ -136,5 +136,7 @@ de innovación comprometidos en el anteproyecto** (D1).
   (2) el estimando es la trayectoria, no el checkpoint; (3) la métrica de
   selección tiene que estar alineada con la de reporte, y con un proxy en la loss
   está activamente desalineada; (4) el preregistro sólo sirve si se cumple cuando
-  no conviene.
+  no conviene; (5) una afirmación de reproducibilidad hay que medirla, no
+  deducirla del código — la del evaluador no se sostuvo, y se descubrió recién
+  cuando alguien la puso a prueba (§4.1.1).
 - **Falta**: nada. Este apartado es el que el tribunal va a citar.

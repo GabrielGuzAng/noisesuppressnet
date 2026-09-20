@@ -40,13 +40,20 @@ lado del criterio comprometido.
 | OP-3 SI-SDR | ≥ 8 dB | ≥ 12 dB | 14,44 dB (V2, EN) · 14,27 dB (V5, ES) | ambos cumplidos |
 | OP-4 RTF | < 1,0 | < 0,5 | 0,331 mediana, 0,340 p95 | ambos cumplidos |
 | OP-5 Causalidad | diff = 0,00e+00 | bit-exact | bit-exact a nivel de frame, **+10 ms de lookahead por `center=True`** | cumplido con corrección de enunciado |
-| OP-6 vs Butterworth | PESQ y STOI > Butter LP | en todas las categorías de ruido | **no medido sobre sellado** | abierto |
+| OP-6 vs Butterworth | PESQ y STOI > Butter LP | en todas las categorías de ruido | 2,849 vs 2,163 (EN) · 2,686 vs 2,163 (ES) · 2,840 vs 2,198 (MLS) | cumplido |
 
 - **Fuente**: criterios del anteproyecto §6.2; valores de `FUENTES.md`.
-- **Falta**: OP-6. La única comparación contra el pasabajo es
-  `results/summary_metrics.csv`, del 27/06/2026, un mes anterior al sellado de
-  `test_v1_en`, y ahí V0 pierde contra el Butterworth (1,417 contra 2,052).
-  Correr `baselines/butterworth.py` sobre los tres sellados cierra el objetivo.
+- **OP-6, cerrado el 20/09/2026**: el baseline se evaluó sobre los tres sellados
+  en sus dos modos. Todas las variantes del CRN lo superan en PESQ y STOI en los
+  tres, por márgenes de entre 0,49 y 0,69 puntos de PESQ-NB contra el mejor de
+  los dos modos. Detalle y justificación de por qué se reportan los dos en
+  `FUENTES.md`.
+- **Matiz que hay que escribir**: la comparación previa, en
+  `results/summary_metrics.csv` del 27/06/2026, es sobre el conjunto de
+  validación de V0 y es anterior al sellado de `test_v1_en`. Ahí V0 **pierde**
+  contra el Butterworth (1,417 contra 2,052). Ese resultado no se borra: es parte
+  del diagnóstico de output collapse del §5.1, y el contraste entre esa tabla y
+  esta es justamente lo que mide el salto V0→V1.
 
 ## 1.4 Alcance: qué se hizo y qué no
 

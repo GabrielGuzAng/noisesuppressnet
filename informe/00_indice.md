@@ -37,7 +37,7 @@ Dos archivos transversales:
 | 5 | Desarrollo por variante (V0–V7) | 28 | Parcial | V7 confirmatorio; secciones V3b/V3e/V4/V4b/V5 de `EXPERIMENTS.md` |
 | 6 | Resultados negativos y qué se aprendió | 14 | Redactable | — |
 | 7 | Análisis estadístico | 12 | Redactable | — |
-| 8 | Gestión del proyecto | 14 | Parcial | costos de V4/V4b sin generar (8 brazos) |
+| 8 | Gestión del proyecto | 14 | Bloqueado | EDT v3 no está en `DocsProfesores/` |
 | 9 | Conclusiones y trabajo futuro | 6 | Bloqueado | cierre de V7 y de los pendientes de alcance |
 | 10 | Anexos | 20 | Parcial | reportes de costo V3–V7 sin generar |
 |  | **Total cuerpo + anexos** | **~142** | | |
@@ -47,28 +47,32 @@ tiene fuente. No significa que esté escrito.
 
 ---
 
+## Resuelto el 20/09/2026
+
+- **OP-6 cerrado**: el baseline Butterworth se evaluó sobre los tres sellados en
+  sus dos modos. Todas las variantes del CRN lo superan en PESQ y STOI en los
+  tres. Ver `FUENTES.md` y §5.1.b.
+- **Costos completos hasta V7**, incluida la línea de proxy como suma de sus 8
+  brazos: 150,69 h de GPU en 20 corridas medidas.
+- **Hallazgo no buscado**: la evaluación nunca fue bit-reproducible. Documentado
+  y medido en §4.1.1. No invalida ningún número reportado; sí invalida la
+  afirmación de bit-reproducibilidad.
+
+---
+
 ## Los cuatro problemas que hay que resolver antes de la entrega
 
-Ordenados por cuánto bloquean. La discrepancia de versiones del EDT queda fuera
-de esta lista: la resuelve el autor por su cuenta.
+Ordenados por cuánto bloquean.
 
-### 1. El baseline Butterworth nunca se evaluó sobre un test set sellado
+### 1. El EDT v3 no existe como archivo
 
-`results/summary_metrics.csv` es del 27/06/2026; `test_v1_en` se selló el
-26/07/2026. La única comparación existente contra el pasabajo es sobre el
-conjunto de validación de V0, y ahí V0 **pierde** (PESQ-NB 1,417 contra 2,052 del
-Butterworth y 2,050 del ruidoso).
+El anteproyecto (§3.3) cita *"EDT v3 — NoiseSuppressNet"* con 65 paquetes de
+trabajo. En `DocsProfesores/` sólo está `EDT_v2_NoiseSuppressNet.docx`. Tampoco
+está la presentación de la defensa del preproyecto.
 
-El objetivo de calidad OP-6 del plan de calidad pide superioridad sobre el
-baseline pasabajo. Hoy no está demostrado sobre el material sellado.
-
-`evaluation/evaluate_variant.py` ya acepta `--variant butterworth` (19/09/2026):
-los baselines sin pesos se aplican como función en lugar de cargarse como
-checkpoint. **El pasabajo por default es de fase cero (`sosfiltfilt`), que no es
-causal** y por lo tanto no cumple la restricción a la que sí está sujeto el CRN.
-Se mantiene así por continuidad con los números de V0 y porque ganarle a un
-baseline que ve el futuro es la afirmación más fuerte; `--baseline_causal` da la
-comparación pareja. El informe reporta las dos y declara cuál es cuál.
+Es el único bloqueante duro que queda: sin la línea base no se pueden escribir
+§8.1 (EDT) ni §8.2 (cronograma planificado contra real). Los datos de costo, ya
+generados, alimentan §8.4 y **no lo destraban** — son cosas distintas.
 
 ### 2. Faltan métricas que estaban dentro del alcance
 

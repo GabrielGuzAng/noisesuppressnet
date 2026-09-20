@@ -25,6 +25,51 @@ escribe antes que ellos, porque todos citan hacia acá.
 - **Fuente**: `decisions.md`, 22/08/2026 y entrada de cierre del bug.
 - **Falta**: nada. Declararlo cuesta menos que si lo encuentra el tribunal.
 
+### 4.1.1 La evaluación tampoco es bit-reproducible (medido el 20/09/2026)
+
+- **Afirma**: `evaluation/evaluate_variant.py` **no activa el determinismo de
+  cuDNN**. El trainer lo hace desde V3b; el evaluador nunca lo hizo. En
+  consecuencia, **ningún JSON de `results/` es bit-reproducible**: re-evaluar la
+  misma variante sobre el mismo sellado con el mismo checkpoint da un archivo
+  distinto.
+- **Cómo se estableció**, en tres pasos, porque la conclusión no se deduce del
+  código sino de la medición:
+
+  1. Dos pasadas del forward del mismo modelo, sobre el mismo audio, en el mismo
+     proceso, difieren en los 6 pares probados, con `max|a−b|` entre 3e−08 y
+     7e−07. El modelo es 94 % LSTM y los kernels de cuDNN para RNN no son
+     deterministas por defecto.
+  2. Las métricas del audio **ruidoso** —el único camino que no pasa por la
+     GPU— salen bit-idénticas en las cuatro métricas y en las tres corridas.
+     Sólo difiere lo que pasa por el modelo.
+  3. Dos re-evaluaciones completas de V1 sobre `test_v1_en` con **código
+     idéntico** difieren entre sí tanto como cualquiera de ellas difiere del
+     JSON commiteado: 1163 diferencias contra 1159, con la misma mediana de
+     2,384e−07. La variación entre corridas del mismo código es indistinguible
+     de la variación contra el archivo sellado.
+
+- **Magnitud**: por par, máximo 7,6e−05 en PESQ-WB. En los agregados globales,
+  entre 6,8e−10 (STOI) y 2,0e−07 (PESQ-WB); el SI-SDR global no se mueve, por
+  cancelación al promediar. **A tres decimales, que es la precisión con que el
+  informe reporta, los cuatro agregados son idénticos en las tres corridas.**
+- **Qué NO invalida**: ningún número reportado. Las diferencias están entre tres
+  y cinco órdenes de magnitud por debajo de la precisión de reporte, y muy por
+  debajo del piso de ruido por checkpoint del §4.6 (sd 0,0099), que es el que
+  gobierna qué efectos el proyecto puede resolver.
+- **Qué sí invalida**: la afirmación de que los resultados son bit-reproducibles.
+  Son reproducibles **a la precisión reportada**, que es una afirmación más débil
+  y es la que corresponde escribir.
+- **Decisión pendiente**: activar el determinismo de cuDNN en el evaluador. A
+  favor, es la única forma de que una prueba de no-regresión sobre esta
+  herramienta pueda pasar, y el trainer ya lo hace. En contra, cambia los kernels,
+  así que las corridas futuras tampoco reproducirían los JSON ya commiteados: se
+  cambia "irreproducible hacia atrás y hacia adelante" por "irreproducible hacia
+  atrás, reproducible desde acá".
+- **Nota de honestidad para el capítulo 6**: este hallazgo salió de una prueba de
+  no-regresión rutinaria, al agregar soporte de baselines al evaluador. La prueba
+  no encontró lo que buscaba —el cambio no introdujo regresión— y encontró algo
+  que llevaba en el repositorio desde V0.
+
 ## 4.2 Sellado de los conjuntos de prueba
 
 - **Afirma**: tres conjuntos de 250 pares, sellados una vez, no regenerables. La

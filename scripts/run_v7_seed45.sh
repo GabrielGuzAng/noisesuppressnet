@@ -19,7 +19,12 @@ set -u
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
 
-while pgrep -f "evaluation.evaluate_variant|training.trainer" > /dev/null; do
+# La guarda mira también el script padre y no sólo los procesos de python. Entre
+# que una corrida de run_v7_seeds.sh termina y arranca la siguiente hay un hueco
+# de segundos sin ningún proceso de GPU vivo; si un sondeo cayera justo ahí, las
+# dos cosas arrancarían juntas y 8 GB no dan para dos. El script padre sí sigue
+# vivo durante ese hueco.
+while pgrep -f "run_v7_seeds.sh|evaluation.evaluate_variant|training.trainer" > /dev/null; do
   echo "[$(date +%H:%M:%S)] hay otro job de GPU corriendo, esperando..."
   sleep 300
 done

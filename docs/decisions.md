@@ -1157,9 +1157,16 @@ entre semillas, así que se declara como **verificación de replicación y no co
 hipótesis**, y no se fabrica un p-valor que no corresponde.
 
 **Consecuencia operativa, que es la que fija el presupuesto:** con este estimando hay que correr
-las dos semillas nuevas, los dos brazos — cuatro entrenamientos, ~45 h. Recortar a una sola
-semilla nueva dejaría el confirmatorio otra vez en n=1 y haría inútil el gasto. Las 45 h son el
-piso de la versión limpia, no un número inflado.
+semillas nuevas completas, los dos brazos de cada una. Recortar a una sola dejaría el
+confirmatorio otra vez en n=1 y haría inútil el gasto.
+
+**Corregido el 19/09 al cerrar el preregistro: van TRES semillas nuevas (43, 44 y 45), no dos.**
+Esta entrada se escribió el 18/09 con un plan de dos semillas y ~45 h, y quedó desactualizada.
+El documento hasheado declara seis corridas y ~68 h, que además es la lectura estricta de las
+"~63 h de la confirmación con tres semillas" que presupuestaba el preregistro de V7. Con n=3 el
+piso por semilla de C2 deja de ser un parche sobre un diseño corto y pasa a ser una guarda sobre
+uno que ya tiene margen. Vale el documento hasheado, no esta entrada: el hash está en
+`docs/preregistro_v7_semillas.sha256`.
 
 El preregistro completo vive fuera del repo por la regla anti-contaminación; acá queda la
 decisión y su razón, que es lo que tiene que sobrevivir aunque el documento no se lea. El hash va

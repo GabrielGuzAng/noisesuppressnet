@@ -71,3 +71,11 @@ nosiesuppressnet-oracle/
 
 # Documentos de trabajo personales, no artefactos del proyecto
 docs/reunion_*.html
+
+# Contexto operacional para Claude Code y paneles locales de trabajo.
+# Viven en el disco, no son artefactos del proyecto.
+CLAUDE.md
+ROLES.md
+docs/dashboard.html
+scripts/generate_dashboard.py
+docs/camino_critico.html

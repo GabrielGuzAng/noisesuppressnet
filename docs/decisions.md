@@ -836,6 +836,9 @@ idioma, y obliga a reformular el aporte 2.
 
 **Hallazgo lateral, y es el más accionable: cuánto se retiene depende fuertemente de la receta.**
 
+> **RETRACTADO el 09/09/2026.** El estimando de esta tabla está mal elegido y el 67 % no se
+> sostiene. Ver la corrección al final de este archivo antes de citar cualquier número de acá.
+
 | modelo | ganancia en Common Voice | en audiolibro | retiene |
 |---|---|---|---|
 | V3e | +0,221 | +0,084 | **38 %** |
@@ -930,3 +933,234 @@ De paso quedó cuantificado que el **0,13 %** de los pares tiene ruido digitalme
 proporción es idéntica en `processed_es`, así que es una propiedad de los corpus de ruido
 y no algo que introduzca el rango ancho. A ese nivel es despreciable, pero conviene tenerlo
 registrado.
+
+---
+
+## El estimando pasa a ser la trayectoria promediada, no el checkpoint seleccionado (15/09/2026)
+
+V6 midió, sobre seis checkpoints consecutivos de dos ramas que sólo difieren en la compuerta,
+un piso de ruido por checkpoint de **sd 0,0099 sobre `test_v2_es` y 0,0166 sobre `test_v1_en`**
+en el contraste de PESQ-NB. Los efectos que este proyecto está persiguiendo en sus últimas
+variantes son de ese mismo orden.
+
+La consecuencia no es estadística sino de diseño: **ninguna comparación entre dos checkpoints
+únicos puede resolver un efecto de este tamaño**, caiga donde caiga la selección. Da igual si la
+selección fue por mínimo de `val_loss`, por PESQ sobre validación o por época fija: el número que
+se reporta lleva incorporado un término de ruido tan grande como el efecto.
+
+Desde V7 el estimando primario de una intervención arquitectónica es **el contraste promediado
+sobre un tramo declarado de épocas** (15 a 20, las últimas seis de veinte), con el tramo escrito
+en el preregistro antes de correr. Eso obliga a `save_every_n_epochs=1` en cualquier corrida cuyo
+resultado se vaya a reportar.
+
+Dos límites que hay que enunciar cada vez que se usa: los checkpoints de una trayectoria **no son
+muestras independientes**, así que el p-valor sobre el promedio es descriptivo y no confirmatorio;
+y promediar sobre épocas no sustituye a replicar sobre semillas, que es una fuente de varianza
+distinta.
+
+Evidencia acumulada de que la selección por mínimo de `val_loss` no está alineada con PESQ, en
+orden: el placebo de V4b (V1 + 2 épocas a lr 2e-5 gana en las cuatro métricas con peor val MSE),
+las dos réplicas de semilla de V5 (pico en la época 18, no en la de mínima `val_loss`), y el
+barrido por época de V6. `scripts/select_by_val_pesq.py` reemplaza el criterio; el sd de la
+diferencia apareada entre checkpoints es 0,059, así que con 300 pares de validación el error
+estándar queda en 0,0034.
+
+---
+
+## V7 reentrena su propio control en vez de comparar contra V2 (15/09/2026)
+
+La comparación barata para "¿sirve la compuerta desde cero?" sería correr sólo la rama con
+compuerta y contrastarla contra V2, que ya está entrenado con la misma receta. **Está confundida.**
+V2 se entrenó antes de que el trainer tuviera `cudnn_deterministic`, así que su trayectoria de
+punto flotante es otra. Se verificó que `np.random` no interviene en el camino de datos del
+entrenamiento —sólo aparece en `make_mixtures.py`, que genera el dataset offline— y que el
+barajado usa el generador de torch, de modo que la única diferencia real es la selección de
+kernels de cuDNN. Esa diferencia es del orden de cambiar la semilla: **sd 0,004 a 0,019** medido
+en las réplicas de V5, o sea **del mismo tamaño que el efecto buscado**.
+
+Costo de la decisión: 10,6 h de GPU extra. Beneficio: el contraste no arrastra el cambio de
+régimen de `cudnn_deterministic`.
+
+**Salvedad encontrada el 19/09, al validar el preregistro de las réplicas.** "Una sola variable"
+no es literalmente cierto. Construir la cabeza de compuerta consume draws del generador global de
+CPU, del que `RandomSampler` saca su semilla de época, así que **los dos brazos ven el mismo
+dataset en distinto orden** — verificado: la inicialización del backbone es bit-idéntica
+(`max|diff| = 0`) pero las semillas de sampler difieren en todas las épocas. El ruido que esta
+decisión evitaba por un lado está metido por otro, del mismo orden (la sd de orden de datos de V5,
+0,004-0,019) y un orden de magnitud por debajo del efecto. No se corrige, porque cambiarlo haría
+que las réplicas corran otro protocolo; se declara, y las réplicas lo absorben.
+
+Es la tercera vez que el proyecto paga este precio y la tercera vez que cambia la conclusión.
+En V4b, contra el audio sin procesar el término perceptual parecía casi inocuo (−0,059) y contra
+el placebo con idéntico protocolo costaba −0,598. En V6, contra V2 la compuerta parecía mejorar
++0,036 en inglés y contra el placebo costaba −0,011. **El control con protocolo idéntico no es
+un lujo del diseño: es la diferencia entre la conclusión correcta y la opuesta.**
+
+---
+
+## La reanudación de una corrida cortada tiene que ser bit-exacta o no sirve (16/09/2026)
+
+Dos cortes de energía el 16/09 —uno a las 06:50 durante el entrenamiento de V7control, otro a las
+13:08 durante el barrido de evaluación— obligaron a decidir entre reanudar o reentrenar 10,5 h.
+
+**Reanudar "de forma equivalente" no era una opción.** Las épocas perdidas eran 15 a 20, que son
+exactamente las que cargan el estimando primario. Una reanudación que reponga los pesos pero no el
+resto introduce una perturbación del mismo orden que el efecto buscado —el mismo argumento por el
+que V7 reentrena su control en lugar de reusar V2—. O la reanudación es bit-exacta, o el
+experimento se cae.
+
+Las tres piezas que hay que reponer, y que `Trainer._resume` repone:
+
+1. **Pesos y momentos de Adam.** Vienen en el checkpoint periódico.
+2. **La fase del `StepLR`.** El lr ya viene restaurado dentro de `opt_state`, y `StepLR` es
+   multiplicativo sobre el lr corriente —no lo recalcula desde `initial_lr`—, así que replicar los
+   `step()` lo decaería una segunda vez. Sólo hay que reponer `last_epoch`. Este es el bug que
+   agarró el test.
+3. **El RNG global de CPU.** No se guarda en el checkpoint: se **replica**. `RandomSampler.__iter__`
+   saca su semilla de época de ahí, y cada iterador de `DataLoader` saca de ahí su `base_seed` de
+   workers, del que salen los recortes aleatorios de `NSDataset`. Reconstruir un iterador de train
+   y uno de val por época ya hecha avanza el generador exactamente lo que esas épocas consumieron.
+   El generador de CUDA no necesita réplica: el modelo no tiene ninguna operación estocástica en
+   el dispositivo.
+
+`tests/test_resume.py` verifica que los checkpoints de una corrida reanudada son **bit-idénticos**
+a los de la misma corrida sin cortar, y corre cada entrenamiento **en un proceso aparte**: reanudar
+después de un corte es necesariamente un proceso nuevo, y probarlo dentro del mismo intérprete
+dejaría sin verificar justamente lo que podría no reproducirse entre procesos (elección de kernels
+de cuDNN, alineación de memoria en GPU). Lo único que legítimamente difiere es `epoch_time_s`.
+
+Evidencia externa al test, sobre la corrida real: la secuencia de lr de las épocas 15-20 del brazo
+reanudado coincide exactamente con la del brazo que corrió sin cortes, la train loss engancha sin
+escalón en el empalme (−0,0867 → −0,0886), y la val loss no muestra discontinuidad.
+
+**Operativo:** el patrón de lanzamiento sigue siendo `setsid nohup ... < /dev/null &`, que sobrevive
+al cierre de la terminal pero no al corte de energía. Un corte ahora cuesta, como máximo, la época
+en vuelo.
+
+---
+
+## Corrección: el "67 % de retención entre canales" no se sostiene (09/09/2026)
+
+La entrada del 07/09 cierra con un hallazgo lateral: que V5 retiene el 67 % de su ganancia al
+cambiar de canal contra el 38 % de V3e, y que por lo tanto **"la dependencia del canal no es
+una propiedad inevitable del fine-tuning: es una propiedad de la receta"**. Esa frase queda
+retractada, y el número con ella.
+
+**El error es de estimando, no de cálculo.** F6 define la ganancia como `variante − V1`, y ese
+no es el mismo contraste para las dos recetas. V3e parte de V1, así que `V3e − V1` aísla el
+fine-tuning al español. V5 parte de V2, así que `V5 − V1` mete adentro el salto de la loss
+combinada — una mejora entrenada **solo en inglés**, que no tiene por qué comportarse como la
+adaptación al idioma cuando cambia el canal. Se estaban comparando dos cosas distintas.
+
+Con cada efecto medido desde su propio punto de partida:
+
+| efecto | crowdsourced | audiolibro | retiene |
+|---|---|---|---|
+| `V2 − V1` (loss combinada, entrenada en inglés) | +0,121 | +0,160 | **132 %** |
+| `V3e − V1` (fine-tuning al español desde V1) | +0,221 | +0,084 | **38 %** |
+| `V5 − V2` (fine-tuning al español desde V2) | +0,235 | +0,079 | **34 %** |
+
+**V5 retiene menos que V3e, no el doble.** Y lo que reemplaza a la frase retractada tiene mejor
+control que ella: una mejora agnóstica al idioma transfiere al 132 % ante el mismo cambio de
+canal, mientras que los dos fine-tunings al español transfieren al 34-38 %. O sea que la
+dependencia del canal no distingue recetas de fine-tuning: distingue **qué tipo de mejora** es.
+
+**Dónde sigue vivo el número viejo, y qué falta.** Esta corrección se declaró en el mensaje del
+commit `cd0f443` y nunca bajó a los documentos, así que el 67 % siguió leyéndose como hallazgo
+vigente en dos lugares hasta el 19/09: la entrada del 07/09 de este archivo y la tabla de F6 en
+`docs/reanalisis_estadistico.md`. Los dos quedan marcados. **Pendiente y no hecho:**
+`retention_by_recipe` en `analysis/reanalysis_stats.py` sigue calculando contra V1, así que
+`results/reanalysis_stats.json` sigue publicando el estimando equivocado. Corregirlo toca código
+con tests, y por la regla 2 de este proyecto el cambio y sus tests no los escribe el mismo agente.
+
+**Lección de proceso, que es lo que hace que esto merezca una entrada propia:** una retractación
+que vive únicamente en un mensaje de commit no existe. Los mensajes de commit no se releen; los
+documentos sí. Cualquier número retirado se marca en el lugar donde se publicó, el mismo día.
+
+---
+
+## Qué miden las réplicas de semilla de V5, y qué no habilitan decir (08-09/09/2026)
+
+Se corrieron V5 con semillas 43 y 44 además de la 42. **Las tres parten del mismo
+`checkpoint/v2/best.pt` y el CRN no tiene dropout**, así que lo único que la semilla mueve es el
+orden en que el fine-tuning ve los datos.
+
+| | español, Common Voice | inglés, LibriSpeech | español, audiolibro |
+|---|---|---|---|
+| s42 / s43 / s44 | 2,686 / 2,658 / 2,661 | 2,774 / 2,770 / 2,766 | 2,840 / 2,803 / 2,816 |
+| sd | 0,015 | 0,004 | 0,019 |
+
+**Tres cosas que esto habilita, y una que no.**
+
+Habilita: la ventaja de V5 sobre V3e en español es de siete a nueve desvíos de semilla, así que
+el efecto no es orden de datos. Habilita también fijar la magnitud de ese ruido para diseños
+futuros. Y obliga a una regla de reporte: **la semilla 42 es la más alta de las tres en los tres
+sellados**, o sea que el titular del proyecto sale del máximo de tres corridas, y eso se dice
+cada vez que se cita el número.
+
+**No habilita decir "robusto a la semilla" a secas.** La varianza de inicialización no se midió:
+las tres corridas arrancan del mismo lugar. Es una distinción que parece pedante hasta que se
+necesita — en V7, donde los dos brazos entrenan **desde cero**, la semilla mueve también la
+inicialización, y estos 0,004-0,019 son el denominador equivocado para juzgar aquel efecto. De
+ahí sale la necesidad de las réplicas de V7 y no de un argumento genérico sobre n=1.
+
+**`save_every_n_epochs=3` en las réplicas.** V5 sólo había guardado `best.pt`, lo que dejó sin
+poder chequear si la época de mínima `val_loss` es también la mejor por PESQ. Cada 3 épocas da 8
+checkpoints por corrida (1,6 GB) y cubre la meseta donde cae el mínimo, sin acopiar 5 GB.
+
+**El barrido de época que eso permitió, y la decisión de no usarlo.** En las dos réplicas el pico
+está en la época 18 y no en la de mínima `val_loss`: +0,036 (s43) y +0,022 (s44), p < 0,001
+apareado. **No se seleccionó nada con esto**, y no se va a seleccionar: está medido sobre el
+sellado, y elegir época mirándolo sería selección sobre el test set. V5 se reporta con su
+`best.pt` de la época 21. El hallazgo cuenta como evidencia del problema de criterio de
+selección, no como criterio (ver la entrada del 15/09).
+
+---
+
+## Un preregistro lo valida alguien que no lo escribió (18/09/2026)
+
+En el preregistro de V6 la predicción P3 quedó escrita **con el signo invertido**: pedía que `g`
+creciera con el SNR, contradiciendo la sección del mismo documento donde se explica que la
+compuerta sólo puede aprender a replegarse, y replegarse es `g` bajando. El criterio literal
+falló, el mecanismo real se cumplió con ρ ≈ −0,4, y el veredicto no se revisó — el preregistro
+existe justamente para que no se arregle el enunciado después de ver el dato.
+
+**La causa no fue distracción: fue que nadie más lo leyó.** Es la misma omisión que había dejado
+a F6 sin tests, y es la regla 2 del proyecto aplicada a un documento en vez de a código: nunca la
+misma persona —o el mismo agente— escribe algo y lo verifica.
+
+**Regla desde acá:** ningún preregistro se hashea sin que lo lea un validador independiente, que
+no haya participado en escribirlo. El validador busca, en este orden: contradicciones internas
+—con atención especial a los signos—, criterios que no se puedan computar con el código y los
+datos que van a existir, y grados de libertad que le dejen al autor acomodar el análisis después.
+No busca mejorar la redacción.
+
+Aplicado por primera vez al preregistro de la confirmación de V7 con semillas, el 18/09.
+
+---
+
+## El estimando confirmatorio de V7 excluye la semilla que disparó la confirmación (18/09/2026)
+
+V7 pasó su screening con la semilla 42 y eso activa la confirmación con tres semillas que su
+propio preregistro había declarado. Al escribir el preregistro de esa confirmación apareció una
+decisión que no admite postergarse: **si el número confirmatorio promedia las tres semillas o
+sólo las dos nuevas.**
+
+**Decisión: el estimando confirmatorio es el promedio de las semillas 43 y 44. Las tres se
+reportan siempre juntas.** La 42 es la que generó la hipótesis; incluirla en el número que la
+confirma lo sesga hacia arriba por el mismo mecanismo por el que la semilla más alta de tres se
+convierte en titular, que es el problema que V5 documentó en carne propia. Un dato no puede
+generar y confirmar la misma afirmación.
+
+**Consecuencia aceptada:** el confirmatorio tiene n=2. No hay potencia para testear variabilidad
+entre semillas, así que se declara como **verificación de replicación y no como test de
+hipótesis**, y no se fabrica un p-valor que no corresponde.
+
+**Consecuencia operativa, que es la que fija el presupuesto:** con este estimando hay que correr
+las dos semillas nuevas, los dos brazos — cuatro entrenamientos, ~45 h. Recortar a una sola
+semilla nueva dejaría el confirmatorio otra vez en n=1 y haría inútil el gasto. Las 45 h son el
+piso de la versión limpia, no un número inflado.
+
+El preregistro completo vive fuera del repo por la regla anti-contaminación; acá queda la
+decisión y su razón, que es lo que tiene que sobrevivir aunque el documento no se lea. El hash va
+a `docs/preregistro_v7_semillas.sha256` antes de lanzar.

@@ -289,20 +289,27 @@ problema de arquitectura y pasa a ser uno de señal de entrenamiento.**
 
 ## 10. Qué sigue
 
-**V7, en curso desde el 15/09 12:24.** La compuerta presente desde la
-inicialización, entrenada desde cero contra un control desde cero, 20 épocas cada
-uno. Pregunta si con el camino de identidad disponible de entrada la red aprende
-una división del trabajo distinta —el decoder especializado en corrección
-residual en vez de síntesis completa—, algo que una compuerta atornillada a un
-backbone convergido no puede provocar. Es **screening**: umbral +0,050 (≈3× la sd
-por checkpoint medida acá), solo puede detectar un efecto grande, y eso es
-deliberado. Preregistro con la convención de signo escrita explícitamente y un
-ejemplo numérico, para que el error de P3 no se repita.
+**V7 corrió, y el diagnóstico de arriba resultó ser el punto.** La compuerta
+presente desde la inicialización, entrenada desde cero contra un control desde
+cero, 20 épocas cada uno. El screening pasó: el contraste promediado sobre las
+épocas 15-20 da **+0,0795** en español contra un umbral de +0,050, y **+0,062**
+en inglés, o sea sin costo en el idioma de entrenamiento. El mecanismo se repite
+con el mismo signo y la misma fuerza que acá. **Documento completo:
+`docs/v7_compuerta_desde_cero.md`.**
 
-**Precondición aceptada y pendiente:** reemplazar la selección por mínimo de
-`val_loss` por selección por PESQ sobre el set de **validación** —nunca sobre los
-sellados—. Cuesta cero horas de GPU porque se aplica a posteriori sobre los
-checkpoints por época.
+Lo que eso le hace a la lectura de V6: el camino de identidad **no** era
+insuficiente. Lo insuficiente era atornillarlo a un backbone que ya había
+convergido 20 épocas sin él, que es exactamente la limitación que esta sección
+anticipaba —seis épocas a lr 2e-5 no alcanzan para reorganizarse— pero que no se
+podía separar del resto hasta tener la contrafactual corrida. V6 no queda
+retractado: su endpoint primario falló y sigue fallando. Queda **acotado**: falla
+para la compuerta agregada tarde, no para la compuerta.
+
+**Precondición cumplida.** `scripts/select_by_val_pesq.py` reemplaza la selección
+por mínimo de `val_loss` por PESQ sobre el set de validación, nunca sobre los
+sellados. Tamaño de muestra medido: la sd de la diferencia apareada entre
+checkpoints es 0,059 —no los 0,73 del PESQ crudo—, así que con 300 pares el error
+estándar queda en 0,0034.
 
 **Idea derivada, para su propia celda:** condicionar la compuerta sobre el
 residuo |M̂ − M_noisy| además de `d2`. "Voy a cambiar mucho una entrada que se ve
@@ -323,3 +330,4 @@ ataca el diagnóstico en vez de la división del trabajo.
 - `results/v6_gate_*.json`, `results/v6_placebo_*.json`, `results/v6_epochs/`
 - `docs/preregistro_compuerta.sha256`
 - `logs/v6_gate.log`, `logs/v6_epoch_sweep.log`
+- Continuación: `docs/v7_compuerta_desde_cero.md`

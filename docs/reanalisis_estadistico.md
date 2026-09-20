@@ -216,3 +216,10 @@ Hablantes: 40 | Preregistro: docs/preregistro_mls_es.sha256
 |---|---|---|---|
 | v3e | +0.221 | +0.084 | 38% |
 | v5 | +0.356 | +0.239 | 67% |
+
+> **El 67 % de esta fila queda retractado (09/09/2026).** La ganancia se define acá como
+> variante − V1, y ese no es el mismo estimando para las dos recetas: la de V5 incluye el
+> salto de la loss combinada, entrenada solo en inglés. Con el estimando corregido V5
+> retiene 34 %, menos que V3e, no el doble. Detalle en `decisions.md`, corrección del
+> 09/09/2026. El recálculo de `retention_by_recipe` en `analysis/reanalysis_stats.py`
+> sigue pendiente.

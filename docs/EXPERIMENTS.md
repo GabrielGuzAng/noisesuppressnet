@@ -512,3 +512,204 @@ fine-tuning más conservador (lr reducido, determinado empíricamente)
 reduce el forgetting en inglés sin sacrificar la ganancia en español —
 ese es el objetivo de V3b (docs/PLAN_V3B.md, en curso).
 
+---
+
+## Índice de variantes y dónde está documentada cada una
+
+Esta bitácora tiene detalle completo hasta V3. De ahí en adelante el detalle vive
+en documentos propios y en `decisions.md`; acá quedan las entradas de V6 y V7,
+que son las que no tenían ningún registro formal. **Las secciones de V3b, V3e, V4,
+V4b y V5 siguen pendientes en este archivo** — es deuda declarada, no olvido.
+
+| variante | qué es | documentación |
+|---|---|---|
+| V0 | baseline con 200 pares | este archivo |
+| V1 | dataset escalado a 50k | este archivo |
+| V2 | loss combinada MSE + SI-SDR | este archivo |
+| V3 | fine-tuning agresivo a español | este archivo |
+| V3b, V3e | fine-tuning conservador y su corrección | `decisions.md`, commit `7f7884d` — **pendiente acá** |
+| V4, V4b | proxy perceptual Squim; negativo | `decisions.md` ("Cierre de V4", "V4b"), `docs/PLAN_V4.md` — **pendiente acá** |
+| V5 | propuesta completa + réplicas de semilla | commit `cd0f443`, `decisions.md` — **pendiente acá** |
+| V6 | compuerta atornillada a V2; negativo | `docs/v6_compuerta.md` + sección acá |
+| V7 | compuerta desde cero; screening positivo | `docs/v7_compuerta_desde_cero.md` + sección acá |
+
+---
+
+## V6 — Compuerta causal de paso directo (fine-tuning desde V2)
+
+**Documento completo: `docs/v6_compuerta.md`.** Acá va el resumen de bitácora.
+
+### Objetivo del experimento
+
+El CRN de Tan & Wang 2018 hace mapeo espectral directo: la salida sale de
+`softplus(bn1_t(conv1_t(d2)))` y no toca nunca la magnitud de entrada. Para dejar
+un bin como está hay que reconstruirlo exactamente desde el cuello de botella
+LSTM — no existe un camino barato para expresar "acá no hagas nada". La hipótesis
+es que esa ausencia es el mecanismo por el cual el modelo degrada voz limpia fuera
+de dominio, que es lo que V1 y V2 hacen en el bucket [15,20] dB del español.
+
+Se verificó leyendo el código oficial de Tan & Wang 2020 (GCRN) que el sucesor
+publicado del paper base **tampoco** tiene camino de identidad: sus compuertas son
+GLU entre capas, gating de features internas, no un camino a la entrada.
+
+### Configuración
+
+M_out = g · M̂ + (1 − g) · M_noisy, con g aprendida, causal y por banda.
+193 parámetros sobre 17.579.459 (+0,0011 %). Inicialización preservadora del nulo
+(sesgo +3,0, g₀ = 0,953): el tratamiento arranca casi igual al placebo y sólo
+puede aprender a replegarse.
+
+| | arranca de | arquitectura | épocas | lr |
+|---|---|---|---|---|
+| placebo | `checkpoints/v2/best.pt` | CRN sin compuerta | 6 | 2e-5 |
+| tratamiento | `checkpoints/v2/best.pt` | CRN con compuerta | 6 | 2e-5 backbone / 1e-3 compuerta |
+
+Semilla 42, `cudnn_deterministic=True`, `save_every_n_epochs=1`, loss
+`mse_plus_sisdr` α 0,7, datos en inglés. El estimando es tratamiento − placebo,
+apareado archivo por archivo. Preregistro con hash en
+`docs/preregistro_compuerta.sha256`.
+
+### Verificaciones previas
+
+- `CRN(gate=False)` es **bit-idéntico** al CRN original: cargando el mismo
+  checkpoint en las dos clases, `max|diff| = 0,000e+00`.
+- Causalidad de frame con la compuerta activa: `tests/test_causality.py`
+  parametrizado con y sin compuerta, 24 tests.
+
+### Resultados
+
+| endpoint | criterio | resultado |
+|---|---|---|
+| P1 (primaria) | margen recuperado en [15,20] dB ES ≥ +3 pp, p < 0,05 | **falla**: +2,5 pp, p = 0,181 |
+| P2 (costo acotado) | — | pasa |
+| P3 (mecanismo) | *escrito con el signo invertido* | el mecanismo se cumple con ρ ≈ −0,4, p < 1e−8 |
+| P4 (degeneración) | media de g en rango | pasa: 0,57 a 0,65 |
+
+PESQ-NB global, checkpoint seleccionado:
+
+| test set | V2 | placebo | compuerta | comp − plac |
+|---|---|---|---|---|
+| inglés, LibriSpeech | 2,8493 | 2,8963 | 2,8856 | −0,0106 (p=5e−03) |
+| español, Common Voice | 2,4511 | 2,4635 | 2,4775 | +0,0141 (p=0,72) |
+| español, audiolibro | 2,7615 | 2,8089 | 2,8055 | −0,0034 (p=0,21) |
+
+### Conclusión
+
+Por la regla de decisión preregistrada, **la hipótesis no queda sostenida**. Tres
+cosas sobreviven al veredicto:
+
+1. **El mecanismo existe y es fuerte**: ρ(g, SNR) ≈ −0,4 con p < 1e−8 en los tres
+   sellados. La compuerta aprendió a replegarse sobre entrada limpia, que es
+   exactamente lo que se buscaba.
+2. **El placebo cambió la conclusión.** Contra V2 el tratamiento parecía mejorar
+   +0,036 en inglés; contra el placebo con idéntico protocolo cuesta −0,011. Las
+   seis épocas extra a lr 2e-5 valen +0,047 por sí solas.
+3. **El piso de ruido por checkpoint** (sd 0,0099 ES / 0,0166 EN) es del mismo
+   tamaño que el efecto buscado, lo que invalida el **diseño** de cualquier
+   comparación de un solo checkpoint. Ver `decisions.md` (15/09/2026).
+
+El costo en inglés que se reportó la primera mañana quedó **retractado**: sobre la
+trayectoria de seis épocas el contraste es +0,004 con 3 de 6 positivas, centrado
+en cero.
+
+Diagnóstico que abre V7: la compuerta aprendió a detectar *"la entrada está
+limpia"* —una señal de SNR disponible en el entrenamiento inglés— y no *"estoy
+fuera de mi dominio"*, que no existe en datos de un solo idioma. Y la compuerta
+estaba atornillada a un backbone que ya había convergido 20 épocas sin ella.
+
+---
+
+## V7 — La misma compuerta, entrenada desde cero
+
+**Documento completo: `docs/v7_compuerta_desde_cero.md`.** Acá va el resumen de
+bitácora.
+
+### Objetivo del experimento
+
+V6 dejó una ambigüedad que no se podía resolver con sus propios datos: su
+endpoint falló, pero la compuerta estaba atornillada a un backbone que ya había
+convergido 20 épocas sin ella. **V7 pregunta si con el camino de identidad
+disponible desde la inicialización la red aprende una división del trabajo
+distinta** — el decoder especializado en corrección residual en vez de síntesis
+completa.
+
+Es screening declarado: umbral +0,050, unas tres veces la sd por checkpoint que
+midió V6, de modo que sólo puede detectar un efecto grande.
+
+### Configuración
+
+| | arquitectura | init | épocas | lr | loss | datos |
+|---|---|---|---|---|---|---|
+| control | CRN sin compuerta | aleatoria | 20 | 2e-4, StepLR(2 · 0,98) | mse_plus_sisdr α 0,7 | `data/processed` (EN) |
+| tratamiento | CRN con compuerta | aleatoria | 20 | idéntico | idéntica | idéntico |
+
+Semilla 42, `cudnn_deterministic=True`, `save_every_n_epochs=1`.
+**El control se reentrena y no se reusa V2** (ver `decisions.md`, 15/09/2026).
+Estimando: contraste global de PESQ-NB, compuerta − control, apareado archivo por
+archivo, **promediado sobre las épocas 15 a 20**.
+
+Preregistro con hash en `docs/preregistro_v7_desde_cero.sha256`, escrito antes de
+crear las configs.
+
+### Curva de entrenamiento
+
+31,8 min/época en los dos brazos: 10,60 h el tratamiento y 10,58 h el control,
+más ~1,5 h de barrido de evaluación. Total ~22,7 h de GPU.
+
+Dos cortes de energía el 16/09 (06:50 y 13:08) mataron el control a mitad de la
+época 15 y después el barrido. Se reanudó **bit-exacto** desde `epoch_14.pt`;
+`tests/test_resume.py` verifica que los checkpoints de una corrida reanudada son
+idénticos a los de la misma corrida sin cortar. Importaba: las épocas perdidas
+eran justamente las que cargan el estimando primario.
+
+### Resultados
+
+| endpoint | criterio preregistrado | resultado | |
+|---|---|---|---|
+| E1 contraste global ES, media ép. 15-20 | ≥ +0,050 | +0,0795 | pasa |
+| E2 costo en inglés | ≥ −0,020 | +0,0620 | pasa |
+| E3 ρ(g,SNR), tres sellados | negativo, \|ρ\| ≥ 0,15 | −0,350 / −0,415 / −0,399 | pasa |
+| E4 degeneración | media de g en (0,05 · 0,99) | 0,42 a 0,51 | pasa |
+| E5 desde cero vs. tarde | contra el +0,0187 de V6 | 4,3× | desde cero rinde |
+
+Contraste sobre los tres sellados, promediado sobre las épocas 15-20, con las seis
+épocas positivas en los tres: **+0,0795** (español Common Voice) · **+0,0753**
+(español audiolibro) · **+0,0620** (inglés LibriSpeech).
+
+### Análisis por bucket de SNR
+
+Δ PESQ-NB contra noisy en el bucket [15,20] dB, donde V1 y V2 degradan:
+
+| | inglés / audiolibro | español / audiolibro | español / crowdsourced |
+|---|---|---|---|
+| V1 | +0,343 | +0,104 | −0,167 |
+| V2 | +0,595 | +0,330 | −0,087 |
+| V7 control | +0,561 | +0,318 | −0,084 |
+| V7 compuerta | +0,647 | +0,412 | **+0,006** |
+
+El control desde cero **replica la patología** que V1 y V2 muestran en español
+crowdsourced, lo que la convierte en una propiedad de la arquitectura y la receta
+y no de una variante puntual. La compuerta la cruza a cero.
+
+### Conclusión
+
+Por la tabla de desenlaces del preregistro el resultado cae en *"E1 ≥ +0,050 y E3
+se cumple"*: la compuerta desde cero es un aporte arquitectónico real **y
+corresponde confirmarlo con tres semillas antes de escribirlo como tal**.
+
+Tres reservas van escritas al lado del resultado, no en un apéndice:
+
+1. **Una sola semilla por brazo.** Las réplicas de V5 midieron sd entre semillas
+   de 0,004 a 0,019; E1 es de 4 a 20 veces eso, improbable como ruido de semilla
+   pero no descartado. Acá la semilla mueve además la inicialización, porque los
+   dos brazos entrenan desde cero.
+2. **El mecanismo propuesto no es la única explicación.** El contraste es parejo
+   entre buckets y entre sellados, y el brazo con compuerta ajusta mejor en
+   validación (`val_mse` 0,0899 contra 0,1026). Parte del efecto es que un camino
+   de identidad facilita la optimización, como cualquier conexión residual.
+3. **La sd entre épocas (0,0340 en español) es más ancha que la que midió V6**
+   (0,0099), con la que se fijó el umbral. E1 lo pasa, pero por unos dos errores
+   estándar, y los seis checkpoints no son muestras independientes.
+
+Efecto sobre V6: queda **acotado, no retractado**. Su endpoint falló y sigue
+fallando, pero falla para la compuerta agregada tarde, no para la compuerta.

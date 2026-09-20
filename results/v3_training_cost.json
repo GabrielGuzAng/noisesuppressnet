@@ -1,0 +1,28 @@
+{
+  "variant": "v3",
+  "generated_at": "2026-09-19T13:42:31.323320",
+  "n_epochs": 30,
+  "best_epoch": 21,
+  "best_val_loss": 0.0821331369485706,
+  "mean_epoch_seconds": 1888.1649375041327,
+  "total_seconds": 56644.94812512398,
+  "total_hours": 15.734707812534438,
+  "time_to_best_hours": 11.01843600836065,
+  "efficiency_percent": 70.02631469002078,
+  "gpu_power_w": 105,
+  "system_power_w": 70,
+  "total_power_w": 175,
+  "total_kwh": 2.753573867193527,
+  "useful_kwh": 1.9282263014631138,
+  "co2_kg_per_kwh": 0.3,
+  "total_co2_kg": 0.8260721601580581,
+  "useful_co2_kg": 0.5784678904389341,
+  "cloud_usd_per_hour": 0.35,
+  "cloud_cost_usd": 5.507147734387053,
+  "hardware": {
+    "gpu": "NVIDIA RTX 4060 Gaming X 8GB",
+    "cpu": "Intel i5-4460",
+    "ram": "12 GB DDR3",
+    "os": "Ubuntu 24.04"
+  }
+}

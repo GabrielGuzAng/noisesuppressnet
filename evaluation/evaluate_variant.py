@@ -22,6 +22,11 @@ from collections import defaultdict
 from models.crn import CRN
 from stft import STFTHelper
 from evaluation.metrics import compute_metrics
+from baselines.butterworth import apply_to_waveform as butterworth_waveform
+
+
+# Baselines sin entrenamiento: no tienen checkpoint, se aplican como función.
+BASELINES = {"butterworth": butterworth_waveform}
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -59,7 +64,15 @@ def load_variant(variant_name, device, checkpoint_path=None):
     Por default busca checkpoints/<variant_name>/best.pt. Si se pasa
     checkpoint_path explícito (ej. checkpoints/v3_sweep/lr_5e-06/best.pt,
     que no sigue esa convención), se usa ese en su lugar.
+
+    Si variant_name es un baseline sin entrenamiento (ver BASELINES) devuelve
+    (None, ckpt_ficticio): no hay pesos que cargar y el loop de evaluación
+    aplica la función del baseline en lugar del modelo.
     """
+    if variant_name in BASELINES:
+        print(f"✓ {variant_name.upper()}: baseline sin entrenamiento, no hay checkpoint")
+        return None, {"epoch": None, "val_loss": None}
+
     ckpt_path = Path(checkpoint_path) if checkpoint_path else PROJECT_ROOT / "checkpoints" / variant_name / "best.pt"
     if not ckpt_path.exists():
         raise FileNotFoundError(f"No existe checkpoint: {ckpt_path}")
@@ -84,9 +97,13 @@ def infer_pair(model, stft, noisy_wav, device):
     """Aplica el modelo a un par noisy → enhanced.
 
     Returns the enhanced waveform and, for gated models, the per-pair gate
-    statistics. The gate is the mechanism under test (P3 of the
-    preregistration: g must grow with SNR), so it travels with the metrics
-    instead of needing a second pass over the sealed set.
+    statistics. The gate is the mechanism under test, so it travels with the
+    metrics instead of needing a second pass over the sealed set.
+
+    Sign convention, since an earlier version of this docstring had it
+    backwards: with ``M_out = g*M_hat + (1-g)*M_noisy``, ``g = 1`` is pure
+    enhancement and ``g = 0`` is the untouched input. Backing off on clean
+    input therefore means g FALLING as SNR rises, i.e. rho(g, SNR) negative.
     """
     with torch.no_grad():
         noisy = noisy_wav.to(device)
@@ -106,7 +123,7 @@ def infer_pair(model, stft, noisy_wav, device):
 
 
 def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
-                      checkpoint_path=None, output_path=None):
+                      checkpoint_path=None, output_path=None, baseline_causal=False):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"\n{'='*70}")
     print(f"EVALUACIÓN: {variant_name.upper()} sobre test set sellado")
@@ -150,8 +167,13 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
         clean, sr_c = torchaudio.load(str(pair_dir / "clean.wav"))
         assert sr_n == sr_c == SAMPLE_RATE, f"SR incorrecto en pair_{pair_id}"
         
-        # Inferencia
-        enhanced, gate_stats = infer_pair(model, stft, noisy.squeeze(0), device)
+        # Inferencia (o filtrado, si la variante es un baseline sin pesos)
+        if model is None:
+            enhanced = BASELINES[variant_name](noisy.squeeze(0),
+                                               causal=baseline_causal)
+            gate_stats = None
+        else:
+            enhanced, gate_stats = infer_pair(model, stft, noisy.squeeze(0), device)
         
         # Guardar audio si se pidió
         if estimates_dir is not None:
@@ -301,7 +323,8 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
     output_data = {
         "variant": variant_name,
         "checkpoint_epoch": ckpt["epoch"],
-        "checkpoint_val_loss": float(ckpt["val_loss"]),
+        "checkpoint_val_loss": (None if ckpt["val_loss"] is None
+                                else float(ckpt["val_loss"])),
         "test_set": _display_path(test_dir),
         "n_pairs_evaluated": len(all_results),
         "global": global_stats,
@@ -324,7 +347,12 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--variant", type=str, required=True,
-                        help="Nombre de la variante (v1, v2, v3, v4, v5)")
+                        help="Nombre de la variante (v1, v2, v3, v4, v5) o un "
+                             f"baseline sin entrenamiento: {sorted(BASELINES)}")
+    parser.add_argument("--baseline_causal", action="store_true",
+                        help="Solo para baselines: usar la versión causal del "
+                             "filtro. Por default el pasabajo es de fase cero, "
+                             "que no es causal y favorece al baseline.")
     parser.add_argument("--test_dir", type=str,
                         default=str(PROJECT_ROOT / "data" / "test_sealed" / "v1_en"),
                         help="Directorio del test set sellado")
@@ -351,5 +379,6 @@ if __name__ == "__main__":
         save_audio=args.save_audio,
         checkpoint_path=args.checkpoint,
         output_path=args.output,
+        baseline_causal=args.baseline_causal,
     )
 

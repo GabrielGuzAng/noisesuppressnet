@@ -23,10 +23,26 @@ from models.crn import CRN
 from stft import STFTHelper
 from evaluation.metrics import compute_metrics
 from baselines.butterworth import apply_to_waveform as butterworth_waveform
+from baselines.external import cached_baseline
 
 
-# Baselines sin entrenamiento: no tienen checkpoint, se aplican como función.
-BASELINES = {"butterworth": butterworth_waveform}
+def _butterworth(noisy, *, causal, pair_id, test_set):
+    """Adapter: el pasabajo no depende del par ni del sellado, pero comparte
+    la firma con los baselines externos, que sí."""
+    return butterworth_waveform(noisy, causal=causal)
+
+
+# Baselines sin entrenamiento: no tienen checkpoint, se aplican como función
+# sobre el noisy. Los dos externos no corren acá -- su audio lo genera
+# baselines/run_external.py en un venv aparte y esta capa solo lo lee, para que
+# pasen por la misma maquinaria de buckets, categorías y JSON que las variantes
+# entrenadas. Ver docs/baselines_externos.md.
+BASELINES = {
+    "butterworth": _butterworth,
+    "rnnoise": cached_baseline("rnnoise"),
+    "deepfilternet2": cached_baseline("deepfilternet2"),
+    "resample_roundtrip": cached_baseline("resample_roundtrip"),
+}
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -170,7 +186,9 @@ def evaluate_variant(variant_name, test_dir, metadata_path, save_audio=False,
         # Inferencia (o filtrado, si la variante es un baseline sin pesos)
         if model is None:
             enhanced = BASELINES[variant_name](noisy.squeeze(0),
-                                               causal=baseline_causal)
+                                               causal=baseline_causal,
+                                               pair_id=pair_id,
+                                               test_set=test_dir.name)
             gate_stats = None
         else:
             enhanced, gate_stats = infer_pair(model, stft, noisy.squeeze(0), device)
@@ -350,9 +368,10 @@ if __name__ == "__main__":
                         help="Nombre de la variante (v1, v2, v3, v4, v5) o un "
                              f"baseline sin entrenamiento: {sorted(BASELINES)}")
     parser.add_argument("--baseline_causal", action="store_true",
-                        help="Solo para baselines: usar la versión causal del "
-                             "filtro. Por default el pasabajo es de fase cero, "
-                             "que no es causal y favorece al baseline.")
+                        help="Solo para el baseline butterworth: usar la "
+                             "versión causal del filtro. Por default el "
+                             "pasabajo es de fase cero, que no es causal y "
+                             "favorece al baseline.")
     parser.add_argument("--test_dir", type=str,
                         default=str(PROJECT_ROOT / "data" / "test_sealed" / "v1_en"),
                         help="Directorio del test set sellado")

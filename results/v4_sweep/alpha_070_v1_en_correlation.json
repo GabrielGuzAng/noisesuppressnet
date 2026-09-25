@@ -1,0 +1,2605 @@
+{
+  "variant": "alpha_070",
+  "checkpoint": "checkpoints/v4_sweep/alpha_070/best.pt",
+  "checkpoint_epoch": 3,
+  "squim_exposure": "squim",
+  "test_set": "data/test_sealed/v1_en",
+  "real_pesq_source": "results/v4_sweep/alpha_070_v1_en.json",
+  "real_pesq_recomputed": false,
+  "metric": "PESQ-WB",
+  "metric_note": "PESQ-WB y nunca NB: la cabeza de Squim estima WB-PESQ, acotada en [1, 4.64] por sigmoide.",
+  "squim_bundle": "torchaudio.pipelines.SQUIM_OBJECTIVE",
+  "squim_pesq_ceiling": 4.64,
+  "squim_nominal_mae_wb": 0.142,
+  "n_pairs": 250,
+  "limit_applied": null,
+  "device": "cuda",
+  "seed": 42,
+  "generated_utc": "2026-09-23T02:22:54+00:00",
+  "posterior_verification": "Instrumento construido en septiembre de 2026, después de que las decisiones de V4 y V4b se tomaran con la brecha pesq_hat - PESQ-WB. Da el r comprometido, no la vigilancia comprometida: el KPI nunca alertó de nada porque no existía. Ver informe/LEDGER.md §11.a.",
+  "regimes": {
+    "reference_noisy": {
+      "description": "Squim vs PESQ-WB real sobre el audio noisy del sellado. Régimen en que Squim fue validado por sus autores.",
+      "evidence_level": "descriptivo (diseñado antes del dato, PLAN_V4 Fase 4)",
+      "expected_lcc": 0.9,
+      "n_dropped_non_finite": 0,
+      "n": 250,
+      "pearson_r": 0.9306804399144274,
+      "pearson_p_value": 2.6879176901609277e-110,
+      "pearson_ci95": {
+        "lo": 0.8869073956846463,
+        "hi": 0.955486838268691,
+        "method": "BCa",
+        "n_resamples": 10000,
+        "seed": 42
+      },
+      "pearson_ci95_fisher_z": {
+        "lo": 0.911908149993871,
+        "hi": 0.9455662663526929
+      },
+      "spearman_rho": 0.9369976479623673,
+      "spearman_p_value": 2.8611655701640055e-115,
+      "bias_mean": -0.02943611478805542,
+      "bias_ci95": {
+        "point": -0.02943611478805542,
+        "lo": -0.06208210893821818,
+        "hi": -0.005165962672533001,
+        "method": "BCa",
+        "n_resamples": 10000,
+        "seed": 42
+      },
+      "mae": 0.13173814058303834,
+      "rmse": 0.2282294330438624,
+      "mean_pesq_hat": 1.5537691721916198,
+      "mean_pesq_wb_real": 1.5832052869796753,
+      "bias_vs_nominal_mae": -0.2072965830144748,
+      "alert_threshold_r": 0.3,
+      "below_alert_threshold": false
+    },
+    "model_output": {
+      "description": "Squim vs PESQ-WB real sobre la salida del modelo. Régimen real de uso del proxy.",
+      "evidence_level": "descriptivo (diseñado antes del dato, PLAN_V4 Fase 4)",
+      "n_dropped_non_finite": 0,
+      "n": 250,
+      "pearson_r": 0.0975927052846869,
+      "pearson_p_value": 0.12379966731747644,
+      "pearson_ci95": {
+        "lo": -0.007216343628822086,
+        "hi": 0.19797986179092839,
+        "method": "BCa",
+        "n_resamples": 10000,
+        "seed": 42
+      },
+      "pearson_ci95_fisher_z": {
+        "lo": -0.026801070482099735,
+        "hi": 0.21901013630737662
+      },
+      "spearman_rho": 0.0989434070945135,
+      "spearman_p_value": 0.11865978539181989,
+      "bias_mean": 3.2873086438179016,
+      "bias_ci95": {
+        "point": 3.2873086438179016,
+        "lo": 3.2561687584218806,
+        "hi": 3.309721166016086,
+        "method": "BCa",
+        "n_resamples": 10000,
+        "seed": 42
+      },
+      "mae": 3.2873086438179016,
+      "rmse": 3.2942115298160712,
+      "mean_pesq_hat": 4.4005307760238646,
+      "mean_pesq_wb_real": 1.1132221322059632,
+      "bias_vs_nominal_mae": 23.150060871957056,
+      "alert_threshold_r": 0.3,
+      "below_alert_threshold": true
+    }
+  },
+  "per_pair": [
+    {
+      "pair_id": 0,
+      "bucket_idx": 0,
+      "snr_db": -4.807,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0501881837844849,
+      "pesq_hat_noisy": 1.1258655786514282,
+      "pesq_wb_real_est": 1.0538697242736816,
+      "pesq_hat_est": 4.49743127822876
+    },
+    {
+      "pair_id": 1,
+      "bucket_idx": 0,
+      "snr_db": -1.519,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0442886352539062,
+      "pesq_hat_noisy": 1.1029365062713623,
+      "pesq_wb_real_est": 1.0255591869354248,
+      "pesq_hat_est": 4.51246452331543
+    },
+    {
+      "pair_id": 2,
+      "bucket_idx": 0,
+      "snr_db": -4.28,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0573475360870361,
+      "pesq_hat_noisy": 1.1534106731414795,
+      "pesq_wb_real_est": 1.0655437707901,
+      "pesq_hat_est": 4.035850524902344
+    },
+    {
+      "pair_id": 3,
+      "bucket_idx": 0,
+      "snr_db": -2.687,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0432178974151611,
+      "pesq_hat_noisy": 1.119694471359253,
+      "pesq_wb_real_est": 1.05113685131073,
+      "pesq_hat_est": 3.8103082180023193
+    },
+    {
+      "pair_id": 4,
+      "bucket_idx": 0,
+      "snr_db": -1.642,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2083892822265625,
+      "pesq_hat_noisy": 1.1325044631958008,
+      "pesq_wb_real_est": 1.208516001701355,
+      "pesq_hat_est": 3.9953649044036865
+    },
+    {
+      "pair_id": 5,
+      "bucket_idx": 0,
+      "snr_db": -1.035,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.914954423904419,
+      "pesq_hat_noisy": 2.30074405670166,
+      "pesq_wb_real_est": 1.0566097497940063,
+      "pesq_hat_est": 4.543211460113525
+    },
+    {
+      "pair_id": 6,
+      "bucket_idx": 0,
+      "snr_db": -2.734,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0469130277633667,
+      "pesq_hat_noisy": 1.1102122068405151,
+      "pesq_wb_real_est": 1.0666358470916748,
+      "pesq_hat_est": 4.435561180114746
+    },
+    {
+      "pair_id": 7,
+      "bucket_idx": 0,
+      "snr_db": -2.509,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2769774198532104,
+      "pesq_hat_noisy": 1.2327520847320557,
+      "pesq_wb_real_est": 1.0851051807403564,
+      "pesq_hat_est": 4.495923042297363
+    },
+    {
+      "pair_id": 8,
+      "bucket_idx": 0,
+      "snr_db": -4.904,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0325595140457153,
+      "pesq_hat_noisy": 1.1234877109527588,
+      "pesq_wb_real_est": 1.0301809310913086,
+      "pesq_hat_est": 4.507878303527832
+    },
+    {
+      "pair_id": 9,
+      "bucket_idx": 0,
+      "snr_db": -2.838,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0273138284683228,
+      "pesq_hat_noisy": 1.1696277856826782,
+      "pesq_wb_real_est": 1.0356829166412354,
+      "pesq_hat_est": 4.465727806091309
+    },
+    {
+      "pair_id": 10,
+      "bucket_idx": 0,
+      "snr_db": -3.138,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 4.643888473510742,
+      "pesq_hat_noisy": 2.6837685108184814,
+      "pesq_wb_real_est": 1.124943494796753,
+      "pesq_hat_est": 4.569980621337891
+    },
+    {
+      "pair_id": 11,
+      "bucket_idx": 0,
+      "snr_db": -0.739,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0796482563018799,
+      "pesq_hat_noisy": 1.0989476442337036,
+      "pesq_wb_real_est": 1.0870378017425537,
+      "pesq_hat_est": 4.528989315032959
+    },
+    {
+      "pair_id": 12,
+      "bucket_idx": 0,
+      "snr_db": -2.265,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.6171875,
+      "pesq_hat_noisy": 1.8037023544311523,
+      "pesq_wb_real_est": 1.0713521242141724,
+      "pesq_hat_est": 4.328623294830322
+    },
+    {
+      "pair_id": 13,
+      "bucket_idx": 0,
+      "snr_db": -1.223,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.13845956325531,
+      "pesq_hat_noisy": 1.113011360168457,
+      "pesq_wb_real_est": 1.1341047286987305,
+      "pesq_hat_est": 4.541070938110352
+    },
+    {
+      "pair_id": 14,
+      "bucket_idx": 0,
+      "snr_db": -2.83,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0414772033691406,
+      "pesq_hat_noisy": 1.1814345121383667,
+      "pesq_wb_real_est": 1.0409725904464722,
+      "pesq_hat_est": 4.507317543029785
+    },
+    {
+      "pair_id": 15,
+      "bucket_idx": 0,
+      "snr_db": -4.119,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1558336019515991,
+      "pesq_hat_noisy": 1.1281733512878418,
+      "pesq_wb_real_est": 1.0604870319366455,
+      "pesq_hat_est": 4.524330139160156
+    },
+    {
+      "pair_id": 16,
+      "bucket_idx": 0,
+      "snr_db": -0.746,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0694156885147095,
+      "pesq_hat_noisy": 1.1040642261505127,
+      "pesq_wb_real_est": 1.042423963546753,
+      "pesq_hat_est": 4.3019819259643555
+    },
+    {
+      "pair_id": 17,
+      "bucket_idx": 0,
+      "snr_db": -0.899,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0641227960586548,
+      "pesq_hat_noisy": 1.1010499000549316,
+      "pesq_wb_real_est": 1.0469661951065063,
+      "pesq_hat_est": 4.478217601776123
+    },
+    {
+      "pair_id": 18,
+      "bucket_idx": 0,
+      "snr_db": -3.121,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0912226438522339,
+      "pesq_hat_noisy": 1.1193675994873047,
+      "pesq_wb_real_est": 1.0451244115829468,
+      "pesq_hat_est": 4.045843124389648
+    },
+    {
+      "pair_id": 19,
+      "bucket_idx": 0,
+      "snr_db": -4.521,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0775165557861328,
+      "pesq_hat_noisy": 1.1235246658325195,
+      "pesq_wb_real_est": 1.0698715448379517,
+      "pesq_hat_est": 4.514436721801758
+    },
+    {
+      "pair_id": 20,
+      "bucket_idx": 0,
+      "snr_db": -2.438,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1884809732437134,
+      "pesq_hat_noisy": 1.2616980075836182,
+      "pesq_wb_real_est": 1.0456093549728394,
+      "pesq_hat_est": 4.4258623123168945
+    },
+    {
+      "pair_id": 21,
+      "bucket_idx": 0,
+      "snr_db": -2.52,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1499358415603638,
+      "pesq_hat_noisy": 1.1599323749542236,
+      "pesq_wb_real_est": 1.0529736280441284,
+      "pesq_hat_est": 4.341297149658203
+    },
+    {
+      "pair_id": 22,
+      "bucket_idx": 0,
+      "snr_db": -1.138,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.080439805984497,
+      "pesq_hat_noisy": 1.101314902305603,
+      "pesq_wb_real_est": 1.0758531093597412,
+      "pesq_hat_est": 4.217681884765625
+    },
+    {
+      "pair_id": 23,
+      "bucket_idx": 0,
+      "snr_db": -2.014,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.135229229927063,
+      "pesq_hat_noisy": 1.1732888221740723,
+      "pesq_wb_real_est": 1.038193941116333,
+      "pesq_hat_est": 4.459176063537598
+    },
+    {
+      "pair_id": 24,
+      "bucket_idx": 0,
+      "snr_db": -2.467,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1480772495269775,
+      "pesq_hat_noisy": 1.1287261247634888,
+      "pesq_wb_real_est": 1.036042332649231,
+      "pesq_hat_est": 4.208250045776367
+    },
+    {
+      "pair_id": 25,
+      "bucket_idx": 0,
+      "snr_db": -2.124,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2557638883590698,
+      "pesq_hat_noisy": 1.1555044651031494,
+      "pesq_wb_real_est": 1.1065893173217773,
+      "pesq_hat_est": 4.1958723068237305
+    },
+    {
+      "pair_id": 26,
+      "bucket_idx": 0,
+      "snr_db": -3.115,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0464259386062622,
+      "pesq_hat_noisy": 1.1284853219985962,
+      "pesq_wb_real_est": 1.070686936378479,
+      "pesq_hat_est": 4.511690616607666
+    },
+    {
+      "pair_id": 27,
+      "bucket_idx": 0,
+      "snr_db": -4.755,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.2037273645401,
+      "pesq_hat_noisy": 1.1084022521972656,
+      "pesq_wb_real_est": 1.0396831035614014,
+      "pesq_hat_est": 4.437862396240234
+    },
+    {
+      "pair_id": 28,
+      "bucket_idx": 0,
+      "snr_db": -4.694,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1804368495941162,
+      "pesq_hat_noisy": 1.198616862297058,
+      "pesq_wb_real_est": 1.1145000457763672,
+      "pesq_hat_est": 4.510375499725342
+    },
+    {
+      "pair_id": 29,
+      "bucket_idx": 0,
+      "snr_db": -0.29,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.4656261205673218,
+      "pesq_hat_noisy": 1.23508882522583,
+      "pesq_wb_real_est": 1.1575711965560913,
+      "pesq_hat_est": 4.3748955726623535
+    },
+    {
+      "pair_id": 30,
+      "bucket_idx": 0,
+      "snr_db": -0.805,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1427243947982788,
+      "pesq_hat_noisy": 1.1353614330291748,
+      "pesq_wb_real_est": 1.109954833984375,
+      "pesq_hat_est": 4.543450355529785
+    },
+    {
+      "pair_id": 31,
+      "bucket_idx": 0,
+      "snr_db": -3.519,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0355225801467896,
+      "pesq_hat_noisy": 1.1649813652038574,
+      "pesq_wb_real_est": 1.0329209566116333,
+      "pesq_hat_est": 4.062541961669922
+    },
+    {
+      "pair_id": 32,
+      "bucket_idx": 0,
+      "snr_db": -0.556,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.324144721031189,
+      "pesq_hat_noisy": 1.2502319812774658,
+      "pesq_wb_real_est": 1.1620111465454102,
+      "pesq_hat_est": 4.581818103790283
+    },
+    {
+      "pair_id": 33,
+      "bucket_idx": 0,
+      "snr_db": -2.389,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0395569801330566,
+      "pesq_hat_noisy": 1.1243911981582642,
+      "pesq_wb_real_est": 1.0436264276504517,
+      "pesq_hat_est": 4.488682746887207
+    },
+    {
+      "pair_id": 34,
+      "bucket_idx": 0,
+      "snr_db": -4.485,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0743499994277954,
+      "pesq_hat_noisy": 1.0890060663223267,
+      "pesq_wb_real_est": 1.033307433128357,
+      "pesq_hat_est": 4.297423839569092
+    },
+    {
+      "pair_id": 35,
+      "bucket_idx": 0,
+      "snr_db": -0.722,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.2159854173660278,
+      "pesq_hat_noisy": 1.1745233535766602,
+      "pesq_wb_real_est": 1.0382869243621826,
+      "pesq_hat_est": 4.540231227874756
+    },
+    {
+      "pair_id": 36,
+      "bucket_idx": 0,
+      "snr_db": -2.078,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.107593297958374,
+      "pesq_hat_noisy": 1.0990937948226929,
+      "pesq_wb_real_est": 1.0632085800170898,
+      "pesq_hat_est": 4.223519325256348
+    },
+    {
+      "pair_id": 37,
+      "bucket_idx": 0,
+      "snr_db": -0.336,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.356497049331665,
+      "pesq_hat_noisy": 1.9150159358978271,
+      "pesq_wb_real_est": 1.0518090724945068,
+      "pesq_hat_est": 4.426333427429199
+    },
+    {
+      "pair_id": 38,
+      "bucket_idx": 0,
+      "snr_db": -1.604,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2036354541778564,
+      "pesq_hat_noisy": 1.2007884979248047,
+      "pesq_wb_real_est": 1.0494322776794434,
+      "pesq_hat_est": 4.009181022644043
+    },
+    {
+      "pair_id": 39,
+      "bucket_idx": 0,
+      "snr_db": -4.53,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2276772260665894,
+      "pesq_hat_noisy": 1.1799567937850952,
+      "pesq_wb_real_est": 1.1089491844177246,
+      "pesq_hat_est": 4.431595802307129
+    },
+    {
+      "pair_id": 40,
+      "bucket_idx": 0,
+      "snr_db": -1.886,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.3701066970825195,
+      "pesq_hat_noisy": 1.2787507772445679,
+      "pesq_wb_real_est": 1.1815688610076904,
+      "pesq_hat_est": 4.451848983764648
+    },
+    {
+      "pair_id": 41,
+      "bucket_idx": 0,
+      "snr_db": -1.066,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.10365629196167,
+      "pesq_hat_noisy": 1.1419486999511719,
+      "pesq_wb_real_est": 1.0388975143432617,
+      "pesq_hat_est": 4.163071632385254
+    },
+    {
+      "pair_id": 42,
+      "bucket_idx": 0,
+      "snr_db": -0.505,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.055044412612915,
+      "pesq_hat_noisy": 1.1336183547973633,
+      "pesq_wb_real_est": 1.0484086275100708,
+      "pesq_hat_est": 4.495408058166504
+    },
+    {
+      "pair_id": 43,
+      "bucket_idx": 0,
+      "snr_db": -3.344,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0427907705307007,
+      "pesq_hat_noisy": 1.1101247072219849,
+      "pesq_wb_real_est": 1.0346301794052124,
+      "pesq_hat_est": 4.539653778076172
+    },
+    {
+      "pair_id": 44,
+      "bucket_idx": 0,
+      "snr_db": -2.356,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0562412738800049,
+      "pesq_hat_noisy": 1.1118910312652588,
+      "pesq_wb_real_est": 1.0548815727233887,
+      "pesq_hat_est": 3.8875651359558105
+    },
+    {
+      "pair_id": 45,
+      "bucket_idx": 0,
+      "snr_db": -1.494,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.073714256286621,
+      "pesq_hat_noisy": 1.1209276914596558,
+      "pesq_wb_real_est": 1.058943510055542,
+      "pesq_hat_est": 4.504245758056641
+    },
+    {
+      "pair_id": 46,
+      "bucket_idx": 0,
+      "snr_db": -4.166,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0252025127410889,
+      "pesq_hat_noisy": 1.1742615699768066,
+      "pesq_wb_real_est": 1.031286597251892,
+      "pesq_hat_est": 4.360321998596191
+    },
+    {
+      "pair_id": 47,
+      "bucket_idx": 0,
+      "snr_db": -0.758,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.4376835823059082,
+      "pesq_hat_noisy": 1.4796005487442017,
+      "pesq_wb_real_est": 1.1765068769454956,
+      "pesq_hat_est": 4.386876106262207
+    },
+    {
+      "pair_id": 48,
+      "bucket_idx": 0,
+      "snr_db": -1.096,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1720296144485474,
+      "pesq_hat_noisy": 1.195335865020752,
+      "pesq_wb_real_est": 1.080256700515747,
+      "pesq_hat_est": 4.524694442749023
+    },
+    {
+      "pair_id": 49,
+      "bucket_idx": 0,
+      "snr_db": -4.75,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0639957189559937,
+      "pesq_hat_noisy": 1.1023842096328735,
+      "pesq_wb_real_est": 1.0592758655548096,
+      "pesq_hat_est": 4.522965431213379
+    },
+    {
+      "pair_id": 50,
+      "bucket_idx": 1,
+      "snr_db": 2.957,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2392308712005615,
+      "pesq_hat_noisy": 1.2773480415344238,
+      "pesq_wb_real_est": 1.1405893564224243,
+      "pesq_hat_est": 4.532711982727051
+    },
+    {
+      "pair_id": 51,
+      "bucket_idx": 1,
+      "snr_db": 1.84,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1328973770141602,
+      "pesq_hat_noisy": 1.1375617980957031,
+      "pesq_wb_real_est": 1.0495579242706299,
+      "pesq_hat_est": 4.461663722991943
+    },
+    {
+      "pair_id": 52,
+      "bucket_idx": 1,
+      "snr_db": 0.93,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0943514108657837,
+      "pesq_hat_noisy": 1.1227190494537354,
+      "pesq_wb_real_est": 1.0868935585021973,
+      "pesq_hat_est": 4.528220176696777
+    },
+    {
+      "pair_id": 53,
+      "bucket_idx": 1,
+      "snr_db": 3.022,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1864302158355713,
+      "pesq_hat_noisy": 1.2147518396377563,
+      "pesq_wb_real_est": 1.1332193613052368,
+      "pesq_hat_est": 4.306640148162842
+    },
+    {
+      "pair_id": 54,
+      "bucket_idx": 1,
+      "snr_db": 4.846,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1819628477096558,
+      "pesq_hat_noisy": 1.1172034740447998,
+      "pesq_wb_real_est": 1.1731891632080078,
+      "pesq_hat_est": 4.333651542663574
+    },
+    {
+      "pair_id": 55,
+      "bucket_idx": 1,
+      "snr_db": 2.76,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.5560221672058105,
+      "pesq_hat_noisy": 2.293997287750244,
+      "pesq_wb_real_est": 1.069769263267517,
+      "pesq_hat_est": 4.50034236907959
+    },
+    {
+      "pair_id": 56,
+      "bucket_idx": 1,
+      "snr_db": 0.567,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0939836502075195,
+      "pesq_hat_noisy": 1.0982192754745483,
+      "pesq_wb_real_est": 1.0351115465164185,
+      "pesq_hat_est": 4.35622501373291
+    },
+    {
+      "pair_id": 57,
+      "bucket_idx": 1,
+      "snr_db": 2.475,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1117620468139648,
+      "pesq_hat_noisy": 1.1765873432159424,
+      "pesq_wb_real_est": 1.040787935256958,
+      "pesq_hat_est": 4.520062446594238
+    },
+    {
+      "pair_id": 58,
+      "bucket_idx": 1,
+      "snr_db": 3.896,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1701743602752686,
+      "pesq_hat_noisy": 1.118911862373352,
+      "pesq_wb_real_est": 1.0753566026687622,
+      "pesq_hat_est": 4.464200019836426
+    },
+    {
+      "pair_id": 59,
+      "bucket_idx": 1,
+      "snr_db": 4.776,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1375463008880615,
+      "pesq_hat_noisy": 1.1648955345153809,
+      "pesq_wb_real_est": 1.1099289655685425,
+      "pesq_hat_est": 4.41793155670166
+    },
+    {
+      "pair_id": 60,
+      "bucket_idx": 1,
+      "snr_db": 3.576,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2591030597686768,
+      "pesq_hat_noisy": 1.2803924083709717,
+      "pesq_wb_real_est": 1.0470867156982422,
+      "pesq_hat_est": 4.452967166900635
+    },
+    {
+      "pair_id": 61,
+      "bucket_idx": 1,
+      "snr_db": 0.207,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1403425931930542,
+      "pesq_hat_noisy": 1.1294792890548706,
+      "pesq_wb_real_est": 1.185863733291626,
+      "pesq_hat_est": 4.4326910972595215
+    },
+    {
+      "pair_id": 62,
+      "bucket_idx": 1,
+      "snr_db": 4.833,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1157950162887573,
+      "pesq_hat_noisy": 1.1702669858932495,
+      "pesq_wb_real_est": 1.0365569591522217,
+      "pesq_hat_est": 4.358860015869141
+    },
+    {
+      "pair_id": 63,
+      "bucket_idx": 1,
+      "snr_db": 3.009,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.4776685237884521,
+      "pesq_hat_noisy": 1.3578287363052368,
+      "pesq_wb_real_est": 1.060860514640808,
+      "pesq_hat_est": 4.494655609130859
+    },
+    {
+      "pair_id": 64,
+      "bucket_idx": 1,
+      "snr_db": 0.418,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0375971794128418,
+      "pesq_hat_noisy": 1.1484243869781494,
+      "pesq_wb_real_est": 1.0326210260391235,
+      "pesq_hat_est": 4.3892011642456055
+    },
+    {
+      "pair_id": 65,
+      "bucket_idx": 1,
+      "snr_db": 0.636,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.2282488346099854,
+      "pesq_hat_noisy": 1.6400319337844849,
+      "pesq_wb_real_est": 1.0554875135421753,
+      "pesq_hat_est": 4.486852169036865
+    },
+    {
+      "pair_id": 66,
+      "bucket_idx": 1,
+      "snr_db": 0.431,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.11587393283844,
+      "pesq_hat_noisy": 1.1431535482406616,
+      "pesq_wb_real_est": 1.0762016773223877,
+      "pesq_hat_est": 4.235960006713867
+    },
+    {
+      "pair_id": 67,
+      "bucket_idx": 1,
+      "snr_db": 3.324,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2192330360412598,
+      "pesq_hat_noisy": 1.1729017496109009,
+      "pesq_wb_real_est": 1.0970829725265503,
+      "pesq_hat_est": 4.373574256896973
+    },
+    {
+      "pair_id": 68,
+      "bucket_idx": 1,
+      "snr_db": 0.771,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0579924583435059,
+      "pesq_hat_noisy": 1.124752163887024,
+      "pesq_wb_real_est": 1.0295711755752563,
+      "pesq_hat_est": 4.2829813957214355
+    },
+    {
+      "pair_id": 69,
+      "bucket_idx": 1,
+      "snr_db": 4.037,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.125584363937378,
+      "pesq_hat_noisy": 1.1563705205917358,
+      "pesq_wb_real_est": 1.129246473312378,
+      "pesq_hat_est": 4.510647773742676
+    },
+    {
+      "pair_id": 70,
+      "bucket_idx": 1,
+      "snr_db": 0.545,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2026984691619873,
+      "pesq_hat_noisy": 1.1494033336639404,
+      "pesq_wb_real_est": 1.0927083492279053,
+      "pesq_hat_est": 4.503498077392578
+    },
+    {
+      "pair_id": 71,
+      "bucket_idx": 1,
+      "snr_db": 2.676,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1895217895507812,
+      "pesq_hat_noisy": 1.1404173374176025,
+      "pesq_wb_real_est": 1.054082989692688,
+      "pesq_hat_est": 4.476100921630859
+    },
+    {
+      "pair_id": 72,
+      "bucket_idx": 1,
+      "snr_db": 2.215,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.286213755607605,
+      "pesq_hat_noisy": 1.4217848777770996,
+      "pesq_wb_real_est": 1.0781563520431519,
+      "pesq_hat_est": 4.369601249694824
+    },
+    {
+      "pair_id": 73,
+      "bucket_idx": 1,
+      "snr_db": 0.19,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.139070987701416,
+      "pesq_hat_noisy": 1.1500451564788818,
+      "pesq_wb_real_est": 1.1211891174316406,
+      "pesq_hat_est": 4.503921985626221
+    },
+    {
+      "pair_id": 74,
+      "bucket_idx": 1,
+      "snr_db": 0.013,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.623237133026123,
+      "pesq_hat_noisy": 1.4889471530914307,
+      "pesq_wb_real_est": 1.146193027496338,
+      "pesq_hat_est": 4.519637107849121
+    },
+    {
+      "pair_id": 75,
+      "bucket_idx": 1,
+      "snr_db": 4.518,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.5272561311721802,
+      "pesq_hat_noisy": 1.4929783344268799,
+      "pesq_wb_real_est": 1.1092627048492432,
+      "pesq_hat_est": 4.327939033508301
+    },
+    {
+      "pair_id": 76,
+      "bucket_idx": 1,
+      "snr_db": 4.883,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.3371416330337524,
+      "pesq_hat_noisy": 1.2977759838104248,
+      "pesq_wb_real_est": 1.1409475803375244,
+      "pesq_hat_est": 4.353242874145508
+    },
+    {
+      "pair_id": 77,
+      "bucket_idx": 1,
+      "snr_db": 0.622,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1900070905685425,
+      "pesq_hat_noisy": 1.1539899110794067,
+      "pesq_wb_real_est": 1.0799423456192017,
+      "pesq_hat_est": 4.5213823318481445
+    },
+    {
+      "pair_id": 78,
+      "bucket_idx": 1,
+      "snr_db": 3.673,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.250289797782898,
+      "pesq_hat_noisy": 1.2555859088897705,
+      "pesq_wb_real_est": 1.1037178039550781,
+      "pesq_hat_est": 4.3684797286987305
+    },
+    {
+      "pair_id": 79,
+      "bucket_idx": 1,
+      "snr_db": 4.946,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.6851086616516113,
+      "pesq_hat_noisy": 1.8967695236206055,
+      "pesq_wb_real_est": 1.2142188549041748,
+      "pesq_hat_est": 4.530736923217773
+    },
+    {
+      "pair_id": 80,
+      "bucket_idx": 1,
+      "snr_db": 4.519,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1922799348831177,
+      "pesq_hat_noisy": 1.3022472858428955,
+      "pesq_wb_real_est": 1.0904916524887085,
+      "pesq_hat_est": 4.508628845214844
+    },
+    {
+      "pair_id": 81,
+      "bucket_idx": 1,
+      "snr_db": 4.425,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3750736713409424,
+      "pesq_hat_noisy": 1.367072343826294,
+      "pesq_wb_real_est": 1.0898107290267944,
+      "pesq_hat_est": 4.46467399597168
+    },
+    {
+      "pair_id": 82,
+      "bucket_idx": 1,
+      "snr_db": 1.688,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.2463487386703491,
+      "pesq_hat_noisy": 1.2106267213821411,
+      "pesq_wb_real_est": 1.0509909391403198,
+      "pesq_hat_est": 3.3543057441711426
+    },
+    {
+      "pair_id": 83,
+      "bucket_idx": 1,
+      "snr_db": 3.586,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.156154751777649,
+      "pesq_hat_noisy": 1.123600721359253,
+      "pesq_wb_real_est": 1.0700305700302124,
+      "pesq_hat_est": 4.430436134338379
+    },
+    {
+      "pair_id": 84,
+      "bucket_idx": 1,
+      "snr_db": 2.491,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.310420274734497,
+      "pesq_hat_noisy": 1.3439955711364746,
+      "pesq_wb_real_est": 1.1428794860839844,
+      "pesq_hat_est": 4.505541801452637
+    },
+    {
+      "pair_id": 85,
+      "bucket_idx": 1,
+      "snr_db": 4.687,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0791699886322021,
+      "pesq_hat_noisy": 1.1184533834457397,
+      "pesq_wb_real_est": 1.0640252828598022,
+      "pesq_hat_est": 4.519550323486328
+    },
+    {
+      "pair_id": 86,
+      "bucket_idx": 1,
+      "snr_db": 3.515,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0796890258789062,
+      "pesq_hat_noisy": 1.1176202297210693,
+      "pesq_wb_real_est": 1.0650122165679932,
+      "pesq_hat_est": 4.491353988647461
+    },
+    {
+      "pair_id": 87,
+      "bucket_idx": 1,
+      "snr_db": 4.218,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1662873029708862,
+      "pesq_hat_noisy": 1.155802845954895,
+      "pesq_wb_real_est": 1.1079661846160889,
+      "pesq_hat_est": 2.7835750579833984
+    },
+    {
+      "pair_id": 88,
+      "bucket_idx": 1,
+      "snr_db": 4.286,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3580907583236694,
+      "pesq_hat_noisy": 1.3746544122695923,
+      "pesq_wb_real_est": 1.1059043407440186,
+      "pesq_hat_est": 4.5766754150390625
+    },
+    {
+      "pair_id": 89,
+      "bucket_idx": 1,
+      "snr_db": 1.928,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3297491073608398,
+      "pesq_hat_noisy": 1.2551603317260742,
+      "pesq_wb_real_est": 1.116188883781433,
+      "pesq_hat_est": 4.417508125305176
+    },
+    {
+      "pair_id": 90,
+      "bucket_idx": 1,
+      "snr_db": 3.562,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1860005855560303,
+      "pesq_hat_noisy": 1.231704592704773,
+      "pesq_wb_real_est": 1.1990277767181396,
+      "pesq_hat_est": 4.539763450622559
+    },
+    {
+      "pair_id": 91,
+      "bucket_idx": 1,
+      "snr_db": 0.465,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1916837692260742,
+      "pesq_hat_noisy": 1.1999666690826416,
+      "pesq_wb_real_est": 1.1411627531051636,
+      "pesq_hat_est": 4.537174701690674
+    },
+    {
+      "pair_id": 92,
+      "bucket_idx": 1,
+      "snr_db": 1.03,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.7378597259521484,
+      "pesq_hat_noisy": 2.0051522254943848,
+      "pesq_wb_real_est": 1.1130074262619019,
+      "pesq_hat_est": 4.4286956787109375
+    },
+    {
+      "pair_id": 93,
+      "bucket_idx": 1,
+      "snr_db": 4.683,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0801637172698975,
+      "pesq_hat_noisy": 1.1313647031784058,
+      "pesq_wb_real_est": 1.0746961832046509,
+      "pesq_hat_est": 4.567450046539307
+    },
+    {
+      "pair_id": 94,
+      "bucket_idx": 1,
+      "snr_db": 2.023,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0797626972198486,
+      "pesq_hat_noisy": 1.2008835077285767,
+      "pesq_wb_real_est": 1.13314688205719,
+      "pesq_hat_est": 4.351625442504883
+    },
+    {
+      "pair_id": 95,
+      "bucket_idx": 1,
+      "snr_db": 3.425,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2285354137420654,
+      "pesq_hat_noisy": 1.1926000118255615,
+      "pesq_wb_real_est": 1.16999351978302,
+      "pesq_hat_est": 4.486732006072998
+    },
+    {
+      "pair_id": 96,
+      "bucket_idx": 1,
+      "snr_db": 2.878,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1519091129302979,
+      "pesq_hat_noisy": 1.1709707975387573,
+      "pesq_wb_real_est": 1.0777300596237183,
+      "pesq_hat_est": 3.455287456512451
+    },
+    {
+      "pair_id": 97,
+      "bucket_idx": 1,
+      "snr_db": 1.302,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0423359870910645,
+      "pesq_hat_noisy": 1.1049001216888428,
+      "pesq_wb_real_est": 1.0451395511627197,
+      "pesq_hat_est": 4.496416091918945
+    },
+    {
+      "pair_id": 98,
+      "bucket_idx": 1,
+      "snr_db": 2.932,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0853673219680786,
+      "pesq_hat_noisy": 1.1269237995147705,
+      "pesq_wb_real_est": 1.0812888145446777,
+      "pesq_hat_est": 4.387132167816162
+    },
+    {
+      "pair_id": 99,
+      "bucket_idx": 1,
+      "snr_db": 4.562,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.5546154975891113,
+      "pesq_hat_noisy": 1.5337860584259033,
+      "pesq_wb_real_est": 1.1842544078826904,
+      "pesq_hat_est": 4.514918327331543
+    },
+    {
+      "pair_id": 100,
+      "bucket_idx": 2,
+      "snr_db": 6.637,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.465220332145691,
+      "pesq_hat_noisy": 1.5300672054290771,
+      "pesq_wb_real_est": 1.1631766557693481,
+      "pesq_hat_est": 4.507220268249512
+    },
+    {
+      "pair_id": 101,
+      "bucket_idx": 2,
+      "snr_db": 6.735,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.5460395812988281,
+      "pesq_hat_noisy": 1.4138128757476807,
+      "pesq_wb_real_est": 1.2042956352233887,
+      "pesq_hat_est": 4.451254367828369
+    },
+    {
+      "pair_id": 102,
+      "bucket_idx": 2,
+      "snr_db": 5.929,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0538586378097534,
+      "pesq_hat_noisy": 1.1537368297576904,
+      "pesq_wb_real_est": 1.0732887983322144,
+      "pesq_hat_est": 3.2841405868530273
+    },
+    {
+      "pair_id": 103,
+      "bucket_idx": 2,
+      "snr_db": 5.889,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1001112461090088,
+      "pesq_hat_noisy": 1.1122556924819946,
+      "pesq_wb_real_est": 1.117691993713379,
+      "pesq_hat_est": 4.53941535949707
+    },
+    {
+      "pair_id": 104,
+      "bucket_idx": 2,
+      "snr_db": 9.137,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.160323143005371,
+      "pesq_hat_noisy": 1.1203243732452393,
+      "pesq_wb_real_est": 1.0977983474731445,
+      "pesq_hat_est": 4.395829200744629
+    },
+    {
+      "pair_id": 105,
+      "bucket_idx": 2,
+      "snr_db": 8.531,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1488127708435059,
+      "pesq_hat_noisy": 1.1660219430923462,
+      "pesq_wb_real_est": 1.1597900390625,
+      "pesq_hat_est": 4.476832389831543
+    },
+    {
+      "pair_id": 106,
+      "bucket_idx": 2,
+      "snr_db": 9.825,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1853227615356445,
+      "pesq_hat_noisy": 1.2158334255218506,
+      "pesq_wb_real_est": 1.0591232776641846,
+      "pesq_hat_est": 4.489471435546875
+    },
+    {
+      "pair_id": 107,
+      "bucket_idx": 2,
+      "snr_db": 8.348,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.4698476791381836,
+      "pesq_hat_noisy": 1.362245798110962,
+      "pesq_wb_real_est": 1.1293338537216187,
+      "pesq_hat_est": 4.390924453735352
+    },
+    {
+      "pair_id": 108,
+      "bucket_idx": 2,
+      "snr_db": 9.794,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.8673217296600342,
+      "pesq_hat_noisy": 1.7169216871261597,
+      "pesq_wb_real_est": 1.1272926330566406,
+      "pesq_hat_est": 4.520371437072754
+    },
+    {
+      "pair_id": 109,
+      "bucket_idx": 2,
+      "snr_db": 6.11,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.4071029424667358,
+      "pesq_hat_noisy": 1.5561407804489136,
+      "pesq_wb_real_est": 1.0336402654647827,
+      "pesq_hat_est": 4.444932460784912
+    },
+    {
+      "pair_id": 110,
+      "bucket_idx": 2,
+      "snr_db": 5.939,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.6287094354629517,
+      "pesq_hat_noisy": 1.8002482652664185,
+      "pesq_wb_real_est": 1.1281931400299072,
+      "pesq_hat_est": 4.398990154266357
+    },
+    {
+      "pair_id": 111,
+      "bucket_idx": 2,
+      "snr_db": 6.083,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3995288610458374,
+      "pesq_hat_noisy": 1.2809679508209229,
+      "pesq_wb_real_est": 1.160261631011963,
+      "pesq_hat_est": 4.558924674987793
+    },
+    {
+      "pair_id": 112,
+      "bucket_idx": 2,
+      "snr_db": 6.919,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.268522024154663,
+      "pesq_hat_noisy": 1.2181452512741089,
+      "pesq_wb_real_est": 1.0886285305023193,
+      "pesq_hat_est": 4.2323713302612305
+    },
+    {
+      "pair_id": 113,
+      "bucket_idx": 2,
+      "snr_db": 9.948,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.2249853610992432,
+      "pesq_hat_noisy": 1.5304421186447144,
+      "pesq_wb_real_est": 1.1226409673690796,
+      "pesq_hat_est": 4.446398735046387
+    },
+    {
+      "pair_id": 114,
+      "bucket_idx": 2,
+      "snr_db": 6.124,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0402165651321411,
+      "pesq_hat_noisy": 1.0936901569366455,
+      "pesq_wb_real_est": 1.078750491142273,
+      "pesq_hat_est": 4.469593048095703
+    },
+    {
+      "pair_id": 115,
+      "bucket_idx": 2,
+      "snr_db": 7.292,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.004782199859619,
+      "pesq_hat_noisy": 1.829282283782959,
+      "pesq_wb_real_est": 1.196795105934143,
+      "pesq_hat_est": 4.373692512512207
+    },
+    {
+      "pair_id": 116,
+      "bucket_idx": 2,
+      "snr_db": 5.306,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1538368463516235,
+      "pesq_hat_noisy": 1.1166870594024658,
+      "pesq_wb_real_est": 1.0761997699737549,
+      "pesq_hat_est": 4.559711456298828
+    },
+    {
+      "pair_id": 117,
+      "bucket_idx": 2,
+      "snr_db": 5.136,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.331525444984436,
+      "pesq_hat_noisy": 1.2071385383605957,
+      "pesq_wb_real_est": 1.0764459371566772,
+      "pesq_hat_est": 4.4334306716918945
+    },
+    {
+      "pair_id": 118,
+      "bucket_idx": 2,
+      "snr_db": 7.729,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3713579177856445,
+      "pesq_hat_noisy": 1.4667022228240967,
+      "pesq_wb_real_est": 1.078308343887329,
+      "pesq_hat_est": 4.538293361663818
+    },
+    {
+      "pair_id": 119,
+      "bucket_idx": 2,
+      "snr_db": 8.066,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1302828788757324,
+      "pesq_hat_noisy": 1.1515005826950073,
+      "pesq_wb_real_est": 1.125120759010315,
+      "pesq_hat_est": 4.467148303985596
+    },
+    {
+      "pair_id": 120,
+      "bucket_idx": 2,
+      "snr_db": 7.554,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.225120186805725,
+      "pesq_hat_noisy": 1.3480688333511353,
+      "pesq_wb_real_est": 1.1649909019470215,
+      "pesq_hat_est": 4.502978324890137
+    },
+    {
+      "pair_id": 121,
+      "bucket_idx": 2,
+      "snr_db": 9.573,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.8491368293762207,
+      "pesq_hat_noisy": 1.9128906726837158,
+      "pesq_wb_real_est": 1.1123141050338745,
+      "pesq_hat_est": 4.188570499420166
+    },
+    {
+      "pair_id": 122,
+      "bucket_idx": 2,
+      "snr_db": 9.305,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2540687322616577,
+      "pesq_hat_noisy": 1.153654932975769,
+      "pesq_wb_real_est": 1.0357321500778198,
+      "pesq_hat_est": 4.4394025802612305
+    },
+    {
+      "pair_id": 123,
+      "bucket_idx": 2,
+      "snr_db": 9.756,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1153173446655273,
+      "pesq_hat_noisy": 1.1675628423690796,
+      "pesq_wb_real_est": 1.0983034372329712,
+      "pesq_hat_est": 4.533991813659668
+    },
+    {
+      "pair_id": 124,
+      "bucket_idx": 2,
+      "snr_db": 7.895,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2797973155975342,
+      "pesq_hat_noisy": 1.212398886680603,
+      "pesq_wb_real_est": 1.0827527046203613,
+      "pesq_hat_est": 4.524473667144775
+    },
+    {
+      "pair_id": 125,
+      "bucket_idx": 2,
+      "snr_db": 6.317,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.5012720823287964,
+      "pesq_hat_noisy": 1.6821454763412476,
+      "pesq_wb_real_est": 1.1687848567962646,
+      "pesq_hat_est": 4.467978477478027
+    },
+    {
+      "pair_id": 126,
+      "bucket_idx": 2,
+      "snr_db": 5.65,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3442270755767822,
+      "pesq_hat_noisy": 1.3552145957946777,
+      "pesq_wb_real_est": 1.1265184879302979,
+      "pesq_hat_est": 4.41258430480957
+    },
+    {
+      "pair_id": 127,
+      "bucket_idx": 2,
+      "snr_db": 8.821,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.011876344680786,
+      "pesq_hat_noisy": 1.996507167816162,
+      "pesq_wb_real_est": 1.170588493347168,
+      "pesq_hat_est": 4.455606460571289
+    },
+    {
+      "pair_id": 128,
+      "bucket_idx": 2,
+      "snr_db": 5.773,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.188902497291565,
+      "pesq_hat_noisy": 1.1780099868774414,
+      "pesq_wb_real_est": 1.0697932243347168,
+      "pesq_hat_est": 4.3150224685668945
+    },
+    {
+      "pair_id": 129,
+      "bucket_idx": 2,
+      "snr_db": 5.031,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0450371503829956,
+      "pesq_hat_noisy": 1.1034249067306519,
+      "pesq_wb_real_est": 1.056522011756897,
+      "pesq_hat_est": 4.569000244140625
+    },
+    {
+      "pair_id": 130,
+      "bucket_idx": 2,
+      "snr_db": 8.496,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.0973759889602661,
+      "pesq_hat_noisy": 1.1080268621444702,
+      "pesq_wb_real_est": 1.1196147203445435,
+      "pesq_hat_est": 4.384759902954102
+    },
+    {
+      "pair_id": 131,
+      "bucket_idx": 2,
+      "snr_db": 5.623,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.0072367191314697,
+      "pesq_hat_noisy": 2.381100654602051,
+      "pesq_wb_real_est": 1.1073604822158813,
+      "pesq_hat_est": 4.333542823791504
+    },
+    {
+      "pair_id": 132,
+      "bucket_idx": 2,
+      "snr_db": 8.112,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.6416370868682861,
+      "pesq_hat_noisy": 1.6093705892562866,
+      "pesq_wb_real_est": 1.2026102542877197,
+      "pesq_hat_est": 4.466888427734375
+    },
+    {
+      "pair_id": 133,
+      "bucket_idx": 2,
+      "snr_db": 6.005,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.335860013961792,
+      "pesq_hat_noisy": 1.4461033344268799,
+      "pesq_wb_real_est": 1.107241153717041,
+      "pesq_hat_est": 4.046032428741455
+    },
+    {
+      "pair_id": 134,
+      "bucket_idx": 2,
+      "snr_db": 7.125,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1154403686523438,
+      "pesq_hat_noisy": 1.2018940448760986,
+      "pesq_wb_real_est": 1.1670420169830322,
+      "pesq_hat_est": 4.514360427856445
+    },
+    {
+      "pair_id": 135,
+      "bucket_idx": 2,
+      "snr_db": 5.074,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.4224635362625122,
+      "pesq_hat_noisy": 1.545802116394043,
+      "pesq_wb_real_est": 1.26093590259552,
+      "pesq_hat_est": 4.411141395568848
+    },
+    {
+      "pair_id": 136,
+      "bucket_idx": 2,
+      "snr_db": 6.881,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.4984710216522217,
+      "pesq_hat_noisy": 1.5432116985321045,
+      "pesq_wb_real_est": 1.1143141984939575,
+      "pesq_hat_est": 4.455806255340576
+    },
+    {
+      "pair_id": 137,
+      "bucket_idx": 2,
+      "snr_db": 6.642,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.2315505743026733,
+      "pesq_hat_noisy": 1.143489956855774,
+      "pesq_wb_real_est": 1.1173675060272217,
+      "pesq_hat_est": 4.444427967071533
+    },
+    {
+      "pair_id": 138,
+      "bucket_idx": 2,
+      "snr_db": 6.306,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2609206438064575,
+      "pesq_hat_noisy": 1.4086447954177856,
+      "pesq_wb_real_est": 1.0976181030273438,
+      "pesq_hat_est": 4.496508598327637
+    },
+    {
+      "pair_id": 139,
+      "bucket_idx": 2,
+      "snr_db": 5.669,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1302263736724854,
+      "pesq_hat_noisy": 1.249230146408081,
+      "pesq_wb_real_est": 1.0935295820236206,
+      "pesq_hat_est": 4.532500743865967
+    },
+    {
+      "pair_id": 140,
+      "bucket_idx": 2,
+      "snr_db": 7.878,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.6439399719238281,
+      "pesq_hat_noisy": 1.6754724979400635,
+      "pesq_wb_real_est": 1.1663708686828613,
+      "pesq_hat_est": 4.450181007385254
+    },
+    {
+      "pair_id": 141,
+      "bucket_idx": 2,
+      "snr_db": 8.463,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.7253245115280151,
+      "pesq_hat_noisy": 1.5935829877853394,
+      "pesq_wb_real_est": 1.107333779335022,
+      "pesq_hat_est": 4.548240661621094
+    },
+    {
+      "pair_id": 142,
+      "bucket_idx": 2,
+      "snr_db": 5.998,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.0858726501464844,
+      "pesq_hat_noisy": 1.1090424060821533,
+      "pesq_wb_real_est": 1.1127101182937622,
+      "pesq_hat_est": 4.328335762023926
+    },
+    {
+      "pair_id": 143,
+      "bucket_idx": 2,
+      "snr_db": 5.219,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2641221284866333,
+      "pesq_hat_noisy": 1.3058162927627563,
+      "pesq_wb_real_est": 1.0885051488876343,
+      "pesq_hat_est": 4.454263687133789
+    },
+    {
+      "pair_id": 144,
+      "bucket_idx": 2,
+      "snr_db": 6.341,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.6326172351837158,
+      "pesq_hat_noisy": 1.6866483688354492,
+      "pesq_wb_real_est": 1.1378169059753418,
+      "pesq_hat_est": 4.567773818969727
+    },
+    {
+      "pair_id": 145,
+      "bucket_idx": 2,
+      "snr_db": 8.497,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1154696941375732,
+      "pesq_hat_noisy": 1.1675666570663452,
+      "pesq_wb_real_est": 1.1096571683883667,
+      "pesq_hat_est": 4.505613327026367
+    },
+    {
+      "pair_id": 146,
+      "bucket_idx": 2,
+      "snr_db": 6.366,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.1879353523254395,
+      "pesq_hat_noisy": 1.6998391151428223,
+      "pesq_wb_real_est": 1.0254732370376587,
+      "pesq_hat_est": 4.4400739669799805
+    },
+    {
+      "pair_id": 147,
+      "bucket_idx": 2,
+      "snr_db": 8.238,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3058505058288574,
+      "pesq_hat_noisy": 1.1991956233978271,
+      "pesq_wb_real_est": 1.1606351137161255,
+      "pesq_hat_est": 4.215472221374512
+    },
+    {
+      "pair_id": 148,
+      "bucket_idx": 2,
+      "snr_db": 5.368,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.1785006523132324,
+      "pesq_hat_noisy": 1.1683775186538696,
+      "pesq_wb_real_est": 1.0789098739624023,
+      "pesq_hat_est": 4.38160514831543
+    },
+    {
+      "pair_id": 149,
+      "bucket_idx": 2,
+      "snr_db": 8.517,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.8165953159332275,
+      "pesq_hat_noisy": 1.62471604347229,
+      "pesq_wb_real_est": 1.1289089918136597,
+      "pesq_hat_est": 4.460476398468018
+    },
+    {
+      "pair_id": 150,
+      "bucket_idx": 3,
+      "snr_db": 10.711,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3254469633102417,
+      "pesq_hat_noisy": 1.7181336879730225,
+      "pesq_wb_real_est": 1.0905351638793945,
+      "pesq_hat_est": 4.398423194885254
+    },
+    {
+      "pair_id": 151,
+      "bucket_idx": 3,
+      "snr_db": 11.116,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.4950553178787231,
+      "pesq_hat_noisy": 1.461441993713379,
+      "pesq_wb_real_est": 1.0611662864685059,
+      "pesq_hat_est": 4.398100852966309
+    },
+    {
+      "pair_id": 152,
+      "bucket_idx": 3,
+      "snr_db": 13.648,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2435431480407715,
+      "pesq_hat_noisy": 1.36834716796875,
+      "pesq_wb_real_est": 1.0759024620056152,
+      "pesq_hat_est": 4.414154052734375
+    },
+    {
+      "pair_id": 153,
+      "bucket_idx": 3,
+      "snr_db": 12.375,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.1576128005981445,
+      "pesq_hat_noisy": 1.1057590246200562,
+      "pesq_wb_real_est": 1.1191201210021973,
+      "pesq_hat_est": 4.245621681213379
+    },
+    {
+      "pair_id": 154,
+      "bucket_idx": 3,
+      "snr_db": 13.202,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.6994304656982422,
+      "pesq_hat_noisy": 1.4455353021621704,
+      "pesq_wb_real_est": 1.1419792175292969,
+      "pesq_hat_est": 4.503748893737793
+    },
+    {
+      "pair_id": 155,
+      "bucket_idx": 3,
+      "snr_db": 11.43,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.541935920715332,
+      "pesq_hat_noisy": 1.4341288805007935,
+      "pesq_wb_real_est": 1.0969511270523071,
+      "pesq_hat_est": 4.437222003936768
+    },
+    {
+      "pair_id": 156,
+      "bucket_idx": 3,
+      "snr_db": 13.342,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.106236696243286,
+      "pesq_hat_noisy": 2.2097866535186768,
+      "pesq_wb_real_est": 1.2255407571792603,
+      "pesq_hat_est": 4.457435607910156
+    },
+    {
+      "pair_id": 157,
+      "bucket_idx": 3,
+      "snr_db": 11.495,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.178688883781433,
+      "pesq_hat_noisy": 1.1483407020568848,
+      "pesq_wb_real_est": 1.0943256616592407,
+      "pesq_hat_est": 4.196590900421143
+    },
+    {
+      "pair_id": 158,
+      "bucket_idx": 3,
+      "snr_db": 12.405,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.951592206954956,
+      "pesq_hat_noisy": 1.9871881008148193,
+      "pesq_wb_real_est": 1.2993662357330322,
+      "pesq_hat_est": 4.530177116394043
+    },
+    {
+      "pair_id": 159,
+      "bucket_idx": 3,
+      "snr_db": 12.22,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.4560961723327637,
+      "pesq_hat_noisy": 1.4325731992721558,
+      "pesq_wb_real_est": 1.1951661109924316,
+      "pesq_hat_est": 4.5432634353637695
+    },
+    {
+      "pair_id": 160,
+      "bucket_idx": 3,
+      "snr_db": 14.561,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.8671820163726807,
+      "pesq_hat_noisy": 2.23250150680542,
+      "pesq_wb_real_est": 1.2407207489013672,
+      "pesq_hat_est": 4.193007946014404
+    },
+    {
+      "pair_id": 161,
+      "bucket_idx": 3,
+      "snr_db": 13.761,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.7495570182800293,
+      "pesq_hat_noisy": 1.7487878799438477,
+      "pesq_wb_real_est": 1.2032228708267212,
+      "pesq_hat_est": 4.508396625518799
+    },
+    {
+      "pair_id": 162,
+      "bucket_idx": 3,
+      "snr_db": 12.743,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3056261539459229,
+      "pesq_hat_noisy": 1.386091709136963,
+      "pesq_wb_real_est": 1.1113550662994385,
+      "pesq_hat_est": 4.51515007019043
+    },
+    {
+      "pair_id": 163,
+      "bucket_idx": 3,
+      "snr_db": 14.227,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.7827563285827637,
+      "pesq_hat_noisy": 1.9208686351776123,
+      "pesq_wb_real_est": 1.1935571432113647,
+      "pesq_hat_est": 4.315709114074707
+    },
+    {
+      "pair_id": 164,
+      "bucket_idx": 3,
+      "snr_db": 13.05,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.7523696422576904,
+      "pesq_hat_noisy": 2.464033603668213,
+      "pesq_wb_real_est": 1.1789458990097046,
+      "pesq_hat_est": 4.540592193603516
+    },
+    {
+      "pair_id": 165,
+      "bucket_idx": 3,
+      "snr_db": 13.619,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.706678867340088,
+      "pesq_hat_noisy": 1.4099206924438477,
+      "pesq_wb_real_est": 1.0936801433563232,
+      "pesq_hat_est": 4.309852600097656
+    },
+    {
+      "pair_id": 166,
+      "bucket_idx": 3,
+      "snr_db": 12.59,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.6121292114257812,
+      "pesq_hat_noisy": 1.651921272277832,
+      "pesq_wb_real_est": 1.1977852582931519,
+      "pesq_hat_est": 4.4839186668396
+    },
+    {
+      "pair_id": 167,
+      "bucket_idx": 3,
+      "snr_db": 12.875,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.363611102104187,
+      "pesq_hat_noisy": 1.411028504371643,
+      "pesq_wb_real_est": 1.0842534303665161,
+      "pesq_hat_est": 4.537403106689453
+    },
+    {
+      "pair_id": 168,
+      "bucket_idx": 3,
+      "snr_db": 11.068,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.0049591064453125,
+      "pesq_hat_noisy": 2.054206371307373,
+      "pesq_wb_real_est": 1.2167513370513916,
+      "pesq_hat_est": 4.483920097351074
+    },
+    {
+      "pair_id": 169,
+      "bucket_idx": 3,
+      "snr_db": 14.654,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.6101888418197632,
+      "pesq_hat_noisy": 1.4543547630310059,
+      "pesq_wb_real_est": 1.1226015090942383,
+      "pesq_hat_est": 4.409384727478027
+    },
+    {
+      "pair_id": 170,
+      "bucket_idx": 3,
+      "snr_db": 13.196,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.595426321029663,
+      "pesq_hat_noisy": 1.6851720809936523,
+      "pesq_wb_real_est": 1.0608056783676147,
+      "pesq_hat_est": 4.431558609008789
+    },
+    {
+      "pair_id": 171,
+      "bucket_idx": 3,
+      "snr_db": 14.098,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.7402927875518799,
+      "pesq_hat_noisy": 1.6747851371765137,
+      "pesq_wb_real_est": 1.1504299640655518,
+      "pesq_hat_est": 4.466297149658203
+    },
+    {
+      "pair_id": 172,
+      "bucket_idx": 3,
+      "snr_db": 13.032,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.5816950798034668,
+      "pesq_hat_noisy": 1.5868908166885376,
+      "pesq_wb_real_est": 1.283166766166687,
+      "pesq_hat_est": 4.395574569702148
+    },
+    {
+      "pair_id": 173,
+      "bucket_idx": 3,
+      "snr_db": 10.124,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.5887935161590576,
+      "pesq_hat_noisy": 1.5236787796020508,
+      "pesq_wb_real_est": 1.090415120124817,
+      "pesq_hat_est": 4.519592761993408
+    },
+    {
+      "pair_id": 174,
+      "bucket_idx": 3,
+      "snr_db": 10.541,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3017005920410156,
+      "pesq_hat_noisy": 1.2980232238769531,
+      "pesq_wb_real_est": 1.0910520553588867,
+      "pesq_hat_est": 4.4803619384765625
+    },
+    {
+      "pair_id": 175,
+      "bucket_idx": 3,
+      "snr_db": 14.409,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.1428382396698,
+      "pesq_hat_noisy": 2.1998560428619385,
+      "pesq_wb_real_est": 1.0704559087753296,
+      "pesq_hat_est": 4.516349792480469
+    },
+    {
+      "pair_id": 176,
+      "bucket_idx": 3,
+      "snr_db": 13.498,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.577676773071289,
+      "pesq_hat_noisy": 2.801633358001709,
+      "pesq_wb_real_est": 1.1479029655456543,
+      "pesq_hat_est": 4.526338577270508
+    },
+    {
+      "pair_id": 177,
+      "bucket_idx": 3,
+      "snr_db": 14.522,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.3856042623519897,
+      "pesq_hat_noisy": 1.2372058629989624,
+      "pesq_wb_real_est": 1.0686399936676025,
+      "pesq_hat_est": 4.414449691772461
+    },
+    {
+      "pair_id": 178,
+      "bucket_idx": 3,
+      "snr_db": 14.468,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.3073298931121826,
+      "pesq_hat_noisy": 1.5287048816680908,
+      "pesq_wb_real_est": 1.0720970630645752,
+      "pesq_hat_est": 4.4758453369140625
+    },
+    {
+      "pair_id": 179,
+      "bucket_idx": 3,
+      "snr_db": 11.157,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.755241870880127,
+      "pesq_hat_noisy": 1.626607060432434,
+      "pesq_wb_real_est": 1.0772099494934082,
+      "pesq_hat_est": 4.322309494018555
+    },
+    {
+      "pair_id": 180,
+      "bucket_idx": 3,
+      "snr_db": 14.926,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.3376386165618896,
+      "pesq_hat_noisy": 2.429798126220703,
+      "pesq_wb_real_est": 1.1801648139953613,
+      "pesq_hat_est": 4.533381462097168
+    },
+    {
+      "pair_id": 181,
+      "bucket_idx": 3,
+      "snr_db": 13.053,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.5892114639282227,
+      "pesq_hat_noisy": 1.292710304260254,
+      "pesq_wb_real_est": 1.149760365486145,
+      "pesq_hat_est": 4.521071910858154
+    },
+    {
+      "pair_id": 182,
+      "bucket_idx": 3,
+      "snr_db": 13.65,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.4906967878341675,
+      "pesq_hat_noisy": 1.38413405418396,
+      "pesq_wb_real_est": 1.1465966701507568,
+      "pesq_hat_est": 4.276524066925049
+    },
+    {
+      "pair_id": 183,
+      "bucket_idx": 3,
+      "snr_db": 12.583,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.3452222347259521,
+      "pesq_hat_noisy": 1.3990660905838013,
+      "pesq_wb_real_est": 1.0790666341781616,
+      "pesq_hat_est": 4.450068473815918
+    },
+    {
+      "pair_id": 184,
+      "bucket_idx": 3,
+      "snr_db": 11.281,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.6027679443359375,
+      "pesq_hat_noisy": 1.7036402225494385,
+      "pesq_wb_real_est": 1.2283728122711182,
+      "pesq_hat_est": 4.377619743347168
+    },
+    {
+      "pair_id": 185,
+      "bucket_idx": 3,
+      "snr_db": 12.43,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.9821577072143555,
+      "pesq_hat_noisy": 1.7307833433151245,
+      "pesq_wb_real_est": 1.09035062789917,
+      "pesq_hat_est": 4.500600814819336
+    },
+    {
+      "pair_id": 186,
+      "bucket_idx": 3,
+      "snr_db": 12.31,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.676581621170044,
+      "pesq_hat_noisy": 1.83949875831604,
+      "pesq_wb_real_est": 1.099360466003418,
+      "pesq_hat_est": 4.498405456542969
+    },
+    {
+      "pair_id": 187,
+      "bucket_idx": 3,
+      "snr_db": 11.486,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.574557900428772,
+      "pesq_hat_noisy": 1.3046598434448242,
+      "pesq_wb_real_est": 1.1805425882339478,
+      "pesq_hat_est": 4.44332218170166
+    },
+    {
+      "pair_id": 188,
+      "bucket_idx": 3,
+      "snr_db": 11.709,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.286044955253601,
+      "pesq_hat_noisy": 1.2742241621017456,
+      "pesq_wb_real_est": 1.0507776737213135,
+      "pesq_hat_est": 4.431170463562012
+    },
+    {
+      "pair_id": 189,
+      "bucket_idx": 3,
+      "snr_db": 12.214,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 3.732167959213257,
+      "pesq_hat_noisy": 2.9514620304107666,
+      "pesq_wb_real_est": 1.2143827676773071,
+      "pesq_hat_est": 4.549043655395508
+    },
+    {
+      "pair_id": 190,
+      "bucket_idx": 3,
+      "snr_db": 11.334,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.666517972946167,
+      "pesq_hat_noisy": 1.7818564176559448,
+      "pesq_wb_real_est": 1.0914901494979858,
+      "pesq_hat_est": 4.35079288482666
+    },
+    {
+      "pair_id": 191,
+      "bucket_idx": 3,
+      "snr_db": 10.697,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.2321925163269043,
+      "pesq_hat_noisy": 1.1396089792251587,
+      "pesq_wb_real_est": 1.0148903131484985,
+      "pesq_hat_est": 4.455323219299316
+    },
+    {
+      "pair_id": 192,
+      "bucket_idx": 3,
+      "snr_db": 14.022,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.4463627338409424,
+      "pesq_hat_noisy": 1.3108277320861816,
+      "pesq_wb_real_est": 1.136178970336914,
+      "pesq_hat_est": 4.399740695953369
+    },
+    {
+      "pair_id": 193,
+      "bucket_idx": 3,
+      "snr_db": 11.791,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.3220224380493164,
+      "pesq_hat_noisy": 2.745859146118164,
+      "pesq_wb_real_est": 1.183292269706726,
+      "pesq_hat_est": 4.4554595947265625
+    },
+    {
+      "pair_id": 194,
+      "bucket_idx": 3,
+      "snr_db": 11.824,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.3517736196517944,
+      "pesq_hat_noisy": 1.3875261545181274,
+      "pesq_wb_real_est": 1.154374599456787,
+      "pesq_hat_est": 4.512409210205078
+    },
+    {
+      "pair_id": 195,
+      "bucket_idx": 3,
+      "snr_db": 13.917,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.5603772401809692,
+      "pesq_hat_noisy": 1.6832785606384277,
+      "pesq_wb_real_est": 1.2881276607513428,
+      "pesq_hat_est": 4.455972671508789
+    },
+    {
+      "pair_id": 196,
+      "bucket_idx": 3,
+      "snr_db": 13.491,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.8674125671386719,
+      "pesq_hat_noisy": 1.3423957824707031,
+      "pesq_wb_real_est": 1.1312428712844849,
+      "pesq_hat_est": 4.409335136413574
+    },
+    {
+      "pair_id": 197,
+      "bucket_idx": 3,
+      "snr_db": 12.237,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.5679478645324707,
+      "pesq_hat_noisy": 2.5074915885925293,
+      "pesq_wb_real_est": 1.1033581495285034,
+      "pesq_hat_est": 4.512945175170898
+    },
+    {
+      "pair_id": 198,
+      "bucket_idx": 3,
+      "snr_db": 11.548,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.2181549072265625,
+      "pesq_hat_noisy": 1.2259631156921387,
+      "pesq_wb_real_est": 1.109351634979248,
+      "pesq_hat_est": 4.434198379516602
+    },
+    {
+      "pair_id": 199,
+      "bucket_idx": 3,
+      "snr_db": 13.98,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.0944650173187256,
+      "pesq_hat_noisy": 2.1108500957489014,
+      "pesq_wb_real_est": 1.0886869430541992,
+      "pesq_hat_est": 4.52524471282959
+    },
+    {
+      "pair_id": 200,
+      "bucket_idx": 4,
+      "snr_db": 16.183,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.621553897857666,
+      "pesq_hat_noisy": 2.2867488861083984,
+      "pesq_wb_real_est": 1.085073709487915,
+      "pesq_hat_est": 4.496061325073242
+    },
+    {
+      "pair_id": 201,
+      "bucket_idx": 4,
+      "snr_db": 17.315,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.6282896995544434,
+      "pesq_hat_noisy": 1.7563345432281494,
+      "pesq_wb_real_est": 1.2436468601226807,
+      "pesq_hat_est": 4.188194274902344
+    },
+    {
+      "pair_id": 202,
+      "bucket_idx": 4,
+      "snr_db": 16.872,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.5121803283691406,
+      "pesq_hat_noisy": 1.1684019565582275,
+      "pesq_wb_real_est": 1.01397705078125,
+      "pesq_hat_est": 4.098316192626953
+    },
+    {
+      "pair_id": 203,
+      "bucket_idx": 4,
+      "snr_db": 19.974,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.319295644760132,
+      "pesq_hat_noisy": 2.4891676902770996,
+      "pesq_wb_real_est": 1.1408923864364624,
+      "pesq_hat_est": 4.545768737792969
+    },
+    {
+      "pair_id": 204,
+      "bucket_idx": 4,
+      "snr_db": 16.2,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.5686044692993164,
+      "pesq_hat_noisy": 1.7898290157318115,
+      "pesq_wb_real_est": 1.0561732053756714,
+      "pesq_hat_est": 4.421818733215332
+    },
+    {
+      "pair_id": 205,
+      "bucket_idx": 4,
+      "snr_db": 17.967,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.9792227745056152,
+      "pesq_hat_noisy": 2.3190879821777344,
+      "pesq_wb_real_est": 1.1717113256454468,
+      "pesq_hat_est": 4.338417053222656
+    },
+    {
+      "pair_id": 206,
+      "bucket_idx": 4,
+      "snr_db": 17.636,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 3.5604019165039062,
+      "pesq_hat_noisy": 3.345695972442627,
+      "pesq_wb_real_est": 1.1250505447387695,
+      "pesq_hat_est": 4.537961006164551
+    },
+    {
+      "pair_id": 207,
+      "bucket_idx": 4,
+      "snr_db": 15.243,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.945457100868225,
+      "pesq_hat_noisy": 2.1343750953674316,
+      "pesq_wb_real_est": 1.1395050287246704,
+      "pesq_hat_est": 4.338085174560547
+    },
+    {
+      "pair_id": 208,
+      "bucket_idx": 4,
+      "snr_db": 15.908,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.987544059753418,
+      "pesq_hat_noisy": 1.948160171508789,
+      "pesq_wb_real_est": 1.0849428176879883,
+      "pesq_hat_est": 4.504842758178711
+    },
+    {
+      "pair_id": 209,
+      "bucket_idx": 4,
+      "snr_db": 19.43,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.0612995624542236,
+      "pesq_hat_noisy": 1.8636977672576904,
+      "pesq_wb_real_est": 1.1055630445480347,
+      "pesq_hat_est": 4.369239807128906
+    },
+    {
+      "pair_id": 210,
+      "bucket_idx": 4,
+      "snr_db": 18.944,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.337279796600342,
+      "pesq_hat_noisy": 2.352749824523926,
+      "pesq_wb_real_est": 1.122908592224121,
+      "pesq_hat_est": 4.522223472595215
+    },
+    {
+      "pair_id": 211,
+      "bucket_idx": 4,
+      "snr_db": 16.068,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.165440797805786,
+      "pesq_hat_noisy": 1.992875099182129,
+      "pesq_wb_real_est": 1.1633286476135254,
+      "pesq_hat_est": 4.510037899017334
+    },
+    {
+      "pair_id": 212,
+      "bucket_idx": 4,
+      "snr_db": 15.893,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.825387954711914,
+      "pesq_hat_noisy": 2.3660030364990234,
+      "pesq_wb_real_est": 1.159080147743225,
+      "pesq_hat_est": 4.191729545593262
+    },
+    {
+      "pair_id": 213,
+      "bucket_idx": 4,
+      "snr_db": 19.692,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.5483262538909912,
+      "pesq_hat_noisy": 1.3377503156661987,
+      "pesq_wb_real_est": 1.1234742403030396,
+      "pesq_hat_est": 4.308121681213379
+    },
+    {
+      "pair_id": 214,
+      "bucket_idx": 4,
+      "snr_db": 17.943,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.549103021621704,
+      "pesq_hat_noisy": 1.501193642616272,
+      "pesq_wb_real_est": 1.0860308408737183,
+      "pesq_hat_est": 4.332186698913574
+    },
+    {
+      "pair_id": 215,
+      "bucket_idx": 4,
+      "snr_db": 18.582,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.2706868648529053,
+      "pesq_hat_noisy": 2.040860176086426,
+      "pesq_wb_real_est": 1.1818419694900513,
+      "pesq_hat_est": 4.42141056060791
+    },
+    {
+      "pair_id": 216,
+      "bucket_idx": 4,
+      "snr_db": 19.536,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.6717123985290527,
+      "pesq_hat_noisy": 2.629650115966797,
+      "pesq_wb_real_est": 1.2321555614471436,
+      "pesq_hat_est": 4.432583332061768
+    },
+    {
+      "pair_id": 217,
+      "bucket_idx": 4,
+      "snr_db": 16.305,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.459225654602051,
+      "pesq_hat_noisy": 1.6682827472686768,
+      "pesq_wb_real_est": 1.0868467092514038,
+      "pesq_hat_est": 4.55026388168335
+    },
+    {
+      "pair_id": 218,
+      "bucket_idx": 4,
+      "snr_db": 17.499,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.8318510055541992,
+      "pesq_hat_noisy": 1.8556201457977295,
+      "pesq_wb_real_est": 1.0964992046356201,
+      "pesq_hat_est": 4.480792999267578
+    },
+    {
+      "pair_id": 219,
+      "bucket_idx": 4,
+      "snr_db": 19.569,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.857194662094116,
+      "pesq_hat_noisy": 2.6565632820129395,
+      "pesq_wb_real_est": 1.0744162797927856,
+      "pesq_hat_est": 4.540980339050293
+    },
+    {
+      "pair_id": 220,
+      "bucket_idx": 4,
+      "snr_db": 15.931,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 4.067737102508545,
+      "pesq_hat_noisy": 3.519221782684326,
+      "pesq_wb_real_est": 1.1830341815948486,
+      "pesq_hat_est": 4.246005058288574
+    },
+    {
+      "pair_id": 221,
+      "bucket_idx": 4,
+      "snr_db": 16.273,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.4618581533432007,
+      "pesq_hat_noisy": 1.5936408042907715,
+      "pesq_wb_real_est": 1.237936019897461,
+      "pesq_hat_est": 4.40528678894043
+    },
+    {
+      "pair_id": 222,
+      "bucket_idx": 4,
+      "snr_db": 19.408,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.9043232202529907,
+      "pesq_hat_noisy": 1.7050211429595947,
+      "pesq_wb_real_est": 1.1114933490753174,
+      "pesq_hat_est": 4.571074485778809
+    },
+    {
+      "pair_id": 223,
+      "bucket_idx": 4,
+      "snr_db": 19.208,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 3.590970993041992,
+      "pesq_hat_noisy": 3.498985767364502,
+      "pesq_wb_real_est": 1.0962625741958618,
+      "pesq_hat_est": 4.4896087646484375
+    },
+    {
+      "pair_id": 224,
+      "bucket_idx": 4,
+      "snr_db": 17.577,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 3.2606751918792725,
+      "pesq_hat_noisy": 3.3200509548187256,
+      "pesq_wb_real_est": 1.1754482984542847,
+      "pesq_hat_est": 4.553480625152588
+    },
+    {
+      "pair_id": 225,
+      "bucket_idx": 4,
+      "snr_db": 15.669,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.8667182922363281,
+      "pesq_hat_noisy": 1.7764885425567627,
+      "pesq_wb_real_est": 1.1570665836334229,
+      "pesq_hat_est": 3.587048292160034
+    },
+    {
+      "pair_id": 226,
+      "bucket_idx": 4,
+      "snr_db": 19.166,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.655083656311035,
+      "pesq_hat_noisy": 2.2772250175476074,
+      "pesq_wb_real_est": 1.2866888046264648,
+      "pesq_hat_est": 4.505125045776367
+    },
+    {
+      "pair_id": 227,
+      "bucket_idx": 4,
+      "snr_db": 16.542,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.8657333850860596,
+      "pesq_hat_noisy": 2.021519422531128,
+      "pesq_wb_real_est": 1.1508079767227173,
+      "pesq_hat_est": 4.523022651672363
+    },
+    {
+      "pair_id": 228,
+      "bucket_idx": 4,
+      "snr_db": 18.787,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 4.203317642211914,
+      "pesq_hat_noisy": 3.8506035804748535,
+      "pesq_wb_real_est": 1.18868088722229,
+      "pesq_hat_est": 4.3246355056762695
+    },
+    {
+      "pair_id": 229,
+      "bucket_idx": 4,
+      "snr_db": 16.274,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.7978464365005493,
+      "pesq_hat_noisy": 2.310868740081787,
+      "pesq_wb_real_est": 1.1500256061553955,
+      "pesq_hat_est": 4.549077987670898
+    },
+    {
+      "pair_id": 230,
+      "bucket_idx": 4,
+      "snr_db": 15.77,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.5641932487487793,
+      "pesq_hat_noisy": 1.5913002490997314,
+      "pesq_wb_real_est": 1.1535896062850952,
+      "pesq_hat_est": 4.546429634094238
+    },
+    {
+      "pair_id": 231,
+      "bucket_idx": 4,
+      "snr_db": 18.466,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.995821237564087,
+      "pesq_hat_noisy": 1.9788918495178223,
+      "pesq_wb_real_est": 1.1389412879943848,
+      "pesq_hat_est": 4.415122032165527
+    },
+    {
+      "pair_id": 232,
+      "bucket_idx": 4,
+      "snr_db": 16.966,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.339341402053833,
+      "pesq_hat_noisy": 2.537801742553711,
+      "pesq_wb_real_est": 1.1936135292053223,
+      "pesq_hat_est": 4.389336585998535
+    },
+    {
+      "pair_id": 233,
+      "bucket_idx": 4,
+      "snr_db": 16.88,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.4667797088623047,
+      "pesq_hat_noisy": 1.5061917304992676,
+      "pesq_wb_real_est": 1.1019293069839478,
+      "pesq_hat_est": 4.352520942687988
+    },
+    {
+      "pair_id": 234,
+      "bucket_idx": 4,
+      "snr_db": 17.196,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 3.5941812992095947,
+      "pesq_hat_noisy": 3.182490587234497,
+      "pesq_wb_real_est": 1.1458423137664795,
+      "pesq_hat_est": 4.458060264587402
+    },
+    {
+      "pair_id": 235,
+      "bucket_idx": 4,
+      "snr_db": 17.296,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.9871479272842407,
+      "pesq_hat_noisy": 1.974792242050171,
+      "pesq_wb_real_est": 1.0829039812088013,
+      "pesq_hat_est": 4.5006022453308105
+    },
+    {
+      "pair_id": 236,
+      "bucket_idx": 4,
+      "snr_db": 17.354,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.3806512355804443,
+      "pesq_hat_noisy": 2.20881986618042,
+      "pesq_wb_real_est": 1.2816162109375,
+      "pesq_hat_est": 4.486572265625
+    },
+    {
+      "pair_id": 237,
+      "bucket_idx": 4,
+      "snr_db": 18.241,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.9934616088867188,
+      "pesq_hat_noisy": 1.8330050706863403,
+      "pesq_wb_real_est": 1.2397820949554443,
+      "pesq_hat_est": 4.520237922668457
+    },
+    {
+      "pair_id": 238,
+      "bucket_idx": 4,
+      "snr_db": 15.533,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.2016494274139404,
+      "pesq_hat_noisy": 2.0014820098876953,
+      "pesq_wb_real_est": 1.203798770904541,
+      "pesq_hat_est": 3.888144016265869
+    },
+    {
+      "pair_id": 239,
+      "bucket_idx": 4,
+      "snr_db": 18.377,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.4967914819717407,
+      "pesq_hat_noisy": 1.2963427305221558,
+      "pesq_wb_real_est": 1.0310360193252563,
+      "pesq_hat_est": 3.8565773963928223
+    },
+    {
+      "pair_id": 240,
+      "bucket_idx": 4,
+      "snr_db": 17.433,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.4730453491210938,
+      "pesq_hat_noisy": 2.1419734954833984,
+      "pesq_wb_real_est": 1.1208378076553345,
+      "pesq_hat_est": 4.477840423583984
+    },
+    {
+      "pair_id": 241,
+      "bucket_idx": 4,
+      "snr_db": 19.092,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.8796582221984863,
+      "pesq_hat_noisy": 2.7312986850738525,
+      "pesq_wb_real_est": 1.0559152364730835,
+      "pesq_hat_est": 4.470811367034912
+    },
+    {
+      "pair_id": 242,
+      "bucket_idx": 4,
+      "snr_db": 16.436,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.879472017288208,
+      "pesq_hat_noisy": 1.8334040641784668,
+      "pesq_wb_real_est": 1.155240774154663,
+      "pesq_hat_est": 4.298016548156738
+    },
+    {
+      "pair_id": 243,
+      "bucket_idx": 4,
+      "snr_db": 18.334,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.7224223613739014,
+      "pesq_hat_noisy": 2.7925467491149902,
+      "pesq_wb_real_est": 1.1049453020095825,
+      "pesq_hat_est": 4.583443641662598
+    },
+    {
+      "pair_id": 244,
+      "bucket_idx": 4,
+      "snr_db": 16.028,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 1.742470383644104,
+      "pesq_hat_noisy": 1.5439648628234863,
+      "pesq_wb_real_est": 1.1143591403961182,
+      "pesq_hat_est": 4.466454029083252
+    },
+    {
+      "pair_id": 245,
+      "bucket_idx": 4,
+      "snr_db": 18.495,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.212873935699463,
+      "pesq_hat_noisy": 2.0549049377441406,
+      "pesq_wb_real_est": 1.1393924951553345,
+      "pesq_hat_est": 4.463351249694824
+    },
+    {
+      "pair_id": 246,
+      "bucket_idx": 4,
+      "snr_db": 18.404,
+      "noise_category": "esc50",
+      "pesq_wb_real_noisy": 2.5439352989196777,
+      "pesq_hat_noisy": 2.323033571243286,
+      "pesq_wb_real_est": 1.1957048177719116,
+      "pesq_hat_est": 4.508858680725098
+    },
+    {
+      "pair_id": 247,
+      "bucket_idx": 4,
+      "snr_db": 17.719,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.6777729988098145,
+      "pesq_hat_noisy": 1.3959940671920776,
+      "pesq_wb_real_est": 1.0709850788116455,
+      "pesq_hat_est": 4.344976425170898
+    },
+    {
+      "pair_id": 248,
+      "bucket_idx": 4,
+      "snr_db": 17.397,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 2.0352866649627686,
+      "pesq_hat_noisy": 2.202568531036377,
+      "pesq_wb_real_est": 1.0931601524353027,
+      "pesq_hat_est": 4.530946731567383
+    },
+    {
+      "pair_id": 249,
+      "bucket_idx": 4,
+      "snr_db": 19.752,
+      "noise_category": "musan",
+      "pesq_wb_real_noisy": 1.5315388441085815,
+      "pesq_hat_noisy": 1.5399837493896484,
+      "pesq_wb_real_est": 1.1627346277236938,
+      "pesq_hat_est": 4.304120063781738
+    }
+  ],
+  "pesq_reuse_check": {
+    "n_recomputed": 5,
+    "max_abs_delta": 9.5367431640625e-07,
+    "mean_abs_delta": 2.6226043701171877e-07,
+    "note": "PESQ-WB recalculado sobre los primeros pares y comparado contra el publicado. Verifica que la reinferencia reproduce el audio que generó los números que se reusan."
+  }
+}

@@ -1171,3 +1171,15 @@ uno que ya tiene margen. Vale el documento hasheado, no esta entrada: el hash es
 El preregistro completo vive fuera del repo por la regla anti-contaminación; acá queda la
 decisión y su razón, que es lo que tiene que sobrevivir aunque el documento no se lea. El hash va
 a `docs/preregistro_v7_semillas.sha256` antes de lanzar.
+
+Auditoría de números heredados al consolidar EXPERIMENTS.md (20/09/2026)
+ 
+Escribir las secciones faltantes de la bitácora obligó a releer cada número contra su JSON.
+Cuatro no daban, todos por transcripción y ninguno por medición:
+
+1. decisions.md:543 — control_mse mejora en tres métricas, no cuatro (PESQ-WB: −0,019).
+2. decisions.md:780 — OP-1 lo cruzaba V3e, no lo cruza V5 por primera vez; y es PESQ-NB, no WB.
+3. V3b en español es +0,152, no +0,153 (2,4825 − 2,3302). Vivía en informe/, CLAUDE.md y el generador del dashboard.
+4. El mensaje del commit 7f7884d atribuye a V3e el val_loss 0,0864, que es el de V3b (época 5). El de V3e es 0,0843 (época 14). Un mensaje de commit ya pusheado no se reescribe: queda anotado acá.
+
+Los cuatro son errores de transcripción entre documentos, no de medición. Ninguna conclusión cambia. Es el modo de falla que ya produjo la retractación del "67 % de retención": un número sobrevive en prosa después de que su fundamento se movió. Mitigación adoptada: al escribir cualquier sección nueva, cada número se recomputa contra su JSON en vez de copiarse.

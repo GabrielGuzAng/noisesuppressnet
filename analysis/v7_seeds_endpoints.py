@@ -143,6 +143,16 @@ def _verificar_panel(exclusiones: dict, semilla: int) -> None:
     """``summarize`` promedia por archivo sobre las seis epocas y asume el mismo
     conjunto de pares en todas. Con exclusiones distintas por epoca ese promedio
     no esta definido, asi que se corta en vez de inventar una regla.
+
+    Ambiguedad declarada: la seccion 7 escribe la exclusion por epoca ("se
+    excluyen de esa epoca en los dos brazos"), pero la seccion 3 fija el
+    estimando via ``summarize()``, que ademas del contraste por epoca promedia
+    por archivo sobre las seis. Las dos reglas solo conviven si el conjunto
+    excluido es el mismo en las seis epocas, asi que en los hechos la exclusion
+    queda todo-o-nada sobre la trayectoria: o el par se cae en las seis, o no se
+    cae en ninguna y hay que declarar una regla nueva. Cortar es la unica salida
+    que no elige por su cuenta entre modificar la funcion congelada (prohibido
+    por la seccion 8) y cambiar el estimando de la seccion 3.
     """
     for test_set in v7ge.TEST_SETS:
         conjuntos = {ep: exclusiones[(test_set, ep)]["pares"] for ep in v7ge.EPOCHS}
@@ -201,6 +211,12 @@ def estimando_por_semilla(semilla: int) -> dict:
     epocas_invalidas = [{"test_set": ts, "epoch": ep, "n_excluidos": v["n"]}
                         for (ts, ep), v in sorted(exclusiones.items())
                         if v["epoca_invalida"]]
+    # Ambiguedad declarada: la seccion 7 dice "si se invalidan mas de dos epocas
+    # de seis en una semilla, esa semilla no computa", sin decir sobre que
+    # sellado se cuenta. Se cuenta sobre el primario, porque el estimando
+    # confirmatorio de la seccion 3 es E1 sobre test_v2_es: una epoca invalida en
+    # otro sellado ensucia un numero que se reporta al lado, no el que confirma.
+    # Esas epocas igual salen en "epocas_invalidas" y se reportan como desvio.
     n_invalidas_primario = sum(1 for e in epocas_invalidas
                                if e["test_set"] == SELLADO_PRIMARIO)
 

@@ -1,0 +1,15 @@
+# Preregistro de la validación downstream por WER y del sellado de test_v4_asr.
+# El archivo vive fuera del repositorio (~/nosiesuppressnet-oracle/preregistro_asr_downstream.md)
+# porque contiene criterios de decisión y umbrales que un agente ejecutor no debe ver.
+# Cuando se publique, debe verificar contra su hash.
+#
+# v1 (20/09/2026, 01:13 ART) y v2 (20/09/2026, 21:15 ART) NO fueron hasheadas en su momento.
+# Su historia de enmiendas está declarada dentro del propio documento. Sólo v3 está
+# comprometida por hash, y eso es lo que se puede auditar.
+
+# v3 — escrita el 20/09/2026, 21:45 ART. Hasheada el 26/09/2026. Corrige la enmienda 3
+# sobre §2.1: el estimando de contaminación de ruido pasa a cobertura acumulada y se retira
+# la lectura de la asimetría entre regímenes como evidencia sobre memorización.
+# Comprometida ANTES de sellar un solo par y antes de la primera transcripción:
+# test_v4_asr no existe y no se corrió ningún ASR.
+84a09316fe39485173499bcf3a2c24f60579bdcdad344b1af984821d91e3ba4e  preregistro_asr_downstream.md

@@ -79,3 +79,9 @@ ROLES.md
 docs/dashboard.html
 scripts/generate_dashboard.py
 docs/camino_critico.html
+
+# Entrega a la cátedra (simétrico de DocsProfesores/)
+informe/
+
+# Venvs auxiliares: el patrón .venv/ no los matcheaba
+.venv*

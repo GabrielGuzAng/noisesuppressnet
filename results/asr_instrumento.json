@@ -1,0 +1,254 @@
+{
+  "written_at": "2026-09-26T16:02:58+00:00",
+  "primary": {
+    "model": "Whisper large-v3 (conversión CTranslate2 de openai/whisper-large-v3, pesos guardados en FP16 por el conversor)",
+    "hf_repo": "Systran/faster-whisper-large-v3",
+    "hf_revision": "edaa852ec7e145841d8ffdb056a99866b5f0a478",
+    "files": [
+      {
+        "file": ".gitattributes",
+        "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+      },
+      {
+        "file": "config.json",
+        "sha256": "a9306624f5ec14270a014b647e5c316b6e03a662c369758d1b90697a7b0655b9"
+      },
+      {
+        "file": "model.bin",
+        "sha256": "69f74147e3334731bc3a76048724833325d2ec74642fb52620eda87352e3d4f1"
+      },
+      {
+        "file": "preprocessor_config.json",
+        "sha256": "7ccc62c6f2765af1f3b46c00c9b5894426835a05021c8b9c01eecb6dfb542711"
+      },
+      {
+        "file": "tokenizer.json",
+        "sha256": "6d8cbd7cd0d8d5815e478dac67b85a26bbe77c1f5e0c6d76d1ce2abc0e5f21ca"
+      },
+      {
+        "file": "vocabulary.json",
+        "sha256": "c69260f2ab26d659b7c398f9a2b2b48ed0df16c3b47d7326782fd9cba71690c1"
+      }
+    ],
+    "runtime": "faster-whisper WhisperModel.transcribe (secuencial, no batched)",
+    "device": "cuda",
+    "compute_type": "float16",
+    "decode_args": {
+      "language": "es",
+      "task": "transcribe",
+      "beam_size": 1,
+      "temperature": [
+        0.0
+      ],
+      "condition_on_previous_text": false,
+      "vad_filter": false,
+      "compression_ratio_threshold": null,
+      "log_prob_threshold": null,
+      "no_speech_threshold": null
+    },
+    "decode_args_note": "Los argumentos efectivos completos, defaults incluidos, quedan en effective_transcription_options.",
+    "effective_transcription_options": {
+      "beam_size": 1,
+      "best_of": 5,
+      "patience": 1,
+      "length_penalty": 1,
+      "repetition_penalty": 1,
+      "no_repeat_ngram_size": 0,
+      "log_prob_threshold": null,
+      "no_speech_threshold": null,
+      "compression_ratio_threshold": null,
+      "condition_on_previous_text": false,
+      "prompt_reset_on_temperature": 0.5,
+      "temperatures": [
+        0.0
+      ],
+      "initial_prompt": null,
+      "prefix": null,
+      "suppress_blank": true,
+      "suppress_tokens": [
+        1,
+        2,
+        7,
+        8,
+        9,
+        10,
+        14,
+        25,
+        26,
+        27,
+        28,
+        29,
+        31,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        90,
+        91,
+        92,
+        93,
+        359,
+        503,
+        522,
+        542,
+        873,
+        893,
+        902,
+        918,
+        922,
+        931,
+        1350,
+        1853,
+        1982,
+        2460,
+        2627,
+        3246,
+        3253,
+        3268,
+        3536,
+        3846,
+        3961,
+        4183,
+        4667,
+        6585,
+        6647,
+        7273,
+        9061,
+        9383,
+        10428,
+        10929,
+        11938,
+        12033,
+        12331,
+        12562,
+        13793,
+        14157,
+        14635,
+        15265,
+        15618,
+        16553,
+        16604,
+        18362,
+        18956,
+        20075,
+        21675,
+        22520,
+        26130,
+        26161,
+        26435,
+        28279,
+        29464,
+        31650,
+        32302,
+        32470,
+        36865,
+        42863,
+        47425,
+        49870,
+        50254,
+        50258,
+        50359,
+        50360,
+        50361,
+        50362,
+        50363
+      ],
+      "without_timestamps": false,
+      "max_initial_timestamp": 1.0,
+      "word_timestamps": false,
+      "prepend_punctuations": "\"'“¿([{-",
+      "append_punctuations": "\"'.。,，!！?？:：”)]}、",
+      "multilingual": false,
+      "max_new_tokens": null,
+      "clip_timestamps": "0",
+      "hallucination_silence_threshold": null,
+      "hotwords": null
+    }
+  },
+  "secondary": {
+    "model": "wav2vec2-large-xlsr-53-spanish (CTC)",
+    "hf_repo": "jonatasgrosman/wav2vec2-large-xlsr-53-spanish",
+    "hf_revision": "96d7e9b4e4a78af515a3c6d3cee7c0826045d276",
+    "files": [
+      {
+        "file": "config.json",
+        "sha256": "39ffe954848d5161270eef4378a17a538bffeefc310482f409ec099f7fceaa5b"
+      },
+      {
+        "file": "preprocessor_config.json",
+        "sha256": "ca5999a45e98bb76ea87a461ba28a23ad32a5bb9f733b8e0f6546ff38b6c612d"
+      },
+      {
+        "file": "pytorch_model.bin",
+        "sha256": "41c110e55d2eac8c79486ad87dbe8f9527ed034fe087a6adf03c891eeba914c1"
+      },
+      {
+        "file": "special_tokens_map.json",
+        "sha256": "bb7068de1150661a10b55f9e4b12a0e77af8bf91f5e45e1b58afaf1d0e17f675"
+      },
+      {
+        "file": "vocab.json",
+        "sha256": "7aea8bcd8ba1c176f12cc96c1e8f45247548f4de3218106f7352e3d833cfafdc"
+      }
+    ],
+    "training_data": "Common Voice 6.1 es, splits train+validation (model card)",
+    "device": "cuda",
+    "decoding": "greedy argmax, collapse CTC (processor.batch_decode)",
+    "language_model": null,
+    "dtype": "float32",
+    "batch_size": 1
+  },
+  "normalizer": {
+    "class": "transformers.models.whisper.english_normalizer.BasicTextNormalizer",
+    "kwargs": {
+      "remove_diacritics": true,
+      "split_letters": false
+    },
+    "applied_to": "referencia e hipótesis, idéntico"
+  },
+  "wer": {
+    "library": "jiwer",
+    "aggregate": "sum(S+D+I) / sum(n_words de referencia), sobre utterances; NO es la media de los WER por utterance",
+    "per_utterance_fields": [
+      "S",
+      "D",
+      "I",
+      "H",
+      "n_words"
+    ]
+  },
+  "passes": {
+    "n_passes": 2,
+    "governing_pass": 0,
+    "run_order": "pasada 0 completa con modelo recién cargado, después pasada 1 con otra carga; primario antes que secundario",
+    "policy": "Rige la pasada 0. La pasada 1 sólo mide la fracción de hipótesis que cambian: no se promedia, no se elige, no desempata."
+  },
+  "input_audio": {
+    "sample_rate": 16000,
+    "channels": 1,
+    "format": "WAV float32, leído con soundfile, sin resampleo"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "packages": {
+      "faster-whisper": "1.2.1",
+      "ctranslate2": "4.8.2",
+      "jiwer": "4.0.0",
+      "transformers": "4.57.6",
+      "tokenizers": "0.22.2",
+      "torch": "2.9.1+cu126",
+      "numpy": "2.5.3",
+      "soundfile": "0.13.1",
+      "huggingface_hub": "0.36.2",
+      "av": "18.1.0",
+      "nvidia-cublas-cu12": "12.6.4.1",
+      "nvidia-cudnn-cu12": "9.10.2.21"
+    },
+    "cuda_runtime_torch": "12.6",
+    "cudnn_torch": 91002,
+    "gpu": "NVIDIA GeForce RTX 4060",
+    "seed": 42
+  }
+}

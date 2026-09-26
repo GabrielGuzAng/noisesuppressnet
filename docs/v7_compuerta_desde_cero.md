@@ -1,9 +1,11 @@
 # V7 — La compuerta de paso directo, entrenada desde cero
 
-**Estado: screening positivo sobre el endpoint primario preregistrado, con tres
-reservas escritas y una confirmación pendiente.**
-Corridas del 15 al 18/09/2026. Continuación de `docs/v6_compuerta.md`; se integra
-a `EXPERIMENTS.md` y `decisions.md` cuando se decida dónde va cada parte.
+**Estado: contraste compuerta − control preregistrado y confirmado con tres semillas
+nuevas (+0,061370 PESQ-NB en `test_v2_es`, sd entre semillas 0,026802); la atribución
+a la compuerta NO está confirmada.** Ver §9.
+Screening del 15 al 18/09/2026; corridas de la confirmación del 19 al 22/09/2026;
+adjudicación del endpoint el 26/09/2026. Continuación de `docs/v6_compuerta.md`.
+Resumen en `EXPERIMENTS.md`; decisión en `decisions.md` (26/09/2026).
 
 ---
 
@@ -372,15 +374,127 @@ la afirmación en una sola y no en dos superpuestas.
 
 ---
 
+## 9. La confirmación con tres semillas (26/09/2026)
+
+Las secciones 1 a 8 se escribieron con la confirmación pendiente y quedan como registro del
+screening. Esta sección las cierra.
+
+### 9.1 Diseño
+
+Tres semillas nuevas —43, 44 y 45—, los dos brazos completos en cada una: seis corridas de 20
+épocas con el diseño de §3 sin cambios, incluida la asimetría de orden de datos entre brazos que
+§3 declara y deja como término de ruido. El estimando por semilla es el de §3, calculado por
+`analysis/v7_gate_endpoints.py` sin modificar. **El estimando confirmatorio es la media no
+ponderada de las tres semillas nuevas. La 42 queda excluida por diseño, porque fue la que disparó
+la confirmación, y se reporta al lado.** Así queda resuelta la decisión abierta de §8.
+
+El preregistro está hasheado en `docs/preregistro_v7_semillas.sha256`, commiteado el 19/09/2026 a
+las 21:06:32 (`0424c74`). **Las semillas 43 y 44 se lanzaron antes, a las 00:03:28 de ese mismo
+día**, y el propio `.sha256` lo declara en vez de disimularlo: al hashear no existía ningún
+resultado sobre ningún sellado ni podía existir, porque el barrido de evaluación corre recién al
+terminar los entrenamientos, y lo único visible entretanto es `val_loss` por época, que no
+aparece en ningún criterio. La marca que vale es la del commit, no el `mtime` del archivo
+(20:36:44), porque un `mtime` se reescribe y un commit pusheado no.
+
+### 9.2 Resultado
+
+| sellado | confirmatorio | s43 | s44 | s45 | sd entre semillas | s42 (excluida) |
+|---|---|---|---|---|---|---|
+| `test_v2_es` (primario) | **+0,061370** | +0,073098 | +0,080308 | +0,030703 | **0,026802** | +0,079493 |
+| `test_v1_en` | +0,044470 | +0,059170 | +0,038858 | +0,035381 | 0,012849 | +0,061970 |
+| `test_v3_mls_es` | +0,044083 | +0,055806 | +0,036702 | +0,039740 | 0,010266 | +0,075347 |
+
+| criterio | umbral | resultado | |
+|---|---|---|---|
+| C1 dirección, las tres semillas en ES | > 0 | la menor, +0,030703 | pasa |
+| C2a magnitud media en ES | ≥ +0,050 | +0,061370, margen +0,011370 | pasa |
+| C2b piso por semilla en ES | ≥ +0,025 | la mínima, +0,030703, margen +0,005703 | pasa |
+| C3 costo en inglés | ≥ −0,020 | +0,044470, margen +0,064470 | pasa |
+| C4 ρ(g,SNR) < 0 con \|ρ\| ≥ 0,15 | las 54 épocas (3 semillas × 3 sellados × 6) | 54 de 54; el \|ρ\| más chico es 0,315119 (s45, `test_v2_es`, época 18) | pasa |
+| C5 media de g en (0,05 ; 0,99) | las 54 épocas | 54 de 54; g entre 0,385669 y 0,566935 | pasa |
+
+250 pares en las seis épocas de las tres semillas, cero exclusiones, cero épocas invalidadas.
+Archivos que favorecen a la compuerta en `test_v2_es`: 163, 169 y 157 de 250 (s43, s44, s45).
+
+**Nivel: preregistrado y confirmado**, primera fila de la tabla de desenlaces del preregistro.
+Los sellados son los del screening; lo nuevo son las corridas. Cuenta como fuera de muestra porque
+la variable que se confirma es la semilla.
+
+### 9.3 Qué se confirma y qué no
+
+**Se confirma el contraste: entrenados desde cero con la misma receta, el brazo con compuerta
+supera al control en +0,061370 PESQ-NB en el sellado primario, con las tres semillas nuevas
+positivas, y sin costo en inglés (+0,044470).**
+
+**No se confirma que la mejora provenga de la compuerta.** El preregistro lo excluye. La reserva
+de §6.2 sigue exactamente donde estaba: el camino de identidad puede estar ayudando a optimizar
+como cualquier conexión residual, y lo único que lo separa de "sabe cuándo replegarse" es el
+brazo con `g` constante aprendida de §8, que no se corrió. C4 muestra que la compuerta se repliega
+con el SNR en las tres semillas nuevas, pero no muestra que ese repliegue cause el contraste.
+
+Por lo mismo, la frase de §1 y §7 —"la compuerta desde cero es un aporte arquitectónico real"—
+nombraba la fila de desenlaces del screening y **no es el enunciado confirmado**. El enunciado
+confirmado es el contraste entre brazos.
+
+### 9.4 La fragilidad
+
+- **La sd entre semillas en el sellado primario (0,026802) es mayor que el margen de C2a sobre su
+  umbral (+0,011370)**, y duplica la de inglés (0,012849) y la de audiolibro (0,010266).
+- **La semilla 45 carga toda esa dispersión.** Su estimando en `test_v2_es` es +0,030703, y por
+  época da +0,040680 / −0,001915 / +0,102364 / +0,049586 / −0,014453 / +0,007955: dos de seis
+  negativas, sd entre épocas 0,042923, la más ancha de las cuatro semillas. C1 y C2 se definen
+  sobre el promedio de épocas, así que cumple, con margen chico.
+- **Lo que decidió el resultado fue el piso por semilla, no la media.** Con la 45 0,005703 más
+  abajo, el desenlace habría caído en la tercera fila de la tabla y no en la primera.
+- Otras definiciones del estimando no cambian el veredicto. El pool da +0,061370 y la mediana
+  +0,073098. Incluir la 42 daría +0,065900, sesgado hacia arriba, y el preregistro lo prohíbe.
+
+### 9.5 Qué corrige del screening
+
+- **La magnitud.** El número que se reporta es +0,061370. El +0,0795 de §1 y §5 es el de una
+  semilla que, además, disparó la confirmación.
+- **La semilla 42 otra vez del lado alto**, como en V5 (§6.1): es la más alta de las cuatro en
+  inglés y en audiolibro. En el sellado primario no, porque la 44 la supera (+0,080308 contra
+  +0,079493).
+- **El orden entre sellados de §5 y §6.2 no se reproduce.** El screening daba Common Voice >
+  audiolibro > inglés. En el confirmatorio audiolibro (+0,044083) queda a la par de inglés
+  (+0,044470). El diferencial español − inglés (+0,016900) no habilita afirmar que el efecto sea
+  específico de estar fuera del dominio de entrenamiento, y el preregistro ya declaraba que este
+  experimento no puede resolverlo.
+- **El denominador de §6.1 era el equivocado, como ya advertía esa misma sección.** Las réplicas
+  de V5 daban una sd entre semillas de 0,004 a 0,019 sobre orden de datos. Acá, con la semilla
+  moviendo también la inicialización, la sd es 0,026802 en español.
+
+### 9.6 Qué queda abierto
+
+1. **La atribución** (§6.2): el brazo con `g` constante aprendida. Hasta que se corra, V7 se
+   escribe como contraste entre brazos.
+2. **La especificidad de dominio**, por lo de 9.5.
+3. **El bucket [15,20] dB** (§1 y §5): "el control replica la patología y la compuerta la cruza a
+   cero" sigue siendo un descriptivo de la semilla 42 sola. No es un criterio del preregistro y no
+   se recomputó con las semillas nuevas.
+4. **Las horas de GPU de la confirmación.** No hay reportes de costo de las semillas 43/44/45 en
+   `results/`: el ~68 h que circula es el presupuesto del preregistro, no una medición. Hay que
+   generarlos con `analysis/training_cost_report.py`, no estimarlos.
+
+---
+
 ## Archivos
 
 - `models/crn.py` — `CRN(gate=...)`; con `gate=False` es bit-idéntico al original
-- `training/config.py` — `CONFIG_V7_GATE`, `CONFIG_V7_CONTROL`, y las cuatro de semillas
+- `training/config.py` — `CONFIG_V7_GATE`, `CONFIG_V7_CONTROL`, y las seis de semillas
+  (`GATE`/`CONTROL` × `S43`/`S44`/`S45`)
 - `training/trainer.py` — `--resume-from` y `Trainer._resume`
 - `tests/test_resume.py` — reanudación bit-exacta, cada corrida en su proceso
 - `analysis/v7_gate_endpoints.py` — calcula E1 a E5 desde el barrido
-- `results/v7_epochs/` — 36 evaluaciones (2 brazos × 6 épocas × 3 sellados)
-- `results/v7_endpoints.json` — la salida del análisis
+- `results/v7_epochs/` — 144 evaluaciones: 36 del screening (2 brazos × 6 épocas × 3
+  sellados) y 108 de la confirmación (3 semillas × 2 brazos × 6 épocas × 3 sellados),
+  estas últimas versionadas en `a57172e`
+- `results/v7_endpoints.json` — la salida del análisis del screening
+- `analysis/v7_seeds_endpoints.py` — envoltorio que aplica el cálculo congelado a las
+  semillas 43/44/45
+- `results/v7_seeds_endpoints.json` — estimandos por semilla y confirmatorio (`7620a00`)
+- `docs/preregistro_v7_semillas.sha256` — hash del preregistro de la confirmación
 - `scripts/run_v7_scratch.sh`, `scripts/resume_v7_scratch.sh`, `scripts/resume_v7_eval.sh`,
   `scripts/run_v7_mls_sweep.sh`, `scripts/run_v7_seeds.sh`
 - `docs/preregistro_v7_desde_cero.sha256` — hash del preregistro

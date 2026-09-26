@@ -642,7 +642,7 @@ positivos — es deliberado, y es lo que le da crédito al resto.
 | V4, V4b | proxy perceptual Squim; negativo | este archivo + `decisions.md` ("Cierre de V4", "V4b") + `docs/PLAN_V4.md` |
 | V5 | propuesta completa + réplicas de semilla | este archivo + `decisions.md` (07-09/09), commit `cd0f443` |
 | V6 | compuerta atornillada a V2; negativo | `docs/v6_compuerta.md` + sección acá |
-| V7 | compuerta desde cero; screening positivo | `docs/v7_compuerta_desde_cero.md` + sección acá |
+| V7 | compuerta desde cero; contraste confirmado con tres semillas, atribución abierta | `docs/v7_compuerta_desde_cero.md` + sección acá + `decisions.md` (26/09) |
 
 ---
 
@@ -1178,3 +1178,54 @@ Tres reservas van escritas al lado del resultado, no en un apéndice:
 
 Efecto sobre V6: queda **acotado, no retractado**. Su endpoint falló y sigue
 fallando, pero falla para la compuerta agregada tarde, no para la compuerta.
+
+### Confirmación con tres semillas nuevas
+
+Corridas del 19 al 22/09/2026; endpoint adjudicado el 26/09/2026. La "Conclusión" de arriba es la
+del screening y queda como registro. Lo que sigue la cierra.
+
+**Diseño.** Semillas 43, 44 y 45, los dos brazos completos en cada una: seis corridas de 20
+épocas con la receta del screening sin cambios. Estimando por semilla idéntico al del screening,
+calculado por el mismo código congelado. **Confirmatorio: media no ponderada de las tres semillas
+nuevas. La 42 queda excluida por diseño, porque fue la que disparó la confirmación, y se reporta
+al lado.** Preregistro con hash en `docs/preregistro_v7_semillas.sha256` (`0424c74`), cerrado
+antes de que existiera cualquier resultado sobre los sellados.
+
+| sellado | confirmatorio | s43 | s44 | s45 | sd entre semillas | s42 (excluida) |
+|---|---|---|---|---|---|---|
+| `test_v2_es` (primario) | **+0,061370** | +0,073098 | +0,080308 | +0,030703 | **0,026802** | +0,079493 |
+| `test_v1_en` | +0,044470 | +0,059170 | +0,038858 | +0,035381 | 0,012849 | +0,061970 |
+| `test_v3_mls_es` | +0,044083 | +0,055806 | +0,036702 | +0,039740 | 0,010266 | +0,075347 |
+
+| criterio | umbral | resultado | |
+|---|---|---|---|
+| C1 dirección, las tres semillas en ES | > 0 | la menor, +0,030703 | pasa |
+| C2a magnitud media en ES | ≥ +0,050 | +0,061370 (margen +0,011370) | pasa |
+| C2b piso por semilla en ES | ≥ +0,025 | la mínima, +0,030703 (margen +0,005703) | pasa |
+| C3 costo en inglés | ≥ −0,020 | +0,044470 | pasa |
+| C4 ρ(g,SNR) < 0 con \|ρ\| ≥ 0,15 | las 54 épocas (3 semillas × 3 sellados × 6) | 54 de 54; \|ρ\| mínimo 0,315119 | pasa |
+| C5 media de g en (0,05 ; 0,99) | las 54 épocas | 54 de 54; g entre 0,385669 y 0,566935 | pasa |
+
+250 pares en todas las épocas de las tres semillas, cero exclusiones.
+
+**Nivel: preregistrado y confirmado.** Es fuera de muestra en la semilla, que es la variable que
+se confirma. Los sellados son los mismos del screening.
+
+**Se confirma el contraste compuerta − control, en signo y con +0,061370 PESQ-NB en el sellado
+primario. No se confirma que la mejora provenga de la compuerta**: el preregistro excluye esa
+atribución, y separarla pide un brazo con `g` constante aprendida que este experimento no tiene.
+La reserva 2 del screening sigue en pie sin cambios.
+
+**Fragilidad, al lado del número:** la sd entre semillas en español (0,026802) es mayor que el
+margen de C2a sobre su umbral (+0,011370). La semilla 45 carga esa dispersión: +0,030703, con
+dos de sus seis épocas negativas (`+ − + + − +`, sd entre épocas 0,042923). Lo que decidió el
+resultado fue el piso por semilla: con la 45 0,005703 más abajo, el desenlace habría sido otro.
+
+**Lo que corrige del screening.** La magnitud que se reporta es +0,061370, no +0,0795. La 42 es
+la más alta de las cuatro en inglés y en audiolibro; en el sellado primario la supera la 44. El
+orden entre sellados que el screening mostraba (Common Voice > audiolibro > inglés) no se
+reproduce: audiolibro e inglés quedan a la par. El diferencial español − inglés (+0,016900) no
+habilita afirmar que el efecto sea específico de estar fuera de dominio. El descriptivo del
+bucket [15,20] dB sigue siendo de la semilla 42 sola.
+
+Detalle y discusión: `docs/v7_compuerta_desde_cero.md` §9 y `decisions.md` (26/09/2026).

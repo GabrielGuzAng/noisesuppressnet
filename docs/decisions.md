@@ -1172,7 +1172,14 @@ El preregistro completo vive fuera del repo por la regla anti-contaminación; ac
 decisión y su razón, que es lo que tiene que sobrevivir aunque el documento no se lea. El hash va
 a `docs/preregistro_v7_semillas.sha256` antes de lanzar.
 
-Auditoría de números heredados al consolidar EXPERIMENTS.md (20/09/2026)
+> **Anotado el 26/09/2026.** La intención de hashear "antes de lanzar" no se cumplió: las semillas
+> 43 y 44 arrancaron el 19/09 a las 00:03:28 y el hash se commiteó ese mismo día a las 21:06:32
+> (`0424c74`). El orden real está declarado dentro del propio `.sha256`, junto con la razón por la
+> que no compromete el preregistro: al hashear no existía ningún resultado sobre ningún sellado ni
+> podía existir, porque el barrido de evaluación corre recién al terminar los entrenamientos. La
+> entrada queda como está: esto se anota, no se reescribe.
+
+## Auditoría de números heredados al consolidar EXPERIMENTS.md (20/09/2026)
  
 Escribir las secciones faltantes de la bitácora obligó a releer cada número contra su JSON.
 Cuatro no daban, todos por transcripción y ninguno por medición:
@@ -1183,3 +1190,114 @@ Cuatro no daban, todos por transcripción y ninguno por medición:
 4. El mensaje del commit 7f7884d atribuye a V3e el val_loss 0,0864, que es el de V3b (época 5). El de V3e es 0,0843 (época 14). Un mensaje de commit ya pusheado no se reescribe: queda anotado acá.
 
 Los cuatro son errores de transcripción entre documentos, no de medición. Ninguna conclusión cambia. Es el modo de falla que ya produjo la retractación del "67 % de retención": un número sobrevive en prosa después de que su fundamento se movió. Mitigación adoptada: al escribir cualquier sección nueva, cada número se recomputa contra su JSON en vez de copiarse.
+
+---
+
+## V7 con tres semillas nuevas: el contraste se confirma, la atribución no (26/09/2026)
+
+Corridas del 19 al 22/09/2026; endpoint adjudicado el 26/09/2026.
+
+**Qué se preguntó.** El screening de V7 (semilla 42, un brazo de cada lado) dio el contraste
+compuerta − control por encima de su umbral y, por la tabla de desenlaces de su preregistro,
+activó una confirmación con semillas nuevas. La pregunta de la confirmación es acotada: **si el
+contraste de PESQ-NB entre el brazo con compuerta y el brazo de control, los dos entrenados desde
+cero, se reproduce en signo y tamaño con semillas que no participaron en generar la hipótesis.**
+No pregunta por qué existe ese contraste.
+
+**Cómo se diseñó.** Tres semillas nuevas —43, 44 y 45—, los dos brazos completos en cada una:
+seis corridas de 20 épocas con la receta del screening sin cambios (`CONFIG_V7_{GATE,CONTROL}_S{43,44,45}`).
+El estimando por semilla es el mismo del screening y lo calcula el mismo código congelado
+(`analysis/v7_gate_endpoints.py`, sin cambios desde `9c7d918`; el envoltorio
+`analysis/v7_seeds_endpoints.py` parametriza las ramas en memoria): contraste global de PESQ-NB,
+apareado archivo por archivo y promediado sobre las épocas 15 a 20. **El estimando confirmatorio
+es la media no ponderada de los estimandos de las semillas 43, 44 y 45. La semilla 42 queda
+excluida por diseño, porque fue la que disparó la confirmación, y se reporta siempre al lado.**
+El preregistro está hasheado en `docs/preregistro_v7_semillas.sha256`, commiteado el 19/09 a las
+21:06:32 (`0424c74`). La secuencia está declarada en ese mismo archivo: **las semillas 43 y 44 se
+lanzaron antes del hash**, a las 00:03:28 de ese día. Al hashear no existía un solo resultado
+sobre ningún sellado ni podía existir, porque el barrido de evaluación corre recién al terminar
+los entrenamientos. La marca que vale es la del commit y no el `mtime` del archivo (20:36:44):
+un `mtime` se reescribe, un commit pusheado no.
+
+**Relación con la entrada del 18/09.** Esa entrada fijaba un confirmatorio de dos semillas y ya
+lleva anotada su propia corrección del 19/09: tres semillas nuevas. **Esa corrección es la que se
+ejecutó, y el estimando se calculó con tres.** La entrada queda como está.
+
+**Qué dio.** Los seis criterios, todos sobre el contraste compuerta − control en PESQ-NB,
+apareado y promediado sobre las épocas 15 a 20:
+
+| criterio | umbral | valor | cumple | margen |
+|---|---|---|---|---|
+| C1 dirección: las tres semillas positivas en `test_v2_es` | > 0 | la menor, +0,030703 | sí | — |
+| C2a magnitud: media confirmatoria en `test_v2_es` | ≥ +0,050 | +0,061370 | sí | +0,011370 |
+| C2b piso por semilla en `test_v2_es` | ≥ +0,025 cada una | la mínima, +0,030703 (s45) | sí | +0,005703 |
+| C3 guarda de costo en `test_v1_en` | ≥ −0,020 | +0,044470 | sí | +0,064470 |
+| C4 mecanismo: ρ(g,SNR) < 0 con \|ρ\| ≥ 0,15 | las 54 épocas (3 semillas × 3 sellados × 6) | 54 de 54; el \|ρ\| más chico es 0,315119 (s45, `test_v2_es`, época 18) | sí | — |
+| C5 no degeneración: media de g en (0,05 ; 0,99) | las 54 épocas | 54 de 54; g entre 0,385669 y 0,566935 | sí | — |
+
+Estimando por sellado, con las tres semillas confirmatorias desagregadas y la 42 al lado:
+
+| sellado | confirmatorio | s43 | s44 | s45 | sd entre semillas | s42 (screening, excluida) |
+|---|---|---|---|---|---|---|
+| `test_v2_es` (primario) | **+0,061370** | +0,073098 | +0,080308 | +0,030703 | **0,026802** | +0,079493 |
+| `test_v1_en` | +0,044470 | +0,059170 | +0,038858 | +0,035381 | 0,012849 | +0,061970 |
+| `test_v3_mls_es` | +0,044083 | +0,055806 | +0,036702 | +0,039740 | 0,010266 | +0,075347 |
+
+La sd es la muestral entre las tres semillas confirmatorias. Datos completos: 250 pares en las
+seis épocas de las tres semillas, cero exclusiones por NaN, cero épocas invalidadas. Chequeo de
+integridad: el mismo envoltorio reproduce el +0,079493 de la semilla 42 contra el +0,0795
+publicado en el screening.
+
+**Veredicto: preregistrado y confirmado** (escala de `informe/LEDGER.md` §1), primera fila de la
+tabla de desenlaces del preregistro. Lo "fuera de muestra" hay que precisarlo: los sellados son
+los mismos del screening, lo nuevo son las corridas. Cuenta como fuera de muestra porque la
+variable que se confirma es la semilla.
+
+**Qué se confirma y qué no.** Se confirma **el contraste compuerta − control, con su signo y
+con un tamaño de +0,061370 en el sellado primario**. **No se confirma que la mejora provenga de la
+compuerta.** El preregistro excluye esa atribución expresamente. Separar "el camino de
+identidad facilita la optimización" de "la compuerta sabe cuándo replegarse" pide un brazo con `g`
+constante aprendida, y ese brazo no forma parte de este experimento. Que C4 se cumpla
+dice que la compuerta se repliega con el SNR en las tres semillas, tal como se predijo, y no
+dice que ese repliegue sea la causa del contraste.
+
+**La fragilidad va con el número titular, no aparte:**
+
+- **La dispersión entre semillas en el sellado primario (sd 0,026802) es mayor que el margen de
+  C2a sobre su umbral (+0,011370)**, y duplica la de inglés (0,012849) y la de audiolibro (0,010266).
+- **La semilla 45 concentra la fragilidad.** Su estimando en `test_v2_es` es +0,030703, y sus seis
+  épocas dan +0,040680 / −0,001915 / +0,102364 / +0,049586 / −0,014453 / +0,007955: signos
+  `+ − + + − +`, dos de seis negativas, sd entre épocas 0,042923. C1 y C2 se definen sobre el
+  promedio de épocas, así que cumple, pero con margen chico.
+- **Lo que decidió el resultado fue el piso por semilla (C2b), no la magnitud media.** Con la
+  semilla 45 0,005703 más abajo, el desenlace habría caído en la tercera fila de la tabla y no en
+  la primera.
+- Otras definiciones razonables del estimando no cambian el veredicto. El pool sobre archivos y
+  épocas da lo mismo (+0,061370, porque no hay NaN) y la mediana daría +0,073098. Incluir la 42
+  daría +0,065900, sesgado hacia arriba, y el preregistro lo prohíbe.
+
+**Descriptivos, sin criterio asociado:**
+
+- El screening sobrestimó el tamaño. La magnitud que se reporta de acá en adelante es +0,061370,
+  no el +0,079493 de la semilla 42.
+- La semilla 42 es la más alta de las cuatro en inglés y en audiolibro. En el sellado primario no:
+  la 44 la supera (+0,080308 contra +0,079493).
+- El diferencial español − inglés del confirmatorio es +0,016900. El preregistro ya declaraba que
+  este experimento no puede resolverlo, así que **no habilita afirmar que el efecto sea específico
+  de estar fuera del dominio de entrenamiento**. Tampoco se reproduce el orden que el screening
+  había mostrado entre los tres sellados: audiolibro (+0,044083) queda a la par de inglés
+  (+0,044470), no entre inglés y Common Voice.
+- La sd entre semillas medida acá (0,026802 en español) es más ancha que el rango de 0,004 a 0,019
+  de las réplicas de V5. Es lo que la entrada del 08-09/09 anticipaba: esas réplicas medían orden
+  de datos desde un mismo checkpoint, y acá la semilla mueve también la inicialización.
+
+**Qué queda abierto.**
+
+1. **La atribución.** El brazo con `g` constante aprendida es el experimento que falta. Mientras
+   no se corra, el resultado se enuncia como contraste entre brazos, no como efecto de la compuerta.
+2. **La especificidad de dominio**, por lo dicho arriba.
+3. **El descriptivo por bucket de SNR** ("el control replica la patología de V1/V2 en [15,20] dB
+   del español y la compuerta la cruza a cero") sigue apoyado sólo en la semilla 42: no forma parte
+   de los criterios y no se recomputó para las semillas nuevas.
+4. Salvedad menor: el docstring de `analysis/v7_seeds_endpoints.py` (línea 9) llama "verbatim" a
+   una cita del preregistro que en realidad está condensada, aunque dice lo mismo.

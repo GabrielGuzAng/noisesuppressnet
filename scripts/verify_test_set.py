@@ -38,6 +38,11 @@ SEALED_SETS = {
         "hash_file": PROJECT_ROOT / "seal_test_metadata" / "test_v3_mls_es_hash.txt",
         "description": "Español — MLS, canal audiolibro (control idioma/canal)",
     },
+    "wham_es": {
+        "dir": PROJECT_ROOT / "data" / "test_sealed" / "wham_es",
+        "hash_file": PROJECT_ROOT / "seal_test_metadata" / "test_wham_es_hash.txt",
+        "description": "Español — misma voz que v3_mls_es, ruido holdout (WHAM!)",
+    },
 }
 
 

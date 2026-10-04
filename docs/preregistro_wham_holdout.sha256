@@ -1,0 +1,52 @@
+# Preregistro de test_wham_es, el primer sellado del proyecto con ruido holdout.
+# El archivo vive fuera del repositorio (~/nosiesuppressnet-oracle/preregistro_wham_holdout.md)
+# porque contiene los criterios de decisión, los umbrales y la tabla de desenlaces,
+# que un agente ejecutor no debe ver. Acá queda sólo el compromiso verificable.
+#
+# Por qué existe la sede. El pool de ruido del proyecto (MUSAN + ESC-50) no tiene
+# holdout: datasets/make_mixtures.py y los tres scripts de sellado declaran el mismo
+# conjunto de archivos, de modo que todo el ruido de los tres sellados anteriores
+# estuvo también en entrenamiento. test_wham_es reusa la voz de test_v3_mls_es
+# verbatim —mismas utterances, mismos offsets, mismos SNR, par por par— y cambia
+# únicamente la fuente de ruido, a WHAM! (Wichern et al. 2019), que no entró a
+# ningún entrenamiento de este proyecto. Es el primer sellado donde ninguno de los
+# dos ejes fue visto por ningún modelo nuestro.
+#
+# Declara: tres contrastes confirmatorios, con su estimando, su umbral y su
+# potencia declarada antes del dato; un bloque descriptivo que se reporta siempre y
+# no se puntúa; la unidad de remuestreo (la grabación fuente de WHAM!, con el
+# anidamiento por locación declarado); las reglas de datos faltantes tal como el
+# código las implementa; y una tabla de desenlaces con precedencia, redactada antes
+# de ver el resultado. Declara además, explícitamente, la pregunta que esta sede NO
+# puede contestar: cuánto inflaba los números la exposición al ruido visto, que no
+# es identificable porque la exposición está confundida con el modelo.
+#
+# SECUENCIA, declarada para que la diferencia de fechas no se lea como que el
+# documento se acomodó al dato. Cuando se hashea, data/test_sealed/wham_es NO
+# existe: no hay ninguna métrica sobre ningún par de esta sede ni puede haberla.
+# Lo único que corrió antes es un dry run del script de sellado, que verifica el
+# reparto de ruido, que las utterances se resuelven, que la voz reusada reproduce
+# la de test_v3_mls_es y que se toma un solo canal del ruido binaural. Material,
+# no medición: no computa PESQ, STOI ni SI-SDR sobre nada.
+#
+# El código que el documento declara quedó congelado ANTES de este hash, en el
+# commit ac102f2540c2bf20d4930ea1a9fd74e6f2b59f68 (sellado, barrido, adjudicación
+# y registro de integridad). Cualquier cambio posterior a esos archivos es una
+# enmienda bajo la regla del documento.
+#
+# Cerrado tras una validación independiente: lo leyó un revisor que no lo escribió
+# y que no podía ver ningún resultado de esta sede porque todavía no existe.
+# Encontró tres bloqueantes, y los tres están incorporados reescribiendo las
+# secciones 3, 4 y 5. El más importante: la estimación de potencia del borrador
+# salía del único par de sedes anteriores que comparte las condiciones de ruido
+# verbatim, que es justo lo que esta sede cambia. La potencia quedó reescrita como
+# un rango, y con ella la declaración de que este test está débilmente potenciado.
+# Un cuarto defecto apareció en el código y no en el documento, y también está
+# corregido.
+#
+# Retira: preregistro_ood_ruido.md, nunca hasheado, que cubría la misma pregunta
+# con un diseño de siete brazos y cuatro bloqueos sin reparar. No se adjudica nada
+# contra aquel documento.
+
+# v1 — 4/10/2026.
+9938f5f1cda6e4b7547fbbeacc531273d4002f18b9db088f9d6e29efa2fec57b  preregistro_wham_holdout.md

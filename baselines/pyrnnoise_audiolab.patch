@@ -1,0 +1,20 @@
+--- .venv-baselines/lib/python3.11/site-packages/pyrnnoise/pyrnnoise.py.orig	2026-09-28 14:04:55.488013125 -0300
++++ .venv-baselines/lib/python3.11/site-packages/pyrnnoise/pyrnnoise.py	2026-09-28 14:04:55.489298797 -0300
+@@ -41,7 +41,7 @@
+     def in_graph(self):
+         if self._in_graph is None:
+             self._in_graph = Graph(
+-                rate=self.sample_rate,
++                sample_rate=self.sample_rate,
+                 dtype=self.dtype,
+                 channels=self.channels,
+                 filters=[aformat(np.int16, SAMPLE_RATE)],
+@@ -53,7 +53,7 @@
+     def out_graph(self):
+         if self._out_graph is None:
+             self._out_graph = Graph(
+-                rate=SAMPLE_RATE,
++                sample_rate=SAMPLE_RATE,
+                 dtype=np.int16,
+                 channels=self.channels,
+                 filters=[aformat(np.int16, self.sample_rate)],

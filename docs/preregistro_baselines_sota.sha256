@@ -1,0 +1,49 @@
+# Preregistro de la comparación contra baselines de estado del arte publicados
+# (RNNoise y DeepFilterNet2) sobre los tres conjuntos sellados.
+# El documento vive fuera del repositorio
+# (~/nosiesuppressnet-oracle/preregistro_baselines_sota.md) porque contiene los
+# criterios de decisión y la tabla de desenlaces, que un agente ejecutor no debe
+# ver. Acá queda sólo el compromiso verificable, sin los valores de esos criterios.
+#
+# QUÉ DECLARA
+#   - El sistema propio por sellado, fijado por archivo y no por nombre: V2 en
+#     test_v1_en, y V5 en test_v2_es y test_v3_mls_es, donde V5 es la MEDIA de las
+#     tres semillas y no un checkpoint elegido. Las tres se reportan individualmente.
+#   - El estimando: delta PESQ-NB apareado contra el mejor de los dos baselines, con
+#     el comparador fijado antes de mirar el contraste.
+#   - Un umbral de materialidad declarado, y la unidad de remuestreo del bootstrap
+#     para cada sellado por separado.
+#   - resample_roundtrip como tercer brazo: el control que le pone precio al transito
+#     16k->48k->16k que pagan los dos baselines y nuestro sistema no.
+#   - En 2.1, la contaminacion del material de evaluacion con su modelo de cobertura
+#     explicito, y con los dos valores de k: 52.000 sorteos para V2 y 104.000 para V5,
+#     que vio el mismo pool otra vez durante el fine-tuning.
+#   - En 3, como limitacion conocida y no reparada: elegir el mejor de dos baselines
+#     sobre los mismos pares que producen el contraste sesga el comparador hacia
+#     arriba, o sea EN CONTRA nuestra. El estimando queda conservador.
+#
+# SECUENCIA, declarada porque las fechas no se explican solas
+#   El audio realzado de los tres brazos externos ya existia cuando se tomo este
+#   hash: 2.250 archivos cacheados entre el 28/09/2026 02:46 y el 29/09/2026 01:46
+#   UTC, segun los nueve manifiestos. Eso es MATERIAL, no medicion, y la distincion
+#   es la que sostiene el orden:
+#     - NINGUNA metrica se computo sobre ese audio antes de este hash. No existe un
+#       solo results/*.json de rnnoise, deepfilternet2 ni resample_roundtrip, y no
+#       hay rastro de ellos en logs/. Es comprobable en el arbol de este commit.
+#     - Lo unico observable del audio sin puntuarlo es el RTF de cada cadena, que el
+#       validador verifico que NO interviene en ningun criterio de decision: aparece
+#       solo en la tabla de punto de operacion, que se reporta gane quien gane.
+#     - Esos RTF se midieron con 2 hilos de torch, no en un solo hilo, asi que no son
+#       los valores de la tabla comprometida y hay que remedirlos.
+#   La cuarta sede (ruido fuera de distribucion) NO esta en este documento: se separo
+#   a ~/nosiesuppressnet-oracle/preregistro_ood_ruido.md, que queda SIN HASHEAR con
+#   cuatro hallazgos bloqueantes pendientes. Su material no existe.
+#
+# VALIDACION
+#   Lo leyo un revisor independiente que no lo escribio, en dos pasadas. Informes en
+#   ~/nosiesuppressnet-oracle/validacion_hallazgos_v1.md y _v2.md. Sobre 1 a 7 no
+#   quedo ningun hallazgo bloqueante; los no bloqueantes estan incorporados en 2.1 y
+#   3 o escritos como limitacion conocida.
+
+# v6 — 04/10/2026.
+5e8c56b52ec7de485ec599b6446cdac72e532e2eac36359d38808b1232b19229  preregistro_baselines_sota.md

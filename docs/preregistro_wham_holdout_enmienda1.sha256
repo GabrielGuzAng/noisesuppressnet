@@ -1,0 +1,29 @@
+# Enmienda 1 al preregistro de test_wham_es. El archivo vive fuera del repositorio
+# (~/nosiesuppressnet-oracle/preregistro_wham_holdout_enmienda1.md).
+#
+# POST-HOC: escrita después de que el dato existe. Bajo la regla de enmiendas del
+# documento original, por lo tanto NO cambia ningún criterio ni ningún desenlace
+# declarado, y no los cambia. Lo que corrige son tres defectos de implementación:
+# el código de adjudicación no hacía lo que el documento ya hasheado decía. Una
+# regla declarada en el documento y ausente del código, un criterio secundario que
+# el documento había reemplazado y el código conservaba, y un descriptivo
+# obligatorio que se calculaba y no se guardaba.
+#
+# Es un archivo aparte, y no un apéndice del original, para que el original quede
+# byte-idéntico y su hash siga verificando. Verificado el 4/10 después de los
+# arreglos: docs/preregistro_wham_holdout.sha256 da OK.
+#
+# Declara, además de los tres arreglos: la dirección en que mueven el resultado
+# (los dos que lo mueven lo empeoran, y se deja constancia porque es la evidencia
+# disponible de que esto es cumplimiento y no conveniencia); una corroboración por
+# una vía de incertidumbre distinta de la declarada; el perfil por bucket de SNR
+# como exploratorio, con un confusor medido que el documento original no previó; y
+# una limitación de diseño que debió declararse antes y no se declaró.
+#
+# El código de esta enmienda está en el commit
+# 33bc7cf152e9e7307c9adc13bd641dc93ffdd304. El resto de los archivos congelados en
+# ac102f2540c2bf20d4930ea1a9fd74e6f2b59f68 no se tocó, y el --selftest del módulo
+# sigue reproduciendo los números publicados después de los arreglos.
+
+# v1 — 4/10/2026.
+273f7593f454b8d5465e3b322a9f6d6c31c1b9a4868ca1bd937688028a417980  preregistro_wham_holdout_enmienda1.md

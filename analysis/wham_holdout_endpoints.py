@@ -64,9 +64,11 @@ SEMILLA_SCREENING = v7se.SEMILLA_SCREENING     # 42, descriptiva
 # Umbrales del preregistro, sección 4. Retención >= 50% del efecto observado
 # en la sede de referencia.
 C1_REFERENCIA = 0.0441      # contraste compuerta en v3_mls_es
-C1_UMBRAL = -C1_REFERENCIA / 2
+C1_UMBRAL = -C1_REFERENCIA / 2          # sobre d (diferencia apareada)
+C1_UMBRAL_SEDE = C1_REFERENCIA / 2      # el mismo umbral, sobre E(sede)
 C2_REFERENCIA = 0.0583      # V5(3 semillas) - V2 en v3_mls_es
 C2_UMBRAL = -C2_REFERENCIA / 2
+C2_UMBRAL_SEDE = C2_REFERENCIA / 2
 C3_MAX_RHO = -0.15          # mismo umbral que E3 del preregistro de V7
 
 RAMAS_V5 = ("v5", "v5_s43", "v5_s44")
@@ -228,6 +230,38 @@ def _bootstrap_cluster(por_par: dict, grupos: dict, n: int = 10000) -> dict:
     }
 
 
+def _signo_adaptacion(sede: str) -> dict:
+    """Section 4's C2 secondary: fraction of pairs where V5 beats V2.
+
+    A previous version used "mean(V5 - V2) > 0", which the primary already
+    implies (its threshold is positive) and which therefore could not fail on
+    its own. The independent validator flagged it; this is the replacement the
+    document declares. One binomial test per seed: pooling the three would reuse
+    the same 250 pairs and inflate n.
+    """
+    v2 = _pares(RAMA_V2, sede)
+    por_semilla = []
+    for rama in RAMAS_V5:
+        v5 = _pares(rama, sede)
+        ids = [i for i in sorted(set(v5) & set(v2))
+               if np.isfinite(v5[i]["pesq_nb_est"]) and np.isfinite(v2[i]["pesq_nb_est"])]
+        gana = sum(1 for i in ids if v5[i]["pesq_nb_est"] > v2[i]["pesq_nb_est"])
+        por_semilla.append({
+            "rama": rama,
+            "n": len(ids),
+            "gana_v5": gana,
+            "fraccion": gana / len(ids),
+            "p_signo": float(stats.binomtest(gana, len(ids), 0.5).pvalue),
+        })
+    fr = [r["fraccion"] for r in por_semilla]
+    return {
+        "por_semilla": por_semilla,
+        "fraccion_media": float(np.mean(fr)),
+        "fraccion_rango": [float(min(fr)), float(max(fr))],
+        "p_max": float(max(r["p_signo"] for r in por_semilla)),
+    }
+
+
 def _mecanismo(sede: str) -> dict:
     """rho(g, SNR) over every gate checkpoint of the confirmatory seeds."""
     filas = []
@@ -245,6 +279,48 @@ def _mecanismo(sede: str) -> dict:
         "rho_rango": [float(rhos.min()), float(rhos.max())],
         "cumple": bool((rhos <= C3_MAX_RHO).all()),
         "n_que_no_cumplen": int((rhos > C3_MAX_RHO).sum()),
+    }
+
+
+def _veredicto(en_sede, umbral_sede: float) -> dict:
+    """Apply section 5's non-adjudication rule to a primary criterion.
+
+    Section 3 declares which statistic governs the primary: the between-seed sd
+    of the contrast **on the venue under test**, not of the paired difference.
+    Section 5 then says that if the estimate sits closer than one standard error
+    to the threshold, the report says so and does not adjudicate — with three
+    seeds, that distance cannot separate partial retention from sampling noise.
+
+    A previous version of this module compared against the threshold and printed
+    CUMPLE or FALLA, which is not what the document licenses.
+
+    Args:
+        en_sede: the per-seed contrast values on the venue under test.
+        umbral_sede: the threshold expressed on that same scale.
+
+    Returns:
+        The margin, the governing sem, their ratio, and one of
+        "CUMPLE" / "FALLA" / "NO ADJUDICA".
+    """
+    v = np.array(en_sede, dtype=float)
+    media = float(v.mean())
+    sd = float(v.std(ddof=1))
+    sem = sd / np.sqrt(len(v))
+    margen = media - umbral_sede
+    razon = float(margen / sem) if sem > 0 else float("inf")
+    if abs(razon) < 1.0:
+        veredicto = "NO ADJUDICA"
+    else:
+        veredicto = "CUMPLE" if margen >= 0 else "FALLA"
+    return {
+        "media_en_sede": media,
+        "sd_entre_semillas": sd,
+        "sem": float(sem),
+        "umbral_en_sede": umbral_sede,
+        "margen": float(margen),
+        "margen_en_sem": razon,
+        "veredicto": veredicto,
+        "regla": "seccion 5: |margen| < 1 sem -> no adjudica",
     }
 
 
@@ -283,7 +359,7 @@ def adjudicar(sede: str = SEDE, referencia: str = SEDE_REFERENCIA) -> dict:
             "d_medio": float(np.mean(ds)),
             "d_sd": float(np.std(ds, ddof=1)),
             "umbral": C1_UMBRAL,
-            "cumple_primario": bool(np.mean(ds) >= C1_UMBRAL),
+            "primario": _veredicto(en_sede, C1_UMBRAL_SEDE),
             "retencion": float(np.mean(en_sede) / C1_REFERENCIA),
             "positivo_en_sede": int(sum(1 for x in en_sede if x > 0)),
             "cumple_secundario": bool(all(x > 0 for x in en_sede)),
@@ -293,9 +369,12 @@ def adjudicar(sede: str = SEDE, referencia: str = SEDE_REFERENCIA) -> dict:
         "C2": {
             **c2,
             "umbral": C2_UMBRAL,
-            "cumple_primario": bool(c2["d"] >= C2_UMBRAL),
+            "primario": _veredicto(c2["sede"]["por_semilla"], C2_UMBRAL_SEDE),
             "retencion": float(c2["sede"]["media"] / C2_REFERENCIA),
-            "cumple_secundario": bool(c2["sede"]["media"] > 0),
+            "secundario_signo": {
+                "sede": _signo_adaptacion(sede),
+                "referencia": _signo_adaptacion(referencia),
+            },
             "t_secundario": _t_una_cola(
                 [a - b for a, b in zip(c2["sede"]["por_semilla"],
                                        c2["referencia"]["por_semilla"])],
@@ -308,52 +387,131 @@ def adjudicar(sede: str = SEDE, referencia: str = SEDE_REFERENCIA) -> dict:
     resultado["descriptivo"] = {
         "semilla_screening": _contraste_compuerta(
             SEMILLA_SCREENING, sede, referencia),
-        "buckets_sede": _buckets(sede),
-        "buckets_referencia": _buckets(referencia),
+        "perfil_por_bucket_sede": _perfil_por_bucket(sede),
+        "perfil_por_bucket_referencia": _perfil_por_bucket(referencia),
     }
     return resultado
 
 
-def _buckets(sede: str) -> dict:
-    out = {}
+def _perfil_por_bucket(sede: str) -> list:
+    """D2 of section 7: both contrasts per SNR bucket, plus the noisy baseline.
+
+    Declared descriptive and not scored, but it is where the structure lives:
+    the two contrasts behave very differently across the SNR range, and the
+    noisy baseline is what shows that holding `snr_db` constant between venues
+    does **not** hold difficulty constant — WHAM! babble destroys more PESQ than
+    MUSAN music at the same nominal SNR.
+    """
+    # C1 por bucket: media sobre las tres semillas del desglose por epocas
+    por_semilla = []
     for semilla in SEMILLAS:
         with _sedes(sede):
-            with v7se._ramas(semilla):
-                out[semilla] = v7ge.bucket_breakdown(sede)
-    return out
+            faltantes, datos = v7se._inventario(semilla)
+            if faltantes:
+                raise v7se.DatosFaltantes(
+                    f"semilla {semilla}: faltan {len(faltantes)} evaluaciones")
+            with v7se._ramas(semilla, v7se._exclusiones(datos)):
+                por_semilla.append({r["bucket_idx"]: r["contrast"]
+                                    for r in v7ge.bucket_breakdown(sede)})
+
+    # C2 por bucket y linea de base del ruidoso
+    v2 = _pares(RAMA_V2, sede)
+    buckets = sorted({q["bucket_idx"] for q in v2.values()})
+    c2_por_bucket, base, snr_rango = {}, {}, {}
+    for b in buckets:
+        ids_b = [i for i, q in v2.items() if q["bucket_idx"] == b]
+        base[b] = float(np.mean([v2[i]["pesq_nb_noisy"] for i in ids_b]))
+        snr = [v2[i]["snr_db"] for i in ids_b]
+        snr_rango[b] = [float(min(snr)), float(max(snr))]
+        s_seeds = []
+        for rama in RAMAS_V5:
+            v5 = _pares(rama, sede)
+            ids = [i for i in ids_b if i in v5
+                   and np.isfinite(v5[i]["pesq_nb_est"])
+                   and np.isfinite(v2[i]["pesq_nb_est"])]
+            s_seeds.append(np.mean([v5[i]["pesq_nb_est"] - v2[i]["pesq_nb_est"]
+                                    for i in ids]))
+        c2_por_bucket[b] = float(np.mean(s_seeds))
+
+    return [{
+        "bucket_idx": b,
+        "snr_rango": snr_rango[b],
+        "n": sum(1 for q in v2.values() if q["bucket_idx"] == b),
+        "pesq_nb_noisy": base[b],
+        "c1_compuerta": float(np.mean([d[b] for d in por_semilla if b in d])),
+        "c2_adaptacion": c2_por_bucket[b],
+    } for b in buckets]
 
 
 def _imprimir(r: dict) -> None:
-    print("=" * 72)
+    print("=" * 74)
     print(f"ADJUDICACIÓN — {r['sede']} (ruido holdout) vs {r['sede_referencia']}")
-    print("=" * 72)
+    print("=" * 74)
+
     c = r["C1"]
-    print(f"\nC1 — la compuerta sobrevive al ruido no visto")
-    for s in r["semillas"]:
-        v = c["por_semilla"][s]
-        print(f"    s{s}: {r['sede_referencia']} {v['referencia']:+.4f} -> "
-              f"{r['sede']} {v['sede']:+.4f}   d = {v['d']:+.4f}")
-    print(f"    d medio {c['d_medio']:+.4f} (sd {c['d_sd']:.4f}) vs umbral "
-          f"{c['umbral']:+.4f}  ->  {'CUMPLE' if c['cumple_primario'] else 'FALLA'}")
+    v = c["primario"]
+    print("\nC1 — la compuerta sobrevive al ruido no visto")
+    for s_ in r["semillas"]:
+        q = c["por_semilla"][s_]
+        print(f"    s{s_}: {r['sede_referencia']} {q['referencia']:+.4f} -> "
+              f"{r['sede']} {q['sede']:+.4f}   d = {q['d']:+.4f}")
+    print(f"    primario: E({r['sede']}) = {v['media_en_sede']:+.6f} vs umbral "
+          f"{v['umbral_en_sede']:+.6f}")
+    print(f"              margen {v['margen']:+.6f} / sem {v['sem']:.6f} = "
+          f"{v['margen_en_sem']:.2f} sem   ->  {v['veredicto']}")
+    if v["veredicto"] == "NO ADJUDICA":
+        print(f"              ({v['regla']}; con 3 semillas esa distancia no separa")
+        print(f"               retención parcial de ruido de muestreo)")
     print(f"    retención {c['retencion']*100:.1f}% | positivo en "
           f"{c['positivo_en_sede']}/3 semillas -> "
-          f"{'CUMPLE' if c['cumple_secundario'] else 'FALLA'}")
+          f"{'CUMPLE' if c['cumple_secundario'] else 'FALLA'} (secundario, no decide)")
+    iv = c["intervalos"]
+    for k, et in (("por_grabacion", "grabación"), ("por_locacion", "locación")):
+        b = iv[k]
+        if b.get("ic95"):
+            print(f"    IC95 BCa por {et} (n={b['n_clusters']}): "
+                  f"[{b['ic95'][0]:+.4f}, {b['ic95'][1]:+.4f}]")
+
     c = r["C2"]
-    print(f"\nC2 — la adaptación sobrevive al ruido no visto")
-    print(f"    {r['sede_referencia']} {c['referencia']['media']:+.4f} -> "
-          f"{r['sede']} {c['sede']['media']:+.4f}   d = {c['d']:+.4f}")
-    print(f"    vs umbral {c['umbral']:+.4f}  ->  "
-          f"{'CUMPLE' if c['cumple_primario'] else 'FALLA'}")
-    print(f"    retención {c['retencion']*100:.1f}% | V5-V2 > 0 -> "
-          f"{'CUMPLE' if c['cumple_secundario'] else 'FALLA'}")
+    v = c["primario"]
+    print("\nC2 — la adaptación sobrevive al ruido no visto")
+    print(f"    por semilla {['%+.4f' % x for x in c['sede']['por_semilla']]}")
+    print(f"    primario: {c['sede']['media']:+.6f} vs umbral "
+          f"{v['umbral_en_sede']:+.6f}")
+    print(f"              margen {v['margen']:+.6f} / sem {v['sem']:.6f} = "
+          f"{abs(v['margen_en_sem']):.2f} sem   ->  {v['veredicto']}")
+    print(f"    retención {c['retencion']*100:.1f}%")
+    sg = c["secundario_signo"]
+    print(f"    secundario (test de signo, fracción de pares con V5 > V2):")
+    print(f"       {r['sede_referencia']:<12} {sg['referencia']['fraccion_media']*100:5.1f}%  "
+          f"p_max {sg['referencia']['p_max']:.2e}")
+    print(f"       {r['sede']:<12} {sg['sede']['fraccion_media']*100:5.1f}%  "
+          f"p_max {sg['sede']['p_max']:.2e}")
+
     c = r["C3"]
-    print(f"\nC3 — el mecanismo sobrevive")
+    print("\nC3 — el mecanismo sobrevive")
     print(f"    rho medio {c['rho_medio']:+.4f}  rango "
           f"[{c['rho_rango'][0]:+.4f}, {c['rho_rango'][1]:+.4f}]  n={c['n']}")
     veredicto = ("CUMPLE" if c["cumple"]
                  else f"FALLA ({c['n_que_no_cumplen']} checkpoints no cumplen)")
     print(f"    <= {c['umbral']:+.2f} en los {c['n']}  ->  {veredicto}")
-    print("\n" + "=" * 72)
+
+    print("\n" + "-" * 74)
+    print("D2 (descriptivo, declarado, NO puntuado) — perfil por bucket de SNR")
+    print("-" * 74)
+    a = {x["bucket_idx"]: x for x in r["descriptivo"]["perfil_por_bucket_referencia"]}
+    b = {x["bucket_idx"]: x for x in r["descriptivo"]["perfil_por_bucket_sede"]}
+    print(f"{'SNR':<12}{'noisy ref':>10}{'noisy sede':>11}{'C1 ref':>9}"
+          f"{'C1 sede':>9}{'ret':>7}{'C2 ref':>9}{'C2 sede':>9}{'ret':>8}")
+    for k in sorted(b):
+        lo, hi = b[k]["snr_rango"]
+        rc1 = b[k]["c1_compuerta"] / a[k]["c1_compuerta"] * 100 if a[k]["c1_compuerta"] else float("nan")
+        rc2 = b[k]["c2_adaptacion"] / a[k]["c2_adaptacion"] * 100 if a[k]["c2_adaptacion"] else float("nan")
+        print(f"[{lo:+.0f},{hi:+.0f}]".ljust(12)
+              + f"{a[k]['pesq_nb_noisy']:>10.4f}{b[k]['pesq_nb_noisy']:>11.4f}"
+              + f"{a[k]['c1_compuerta']:>+9.4f}{b[k]['c1_compuerta']:>+9.4f}{rc1:>6.0f}%"
+              + f"{a[k]['c2_adaptacion']:>+9.4f}{b[k]['c2_adaptacion']:>+9.4f}{rc2:>7.0f}%")
+    print("\n" + "=" * 74)
 
 
 def selftest() -> None:
